@@ -1,0 +1,16 @@
+{
+  "name": "album-finder-functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless": "^1.77.1",
+    "serverless-offline": "^6.5.0",
+    "serverless-python-requirements": "^5.1.0"
+  }
+}

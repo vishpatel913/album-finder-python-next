@@ -1,0 +1,38 @@
+service: album-finder-serverless-python
+
+provider:
+  name: aws
+  runtime: python3.6
+  environment: ${file(./.env.yml)}
+  stage: prod
+  region: us-east-1
+
+plugins:
+  - serverless-offline
+  - serverless-python-requirements
+
+custom:
+  serverless-offline:
+    httpPort: 5000
+  pythonRequirements:
+    dockerizePip: true
+    zip: true
+    slim: true
+
+# you can add packaging information here
+package:
+  individually: true
+  include:
+    - resources/**
+  exclude:
+    - venv/** # virtualenv
+    - node_modules/**
+
+functions:
+  album-search-by-artists:
+    handler: handlers/albums_search_by_artists.main
+    events:
+      - http:
+          path: albums
+          method: post
+          # cors: true
