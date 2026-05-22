@@ -1,0 +1,38 @@
+services:
+  api:
+    build:
+      context: ./functions
+      dockerfile: Dockerfile
+    container_name: album-finder-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      MUSIC_LIBRARY_XML: /library/Library.xml
+      SPOTIFY_CACHE_PATH: /app/data/spotify_artist_cache.json
+      CORS_ORIGINS: http://localhost:3000
+    volumes:
+      - ${MUSIC_LIBRARY_XML_HOST_PATH:-~/Music/Library.xml}:/library/Library.xml:ro
+      - ./data:/app/data
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: album-finder-web
+    ports:
+      - "3000:3000"
+    environment:
+      API_BASE: http://api:8000
+      NODE_ENV: development
+    volumes:
+      - ./app:/app/app
+      - ./next.config.mjs:/app/next.config.mjs
+      - ./tailwind.config.ts:/app/tailwind.config.ts
+      - ./postcss.config.js:/app/postcss.config.js
+      - ./tsconfig.json:/app/tsconfig.json
+    depends_on:
+      - api
+    restart: unless-stopped

@@ -1,0 +1,13 @@
+.git
+.gitignore
+.claude
+.vscode
+node_modules
+.next
+__pycache__
+*.pyc
+.env
+README.md
+data/*.json
+data/*.xml
+functions/__pycache__
