@@ -28,3 +28,9 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+.claude
+
+# album finder runtime artefacts
+/data/spotify_artist_cache.json
+/data/*.xml
