@@ -92,6 +92,7 @@ export default async function TracksPage({ searchParams }: { searchParams: Searc
               <tr>
                 <th className="px-3 py-2">Title</th>
                 <th className="px-3 py-2">Artist</th>
+                <th className="px-3 py-2">Featuring</th>
                 <th className="px-3 py-2">Album</th>
                 <th className="px-3 py-2">Genre</th>
                 <th className="px-3 py-2 text-right">Plays</th>

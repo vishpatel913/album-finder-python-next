@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from api.deps import get_resolver
+from api.deps import get_parsed_library, get_resolver
 from api.schemas import EnrichRequest
 
 router = APIRouter(prefix="/api/spotify", tags=["spotify"])
@@ -29,3 +29,20 @@ def enrich(payload: EnrichRequest, resolver=Depends(get_resolver)) -> dict[str, 
     results = resolver.resolve_many(payload.names)
     resolver.save()
     return results
+
+
+@router.post("/enrich-all")
+def enrich_all(
+    parsed: dict = Depends(get_parsed_library),
+    resolver=Depends(get_resolver),
+) -> dict:
+    """Batch-resolve every parsed artist into the cache.
+
+    Idempotent: `resolve_many` skips artists already cached, so re-running
+    only fetches new music. This is the "request Spotify once" entry point.
+    """
+    names = list(parsed.keys())
+    results = resolver.resolve_many(names)
+    resolver.save()
+    matched = sum(1 for v in results.values() if v and v.get("id"))
+    return {"requested": len(names), "matched": matched, "missed": len(names) - matched}

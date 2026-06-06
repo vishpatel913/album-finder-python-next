@@ -5,6 +5,9 @@ export function TrackRow({ track }: { track: TrackRowT }) {
     <tr className="border-b border-neutral-900 hover:bg-neutral-900/50">
       <td className="px-3 py-2 font-medium">{track.name}</td>
       <td className="px-3 py-2 text-neutral-400">{track.artist}</td>
+      <td className="px-3 py-2 text-neutral-500" title={track.featured ?? ""}>
+        {track.featured_artists.join(", ")}
+      </td>
       <td className="px-3 py-2 text-neutral-500">{track.album}</td>
       <td className="px-3 py-2 text-neutral-500">{track.genre}</td>
       <td className="px-3 py-2 text-right tabular-nums">{track.plays}</td>

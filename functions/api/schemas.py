@@ -34,6 +34,8 @@ class Track(BaseModel):
     loved: bool = False
     date_added: str | None = None
     last_played: str | None = None
+    featured: str | None = None
+    featured_artists: list[str] = []
 
 
 class Artist(BaseModel):
@@ -48,11 +50,15 @@ class Artist(BaseModel):
     date_added_last: str | None = None
     avg_rating: float | None = None
     loved_count: int = 0
-    # Spotify enrichment — may be null until /api/spotify/enrich populates.
+    # Spotify enrichment — may be null until /api/spotify/enrich-all populates.
     spotify_id: str | None = None
     display_name: str | None = None
     image_url: str | None = None
     spotify_genres: list[str] = []
+    spotify_url: str | None = None
+    spotify_uri: str | None = None
+    popularity: int | None = None
+    followers: int | None = None
 
 
 class TrackRow(Track):

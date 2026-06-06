@@ -20,6 +20,10 @@ export type Artist = {
   display_name: string | null;
   image_url: string | null;
   spotify_genres: string[];
+  spotify_url: string | null;
+  spotify_uri: string | null;
+  popularity: number | null;
+  followers: number | null;
 };
 
 export type TrackRow = {
@@ -33,6 +37,8 @@ export type TrackRow = {
   loved: boolean;
   date_added: string | null;
   last_played: string | null;
+  featured: string | null;
+  featured_artists: string[];
 };
 
 export type Facets = {

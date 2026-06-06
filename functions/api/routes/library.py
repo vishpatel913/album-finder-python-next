@@ -82,6 +82,10 @@ def list_artists(
             display_name=cached.get("display_name"),
             image_url=cached.get("image_url"),
             spotify_genres=spotify_genres,
+            spotify_url=cached.get("spotify_url"),
+            spotify_uri=cached.get("uri"),
+            popularity=cached.get("popularity"),
+            followers=cached.get("followers"),
         ))
 
     rows = _sort_artists(rows, sort)

@@ -25,7 +25,16 @@ DEFAULT_CACHE_PATH = Path("./data/spotify_artist_cache.json")
 
 
 def _empty_entry() -> dict:
-    return {"id": None, "display_name": None, "image_url": None, "genres": []}
+    return {
+        "id": None,
+        "display_name": None,
+        "image_url": None,
+        "genres": [],
+        "spotify_url": None,
+        "uri": None,
+        "popularity": None,
+        "followers": None,
+    }
 
 
 def _normalise_entry(value) -> dict:
@@ -157,9 +166,14 @@ def _entry_from_artist_object(artist: dict) -> dict:
     image_url = (
         images[1]["url"] if len(images) > 1 else (images[0]["url"] if images else None)
     )
+    followers = (artist.get("followers") or {}).get("total")
     return {
         "id": artist.get("id"),
         "display_name": artist.get("name"),
         "image_url": image_url,
         "genres": artist.get("genres", []),
+        "spotify_url": (artist.get("external_urls") or {}).get("spotify"),
+        "uri": artist.get("uri"),
+        "popularity": artist.get("popularity"),
+        "followers": followers,
     }

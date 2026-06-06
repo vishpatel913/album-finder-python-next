@@ -78,7 +78,32 @@ def parse_args() -> argparse.Namespace:
         "--library",
         help="Path to Music.app Library.xml. Overrides MUSIC_LIBRARY_XML env var.",
     )
+    parser.add_argument(
+        "--enrich-all",
+        action="store_true",
+        help="Batch-fetch Spotify data for every artist into the cache, then exit. "
+        "Idempotent — only fetches artists not already cached.",
+    )
     return parser.parse_args()
+
+
+def enrich_all_cli(library_path: Path) -> None:
+    """Populate the Spotify cache for the whole library (CLI entry point).
+
+    Reuses the API's creds/timeout/cache wiring so behaviour matches the
+    /api/spotify/enrich-all endpoint exactly.
+    """
+    from api.deps import cache_path, get_spotify
+    from resources.artist_resolver import ArtistResolver
+
+    parsed = parse_library(library_path)
+    resolver = ArtistResolver(get_spotify(), cache_path=cache_path())
+    names = list(parsed.keys())
+    logger.info("Enriching %d artists from Spotify (cached ones skipped)…", len(names))
+    results = resolver.resolve_many(names)
+    resolver.save()
+    matched = sum(1 for v in results.values() if v and v.get("id"))
+    logger.info("Done: %d/%d artists matched on Spotify", matched, len(names))
 
 
 def write_results(results) -> None:
@@ -96,6 +121,12 @@ def write_results(results) -> None:
 
 def main_cli() -> None:
     args = parse_args()
+
+    if args.enrich_all:
+        library_path = resolve_library_path(args.library or args.library_positional)
+        logger.info("Reading library: %s", library_path)
+        enrich_all_cli(library_path)
+        return
 
     if SOURCE == "music_app":
         library_path = resolve_library_path(args.library or args.library_positional)

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import logging
 import plistlib
+import re
 import shutil
 import unicodedata
 from collections import Counter, defaultdict
@@ -19,6 +20,60 @@ from pathlib import Path
 from typing import Iterable
 
 logger = logging.getLogger(__name__)
+
+# --- Parsing rules (edit these to tweak behaviour) -------------------------
+
+# Album Artist values that mean "this is a compilation" — for these we group
+# by the track's own Artist field instead. Compared case-insensitively.
+# Add more markers here if you hit other variants (e.g. "VA", "Various").
+VARIOUS_ARTISTS_MARKERS = {"various artists"}
+
+# Featured-artist markers, matched inside () or [] in a track title, e.g.
+# "Song (feat. X)", "Song [Featuring Y & Z]". Longest alternatives first.
+_FEATURED_RE = re.compile(
+    r"[\(\[]\s*(?:featuring|feat\.?|ft\.?)\s+(?P<artists>[^)\]]+?)\s*[\)\]]",
+    re.IGNORECASE,
+)
+
+# Separators used to split the captured string into individual names. The raw
+# string is always kept too, so over-splits (e.g. a "X & Y" duo, or "8Ball And
+# MJG") are recoverable. Tune this alternation if a particular name keeps
+# splitting wrongly.
+_FEATURED_SPLIT_RE = re.compile(r"\s*(?:,|&|\band\b)\s*", re.IGNORECASE)
+
+
+def _extract_featured(title: str) -> str | None:
+    """Return the raw featured-artist text from a track title, or None."""
+    if not title:
+        return None
+    match = _FEATURED_RE.search(title)
+    if not match:
+        return None
+    return match.group("artists").strip() or None
+
+
+def _split_featured(featured: str | None) -> list[str]:
+    """Best-effort split of a featured string into individual artist names."""
+    if not featured:
+        return []
+    return [p.strip() for p in _FEATURED_SPLIT_RE.split(featured) if p.strip()]
+
+
+def _group_artist(raw: dict) -> str:
+    """Decide which artist a track is grouped under.
+
+    Normally the Album Artist; but for compilations (Album Artist is a
+    "various artists" marker) we fall back to the track's own Artist so the
+    real performer is surfaced instead of a meaningless bucket.
+    """
+    album_artist = (raw.get("Album Artist") or "").strip()
+    track_artist = (raw.get("Artist") or "").strip()
+    if album_artist.casefold() in VARIOUS_ARTISTS_MARKERS:
+        return track_artist or album_artist
+    return album_artist or track_artist
+
+
+# ---------------------------------------------------------------------------
 
 # Repo root: functions/resources/music_library.py -> resources -> functions -> root
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -68,8 +123,10 @@ def _iso(value) -> str | None:
 
 
 def _track_dict(track: dict) -> dict:
+    name = track.get("Name", "")
+    featured = _extract_featured(name)
     return {
-        "name": track.get("Name", ""),
+        "name": name,
         "album": track.get("Album", ""),
         "genre": track.get("Genre", ""),
         "year": track.get("Year"),
@@ -78,6 +135,8 @@ def _track_dict(track: dict) -> dict:
         "loved": bool(track.get("Loved", False)),
         "date_added": _iso(track.get("Date Added")),
         "last_played": _iso(track.get("Play Date UTC")),
+        "featured": featured,  # raw captured text, e.g. "Alessia Cara & Khalid"
+        "featured_artists": _split_featured(featured),  # best-effort list
     }
 
 
@@ -109,7 +168,7 @@ def parse_library(
     grouped: dict[str, list[dict]] = defaultdict(list)
 
     for raw in raw_tracks.values():
-        album_artist = (raw.get("Album Artist") or raw.get("Artist") or "").strip()
+        album_artist = _group_artist(raw)
         if not album_artist:
             continue
 
