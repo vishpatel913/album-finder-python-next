@@ -44,7 +44,9 @@ export type Facets = {
 };
 
 export type Health = {
+  status: string;
   library_path: string;
+  library_exists: boolean;
   library_mtime: string | null;
   artists_parsed: number;
   cache_entries: number;

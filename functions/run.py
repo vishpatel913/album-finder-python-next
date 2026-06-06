@@ -6,7 +6,11 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from handlers.albums_search_by_artists import main
-from resources.music_library import find_near_duplicate_artists, parse_library
+from resources.music_library import (
+    find_near_duplicate_artists,
+    parse_library,
+    snapshot_library,
+)
 
 load_dotenv()
 
@@ -17,19 +21,28 @@ SOURCE = "music_app"  # "music_app" | "folders"
 TOP_N_ARTISTS = 50
 MIN_TRACK_PLAYS = 1
 MIN_ARTIST_PLAYS = 5
-DEFAULT_LIBRARY_PATH = Path("~/Music/Library.xml")
+# Repo root: functions/run.py -> functions -> root
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+# Default local dump location (gitignored): drop Library.xml in dumps/.
+DEFAULT_LIBRARY_PATH = PROJECT_ROOT / "dumps" / "Library.xml"
 
 
 def resolve_library_path(cli_path: str | None) -> Path:
+    """CLI path wins, then MUSIC_LIBRARY_XML, then the gitignored dumps/ folder.
+
+    Relative paths resolve against the project root, not the cwd.
+    """
     if cli_path:
         return Path(cli_path).expanduser()
     env_path = os.environ.get("MUSIC_LIBRARY_XML")
     if env_path:
-        return Path(env_path).expanduser()
-    return DEFAULT_LIBRARY_PATH.expanduser()
+        path = Path(env_path).expanduser()
+        return path if path.is_absolute() else (PROJECT_ROOT / path)
+    return DEFAULT_LIBRARY_PATH
 
 
 def artists_from_music_app(library_path: Path) -> list[str]:
+    snapshot_library(library_path)
     parsed = parse_library(
         library_path,
         min_track_plays=MIN_TRACK_PLAYS,

@@ -13,7 +13,7 @@ Two ways to run: **Docker** (one command, everything wired up) or
 
 | Tool | Version | Why |
 | ---- | ------- | --- |
-| Python | 3.11+ | FastAPI + parser |
+| Python | 3.10+ | FastAPI + parser (code uses `X \| None` unions — 3.10 minimum) |
 | Node | 20+ | Next.js 14 |
 | Docker Desktop | latest | Optional — for `docker compose up` |
 | Spotify dev creds | — | https://developer.spotify.com/dashboard → create app |
@@ -93,6 +93,9 @@ faster reload than the container.
 cd functions
 
 # Fresh venv (one-time setup)
+# Must be Python 3.10+ — macOS system python3 is 3.9 and will crash on import.
+# A `.python-version` file pins 3.10.0; with pyenv installed, `python3` resolves to it.
+python3 --version          # verify 3.10+ before continuing
 python3 -m venv venv
 source venv/bin/activate
 pip install --upgrade pip

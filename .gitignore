@@ -38,3 +38,10 @@ yarn-error.log*
 # album finder runtime artefacts
 /data/spotify_artist_cache.json
 /data/*.xml
+/data/.spotify-token-cache
+# spotipy default token cache, if it ever lands in cwd
+.cache
+
+# local Library.xml dumps — keep the folder, ignore its contents
+/dumps/*
+!/dumps/.gitkeep

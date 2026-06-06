@@ -11,13 +11,44 @@ from __future__ import annotations
 
 import logging
 import plistlib
+import shutil
 import unicodedata
 from collections import Counter, defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
 logger = logging.getLogger(__name__)
+
+# Repo root: functions/resources/music_library.py -> resources -> functions -> root
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_BACKUPS_DIR = _PROJECT_ROOT / "dumps" / "backups"
+
+
+def snapshot_library(src: Path, backups_dir: Path = DEFAULT_BACKUPS_DIR) -> Path | None:
+    """Copy ``src`` into ``backups_dir`` as a timestamped, gitignored snapshot.
+
+    The filename is keyed on the source file's mtime, so re-parsing the same
+    export (e.g. on server restart) is idempotent — it won't pile up duplicate
+    copies of an unchanged library. Returns the snapshot path, or None if the
+    source is missing or the copy fails (backups are best-effort, never fatal).
+    """
+    try:
+        if not src.exists():
+            return None
+        stamp = datetime.fromtimestamp(src.stat().st_mtime, tz=timezone.utc).strftime(
+            "%Y%m%d-%H%M%S"
+        )
+        backups_dir.mkdir(parents=True, exist_ok=True)
+        dest = backups_dir / f"{src.stem}-{stamp}{src.suffix}"
+        if dest.exists():
+            return dest
+        shutil.copy2(src, dest)
+        logger.info("Backed up library snapshot -> %s", dest)
+        return dest
+    except OSError as exc:
+        logger.warning("Library snapshot failed (continuing): %s", exc)
+        return None
 
 
 def _normalise(name: str) -> str:

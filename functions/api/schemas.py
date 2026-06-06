@@ -68,7 +68,9 @@ class Facets(BaseModel):
 
 
 class Health(BaseModel):
+    status: str = "ok"
     library_path: str
+    library_exists: bool
     library_mtime: str | None
     artists_parsed: int
     cache_entries: int
