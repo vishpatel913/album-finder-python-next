@@ -8,6 +8,7 @@ __pycache__
 *.pyc
 .env
 README.md
-data/*.json
-data/*.xml
-functions/__pycache__
+data
+dumps
+# the web image is pure Next — it never needs the Python backend
+functions

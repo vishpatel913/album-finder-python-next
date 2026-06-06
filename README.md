@@ -34,8 +34,9 @@ cp .env.example .env
 Open `.env` and fill in:
 
 ```dotenv
-# Path on the HOST to your Library.xml. Defaults to ~/Music/Library.xml.
-MUSIC_LIBRARY_XML_HOST_PATH=~/Music/Library.xml
+# Path on the HOST to your Library.xml. Defaults to ./dumps/Library.xml —
+# drop your export into the gitignored ./dumps/ folder and leave this as-is.
+MUSIC_LIBRARY_XML_HOST_PATH=./dumps/Library.xml
 
 # Spotify (Client Credentials flow — read-only, no user OAuth)
 SPOTIPY_CLIENT_ID=your_client_id_here
@@ -56,10 +57,14 @@ MUSIC_LIBRARY_XML_HOST_PATH=./fixtures/sample_library.xml
 docker compose up --build
 ```
 
-That's it. Two services come up:
+Two services come up:
 
-- **api**  → http://localhost:8000 (FastAPI, auto-reload off)
-- **web**  → http://localhost:3000 (Next.js dev server)
+- **api**  → http://localhost:8000 (FastAPI)
+- **web**  → http://localhost:3000 (Next.js **production build**, not the dev server)
+
+The web image is a multi-stage Next.js standalone build (`output: "standalone"`
+→ `node server.js`). No source bind-mounts and no dev compile, so it boots fast
+and avoids the macOS "port 3000 never loads" dev-server trap.
 
 Open http://localhost:3000 and you should see your artist count on the
 home page. Hit `/artists` and `/tracks` to browse.
@@ -74,10 +79,36 @@ curl "http://localhost:8000/api/library/artists?limit=5"
 
 Auto-generated OpenAPI docs: http://localhost:8000/docs
 
-To stop:
+### Populate the Spotify cache (first run)
+
+The library list shows Spotify images/genres/links **from a cache**. On a fresh
+stack that cache is empty — fill it once with a batch enrich:
+
+```bash
+docker compose exec api python run.py --enrich-all
+# or hit the endpoint:
+curl -X POST http://localhost:8000/api/spotify/enrich-all
+```
+
+This is idempotent: it only fetches artists not already cached, so it's also
+how you top up after adding new music. See [§4.1 Updating](#41-updating-after-new-music).
+
+### Persistence (the "local DB")
+
+The Spotify artist cache + token cache live in a named Docker volume
+(`album-finder-data`), so they **survive rebuilds and `docker compose down`**.
+Your `Library.xml` and timestamped snapshots stay on the host under `./dumps`.
+
+To stop (keeps the cache volume):
 
 ```bash
 docker compose down
+```
+
+To stop **and wipe the cached Spotify data** (forces a full re-enrich next time):
+
+```bash
+docker compose down -v
 ```
 
 ---
@@ -166,16 +197,35 @@ This path is independent of the FastAPI server.
 | What | Command |
 | ---- | ------- |
 | Bring up Docker stack | `docker compose up --build` |
-| Tear down | `docker compose down` |
+| Tear down (keep cache) | `docker compose down` |
+| Tear down + wipe cache | `docker compose down -v` |
 | Rebuild after Python deps change | `docker compose build api` |
-| Rebuild after Node deps change | `docker compose build web` |
+| Rebuild after Node/FE change | `docker compose build web` |
 | View logs | `docker compose logs -f api` / `web` |
+| **Enrich whole library** (Docker) | `docker compose exec api python run.py --enrich-all` |
+| **Enrich whole library** (endpoint) | `curl -X POST http://localhost:8000/api/spotify/enrich-all` |
+| Enrich specific artists | `curl -X POST http://localhost:8000/api/spotify/enrich -H 'content-type: application/json' -d '{"names":["Radiohead","Burial"]}'` |
+| Force re-parse library | `curl -X POST http://localhost:8000/api/library/refresh` |
 | Run Python CLI (bare-metal) | `cd functions && python run.py --library …` |
 | Run FastAPI (bare-metal) | `cd functions && uvicorn api.main:app --reload` |
 | Run Next.js (bare-metal) | `npm run dev` |
 | TypeScript check | `npm run typecheck` |
-| Force re-parse library | `curl -X POST http://localhost:8000/api/library/refresh` |
-| Bulk-enrich Spotify cache | `curl -X POST http://localhost:8000/api/spotify/enrich -H 'content-type: application/json' -d '{"names":["Radiohead","Burial"]}'` |
+
+### 4.1 Updating after new music
+
+When you add music in Music.app:
+
+1. **Re-export** `Library.xml` (File → Library → Export Library…) over the one
+   in `./dumps/` (or wherever `MUSIC_LIBRARY_XML_HOST_PATH` points).
+2. The API re-parses automatically — it keys the parsed library on the file's
+   mtime. (If it doesn't pick up, `curl -X POST .../api/library/refresh`.) A
+   timestamped snapshot of the export is saved under `./dumps/backups/`.
+3. **Top up Spotify data** for the new artists:
+   ```bash
+   docker compose exec api python run.py --enrich-all
+   ```
+   Idempotent — already-cached artists are skipped, so only the new ones hit
+   Spotify. The cache persists in the `album-finder-data` volume.
 
 ---
 
@@ -257,5 +307,3 @@ doesn't, hit `POST /api/library/refresh`.
   [`.claude/plans/next-app-router-fastapi-readonly.md`](.claude/plans/next-app-router-fastapi-readonly.md).
 - **Tests** — none yet. Parser is verified via the fixture; route
   handlers are unit-test-able via FastAPI's `TestClient`.
-- **Production build** — `docker-compose.yml` runs the Next dev server.
-  For prod, switch the web CMD to `npm run build && npm start`.

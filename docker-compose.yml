@@ -11,10 +11,15 @@ services:
     environment:
       MUSIC_LIBRARY_XML: /library/Library.xml
       SPOTIFY_CACHE_PATH: /app/data/spotify_artist_cache.json
+      LIBRARY_BACKUPS_DIR: /app/dumps/backups
       CORS_ORIGINS: http://localhost:3000
     volumes:
-      - ${MUSIC_LIBRARY_XML_HOST_PATH:-~/Music/Library.xml}:/library/Library.xml:ro
-      - ./data:/app/data
+      # Your Library.xml export, read-only (host path via .env, defaults to ./dumps).
+      - ${MUSIC_LIBRARY_XML_HOST_PATH:-./dumps/Library.xml}:/library/Library.xml:ro
+      # Persistent cache — the "local DB". Survives rebuilds and `compose down`.
+      - album-finder-data:/app/data
+      # Library export + timestamped snapshots, kept on the host so you can see them.
+      - ./dumps:/app/dumps
     restart: unless-stopped
 
   web:
@@ -25,14 +30,11 @@ services:
     ports:
       - "3000:3000"
     environment:
+      # Server-side calls only (Next server → api container), so service-name routing works.
       API_BASE: http://api:8000
-      NODE_ENV: development
-    volumes:
-      - ./app:/app/app
-      - ./next.config.mjs:/app/next.config.mjs
-      - ./tailwind.config.ts:/app/tailwind.config.ts
-      - ./postcss.config.js:/app/postcss.config.js
-      - ./tsconfig.json:/app/tsconfig.json
     depends_on:
       - api
     restart: unless-stopped
+
+volumes:
+  album-finder-data:

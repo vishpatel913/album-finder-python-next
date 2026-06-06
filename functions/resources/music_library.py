@@ -10,6 +10,7 @@ The parser knows nothing about Spotify — it only digests the XML.
 from __future__ import annotations
 
 import logging
+import os
 import plistlib
 import re
 import shutil
@@ -77,10 +78,21 @@ def _group_artist(raw: dict) -> str:
 
 # Repo root: functions/resources/music_library.py -> resources -> functions -> root
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_BACKUPS_DIR = _PROJECT_ROOT / "dumps" / "backups"
 
 
-def snapshot_library(src: Path, backups_dir: Path = DEFAULT_BACKUPS_DIR) -> Path | None:
+def _default_backups_dir() -> Path:
+    """Where timestamped library snapshots go.
+
+    Defaults to ``<repo>/dumps/backups``; override with ``LIBRARY_BACKUPS_DIR``
+    (needed in Docker, where the code root isn't the repo root).
+    """
+    raw = os.environ.get("LIBRARY_BACKUPS_DIR")
+    if raw:
+        return Path(raw).expanduser()
+    return _PROJECT_ROOT / "dumps" / "backups"
+
+
+def snapshot_library(src: Path, backups_dir: Path | None = None) -> Path | None:
     """Copy ``src`` into ``backups_dir`` as a timestamped, gitignored snapshot.
 
     The filename is keyed on the source file's mtime, so re-parsing the same
@@ -88,6 +100,7 @@ def snapshot_library(src: Path, backups_dir: Path = DEFAULT_BACKUPS_DIR) -> Path
     copies of an unchanged library. Returns the snapshot path, or None if the
     source is missing or the copy fails (backups are best-effort, never fatal).
     """
+    backups_dir = backups_dir or _default_backups_dir()
     try:
         if not src.exists():
             return None
