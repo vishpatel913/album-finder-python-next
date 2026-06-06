@@ -2,6 +2,17 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
+import { Button } from "@/app/components/ui/button";
+import { Checkbox } from "@/app/components/ui/checkbox";
+import { Input } from "@/app/components/ui/input";
+import { Label } from "@/app/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/components/ui/select";
 
 type FilterField = {
   name: string;
@@ -38,15 +49,15 @@ export function Filters({ fields }: { fields: FilterField[] }) {
           onChange={(v) => updateParam(field.name, v)}
         />
       ))}
-      <button
-        onClick={reset}
-        className="rounded-md border border-neutral-700 px-3 py-2 text-sm hover:border-neutral-500"
-      >
+      <Button variant="outline" onClick={reset}>
         Reset
-      </button>
+      </Button>
     </div>
   );
 }
+
+// Radix Select has no empty-string value; this sentinel represents "no filter".
+const ANY = "__any__";
 
 function FilterInput({
   field,
@@ -57,37 +68,51 @@ function FilterInput({
   value: string;
   onChange: (v: string) => void;
 }) {
-  const baseInput =
-    "rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 placeholder:text-neutral-500 focus:border-neutral-500 focus:outline-none";
+  if (field.type === "checkbox") {
+    return (
+      <label className="flex flex-col gap-1">
+        <span className="text-xs uppercase tracking-wider text-neutral-500">{field.label}</span>
+        <Checkbox
+          checked={value === "true"}
+          onCheckedChange={(c) => onChange(c === true ? "true" : "")}
+        />
+      </label>
+    );
+  }
+
+  if (field.type === "select") {
+    return (
+      <div className="flex flex-col gap-1">
+        <Label>{field.label}</Label>
+        <Select
+          value={value === "" ? ANY : value}
+          onValueChange={(v) => onChange(v === ANY ? "" : v)}
+        >
+          <SelectTrigger className="min-w-[10rem]">
+            <SelectValue placeholder="—" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ANY}>—</SelectItem>
+            {(field.options ?? []).map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    );
+  }
 
   return (
     <label className="flex flex-col gap-1">
       <span className="text-xs uppercase tracking-wider text-neutral-500">{field.label}</span>
-      {field.type === "select" ? (
-        <select className={baseInput} value={value} onChange={(e) => onChange(e.target.value)}>
-          <option value="">—</option>
-          {(field.options ?? []).map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      ) : field.type === "checkbox" ? (
-        <input
-          type="checkbox"
-          checked={value === "true"}
-          onChange={(e) => onChange(e.target.checked ? "true" : "")}
-          className="h-5 w-5"
-        />
-      ) : (
-        <input
-          type={field.type}
-          value={value}
-          placeholder={field.placeholder}
-          onChange={(e) => onChange(e.target.value)}
-          className={baseInput}
-        />
-      )}
+      <Input
+        type={field.type}
+        value={value}
+        placeholder={field.placeholder}
+        onChange={(e) => onChange(e.target.value)}
+      />
     </label>
   );
 }

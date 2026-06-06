@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { api } from "@/app/lib/api";
+import { Button } from "@/app/components/ui/button";
 
 export default async function Home() {
   let health: Awaited<ReturnType<typeof api.health>> | null = null;
@@ -60,18 +61,12 @@ export default async function Home() {
       )}
 
       <section className="flex gap-4">
-        <Link
-          href="/artists"
-          className="rounded-md bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-white"
-        >
-          Browse artists →
-        </Link>
-        <Link
-          href="/tracks"
-          className="rounded-md border border-neutral-700 px-4 py-2 text-sm font-medium hover:border-neutral-500"
-        >
-          Browse tracks →
-        </Link>
+        <Button asChild variant="primary">
+          <Link href="/artists">Browse artists →</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href="/tracks">Browse tracks →</Link>
+        </Button>
       </section>
     </div>
   );
