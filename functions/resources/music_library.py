@@ -150,6 +150,7 @@ def _track_dict(track: dict) -> dict:
         "last_played": _iso(track.get("Play Date UTC")),
         "featured": featured,  # raw captured text, e.g. "Alessia Cara & Khalid"
         "featured_artists": _split_featured(featured),  # best-effort list
+        "compilation": bool(track.get("Compilation", False)),
     }
 
 
@@ -220,8 +221,26 @@ def _artist_rollup(tracks: list[dict], total_plays: int) -> dict:
         "date_added_last": dates[-1] if dates else None,
         "avg_rating": round(sum(ratings) / len(ratings), 1) if ratings else None,
         "loved_count": sum(1 for t in tracks if t["loved"]),
+        # How many of this artist's tracks are NOT from compilations. Zero means
+        # the artist only appears on Various-Artists comps — see enrichable_artist_names.
+        "non_compilation_track_count": sum(1 for t in tracks if not t.get("compilation")),
         "tracks": tracks,
     }
+
+
+def enrichable_artist_names(parsed: dict) -> list[str]:
+    """Artists worth fetching from Spotify: those with at least one
+    non-compilation track.
+
+    Compilation-only artists (the spillover from Various Artists albums) are
+    skipped — their images/ids are rarely needed and they balloon the fetch
+    count. To enrich everyone instead, change the predicate below.
+    """
+    return [
+        name
+        for name, rollup in parsed.items()
+        if rollup.get("non_compilation_track_count", 0) > 0
+    ]
 
 
 def find_near_duplicate_artists(album_artists: Iterable[str]) -> list[list[str]]:

@@ -36,6 +36,7 @@ class Track(BaseModel):
     last_played: str | None = None
     featured: str | None = None
     featured_artists: list[str] = []
+    compilation: bool = False
 
 
 class Artist(BaseModel):

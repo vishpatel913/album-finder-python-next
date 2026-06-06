@@ -11,6 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from api.deps import get_parsed_library, get_resolver
 from api.schemas import EnrichRequest
+from resources.music_library import enrichable_artist_names
 
 router = APIRouter(prefix="/api/spotify", tags=["spotify"])
 
@@ -36,13 +37,19 @@ def enrich_all(
     parsed: dict = Depends(get_parsed_library),
     resolver=Depends(get_resolver),
 ) -> dict:
-    """Batch-resolve every parsed artist into the cache.
+    """Batch-resolve artists with non-compilation albums into the cache.
 
-    Idempotent: `resolve_many` skips artists already cached, so re-running
-    only fetches new music. This is the "request Spotify once" entry point.
+    Compilation-only artists (Various-Artists spillover) are skipped — see
+    `enrichable_artist_names`. Idempotent: `resolve_many` skips already-cached
+    artists, so re-running only fetches new music.
     """
-    names = list(parsed.keys())
+    names = enrichable_artist_names(parsed)
     results = resolver.resolve_many(names)
     resolver.save()
     matched = sum(1 for v in results.values() if v and v.get("id"))
-    return {"requested": len(names), "matched": matched, "missed": len(names) - matched}
+    return {
+        "total_artists": len(parsed),
+        "enrichable": len(names),
+        "skipped_compilation_only": len(parsed) - len(names),
+        "matched": matched,
+    }

@@ -133,8 +133,18 @@ class ArtistResolver:
             else:
                 needs_search.append(name)
 
-        for name in needs_search:
-            results[name] = self.resolve(name)
+        total = len(needs_search)
+        if total:
+            logger.info(
+                "Spotify enrich: %d already cached, %d to fetch", len(results), total
+            )
+        for i, name in enumerate(needs_search, 1):
+            entry = self.resolve(name)
+            results[name] = entry
+            if entry and entry.get("id"):
+                logger.info("  [%d/%d] %s → ✓ %s", i, total, name, entry["display_name"])
+            else:
+                logger.info("  [%d/%d] %s → ✗ no match", i, total, name)
         return results
 
     def _search_and_hydrate(self, query: str) -> dict | None:

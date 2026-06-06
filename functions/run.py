@@ -81,8 +81,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--enrich-all",
         action="store_true",
-        help="Batch-fetch Spotify data for every artist into the cache, then exit. "
-        "Idempotent — only fetches artists not already cached.",
+        help="Batch-fetch Spotify data for artists with non-compilation albums, then "
+        "exit. Idempotent — only fetches artists not already cached.",
+    )
+    parser.add_argument(
+        "--enrich-interactive",
+        action="store_true",
+        help="Like --enrich-all but prompt yes/no per artist. Needs a TTY: run via "
+        "`docker compose exec api python run.py --enrich-interactive`.",
     )
     return parser.parse_args()
 
@@ -95,15 +101,72 @@ def enrich_all_cli(library_path: Path) -> None:
     """
     from api.deps import cache_path, get_spotify
     from resources.artist_resolver import ArtistResolver
+    from resources.music_library import enrichable_artist_names
 
     parsed = parse_library(library_path)
     resolver = ArtistResolver(get_spotify(), cache_path=cache_path())
-    names = list(parsed.keys())
-    logger.info("Enriching %d artists from Spotify (cached ones skipped)…", len(names))
+    names = enrichable_artist_names(parsed)
+    logger.info(
+        "Enriching %d artists with non-compilation albums (%d compilation-only skipped, "
+        "cached ones skipped too)…",
+        len(names),
+        len(parsed) - len(names),
+    )
     results = resolver.resolve_many(names)
     resolver.save()
     matched = sum(1 for v in results.values() if v and v.get("id"))
     logger.info("Done: %d/%d artists matched on Spotify", matched, len(names))
+
+
+def enrich_interactive_cli(library_path: Path) -> None:
+    """Prompt yes/no per artist before fetching from Spotify.
+
+    Only considers artists with non-compilation albums that aren't already
+    cached. Saves after every 'yes' so it's safe to quit and resume.
+    """
+    from api.deps import cache_path, get_spotify
+    from resources.artist_resolver import ArtistResolver
+    from resources.music_library import enrichable_artist_names
+
+    parsed = parse_library(library_path)
+    resolver = ArtistResolver(get_spotify(), cache_path=cache_path())
+    candidates = [
+        name
+        for name in enrichable_artist_names(parsed)
+        if not (resolver.get_cached(name) or {}).get("id")
+    ]
+    total = len(candidates)
+    if not total:
+        logger.info("Nothing to do — all enrichable artists are already cached.")
+        return
+
+    print(f"\n{total} artists to consider.  [y]es  [n]o (default)  [a]ll remaining  [q]uit\n")
+    auto_yes = False
+    matched = 0
+    try:
+        for i, name in enumerate(candidates, 1):
+            if auto_yes:
+                choice = "y"
+            else:
+                choice = input(f"[{i}/{total}] Enrich \"{name}\"? [y/n/a/q] ").strip().lower()
+            if choice in ("q", "quit"):
+                print("Stopping early.")
+                break
+            if choice in ("a", "all"):
+                auto_yes, choice = True, "y"
+            if choice not in ("y", "yes"):
+                continue  # empty / n / anything else → skip
+            entry = resolver.resolve(name)
+            resolver.save()  # persist after each yes → resumable
+            if entry and entry.get("id"):
+                matched += 1
+                print(f"      ✓ {entry['display_name']}  (popularity {entry.get('popularity')})")
+            else:
+                print("      ✗ no Spotify match")
+    except (EOFError, KeyboardInterrupt):
+        print("\nInterrupted — progress saved.")
+    resolver.save()
+    logger.info("Interactive enrich finished: %d matched this session.", matched)
 
 
 def write_results(results) -> None:
@@ -122,10 +185,13 @@ def write_results(results) -> None:
 def main_cli() -> None:
     args = parse_args()
 
-    if args.enrich_all:
+    if args.enrich_all or args.enrich_interactive:
         library_path = resolve_library_path(args.library or args.library_positional)
         logger.info("Reading library: %s", library_path)
-        enrich_all_cli(library_path)
+        if args.enrich_interactive:
+            enrich_interactive_cli(library_path)
+        else:
+            enrich_all_cli(library_path)
         return
 
     if SOURCE == "music_app":

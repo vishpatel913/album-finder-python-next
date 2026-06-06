@@ -39,6 +39,7 @@ export type TrackRow = {
   last_played: string | null;
   featured: string | null;
   featured_artists: string[];
+  compilation: boolean;
 };
 
 export type Facets = {

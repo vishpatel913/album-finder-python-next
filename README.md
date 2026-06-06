@@ -90,8 +90,24 @@ docker compose exec api python run.py --enrich-all
 curl -X POST http://localhost:8000/api/spotify/enrich-all
 ```
 
-This is idempotent: it only fetches artists not already cached, so it's also
-how you top up after adding new music. See [§4.1 Updating](#41-updating-after-new-music).
+Only artists with **at least one non-compilation album** are enriched —
+compilation-only artists (the Various-Artists spillover) are skipped, since
+their images/ids are rarely needed. It's idempotent (already-cached artists are
+skipped), so it's also how you top up after adding new music. See
+[§4.1 Updating](#41-updating-after-new-music). To enrich everyone instead, edit
+`enrichable_artist_names` in `functions/resources/music_library.py`.
+
+Progress is logged artist-by-artist (`[3/329] Taylor Swift → ✓`). The CLI prints
+it inline; the endpoint logs it to the container (`docker compose logs -f api`).
+
+**Pick artists one at a time** — prompts yes/no for each (needs a TTY, which
+`docker compose exec` gives you):
+
+```bash
+docker compose exec api python run.py --enrich-interactive
+#   [y]es  [n]o (default)  [a]ll remaining  [q]uit
+# Saves after every "yes", so you can quit and resume anytime.
+```
 
 ### Persistence (the "local DB")
 
@@ -202,9 +218,11 @@ This path is independent of the FastAPI server.
 | Rebuild after Python deps change | `docker compose build api` |
 | Rebuild after Node/FE change | `docker compose build web` |
 | View logs | `docker compose logs -f api` / `web` |
-| **Enrich whole library** (Docker) | `docker compose exec api python run.py --enrich-all` |
-| **Enrich whole library** (endpoint) | `curl -X POST http://localhost:8000/api/spotify/enrich-all` |
+| **Enrich** (batch, Docker) | `docker compose exec api python run.py --enrich-all` |
+| **Enrich** (batch, endpoint) | `curl -X POST http://localhost:8000/api/spotify/enrich-all` |
+| **Enrich** (interactive y/n) | `docker compose exec api python run.py --enrich-interactive` |
 | Enrich specific artists | `curl -X POST http://localhost:8000/api/spotify/enrich -H 'content-type: application/json' -d '{"names":["Radiohead","Burial"]}'` |
+| Watch enrich progress (endpoint) | `docker compose logs -f api` |
 | Force re-parse library | `curl -X POST http://localhost:8000/api/library/refresh` |
 | Run Python CLI (bare-metal) | `cd functions && python run.py --library …` |
 | Run FastAPI (bare-metal) | `cd functions && uvicorn api.main:app --reload` |
