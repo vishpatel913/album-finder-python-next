@@ -18,6 +18,7 @@ import spotipy
 from spotipy.cache_handler import CacheFileHandler
 from spotipy.oauth2 import SpotifyClientCredentials
 
+from resources.album_resolver import AlbumResolver
 from resources.artist_resolver import ArtistResolver
 from resources.music_library import parse_library, snapshot_library
 
@@ -46,6 +47,7 @@ _state: dict = {
     "parsed": None,
     "spotify": None,
     "resolver": None,
+    "album_resolver": None,
 }
 
 
@@ -75,6 +77,16 @@ def cache_path() -> Path:
     raw = os.environ.get("SPOTIFY_CACHE_PATH") or "data/spotify_artist_cache.json"
     path = Path(raw).expanduser()
     return path if path.is_absolute() else (PROJECT_ROOT / path)
+
+
+def album_cache_path() -> Path:
+    """Spotify album cache path — sits beside the artist cache (same data/ dir,
+    same persistent volume in Docker). Override with SPOTIFY_ALBUM_CACHE_PATH."""
+    raw = os.environ.get("SPOTIFY_ALBUM_CACHE_PATH")
+    if raw:
+        path = Path(raw).expanduser()
+        return path if path.is_absolute() else (PROJECT_ROOT / path)
+    return cache_path().parent / "spotify_album_cache.json"
 
 
 def get_spotify() -> spotipy.Spotify:
@@ -108,6 +120,13 @@ def get_resolver() -> ArtistResolver:
         if _state["resolver"] is None:
             _state["resolver"] = ArtistResolver(get_spotify(), cache_path=cache_path())
         return _state["resolver"]
+
+
+def get_album_resolver() -> AlbumResolver:
+    with _lock:
+        if _state["album_resolver"] is None:
+            _state["album_resolver"] = AlbumResolver(get_spotify(), cache_path=album_cache_path())
+        return _state["album_resolver"]
 
 
 def get_parsed_library(force: bool = False) -> dict:

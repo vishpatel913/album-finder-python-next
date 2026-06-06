@@ -13,6 +13,9 @@ from pydantic import BaseModel, Field
 
 
 SortArtists = Literal["plays_desc", "plays_asc", "name", "added_desc", "added_asc"]
+SortAlbums = Literal[
+    "plays_desc", "plays_asc", "name", "added_desc", "added_asc", "year_desc", "year_asc"
+]
 SortTracks = Literal[
     "plays_desc",
     "plays_asc",
@@ -60,6 +63,29 @@ class Artist(BaseModel):
     spotify_uri: str | None = None
     popularity: int | None = None
     followers: int | None = None
+
+
+class Album(BaseModel):
+    artist: str
+    album: str
+    total_plays: int
+    track_count: int
+    top_genre: str | None = None
+    all_genres: list[str] = []
+    year: int | None = None
+    date_added_first: str | None = None
+    date_added_last: str | None = None
+    avg_rating: float | None = None
+    loved_count: int = 0
+    compilation: bool = False
+    is_greatest_hits: bool = False
+    # Spotify enrichment — may be null until /api/spotify/enrich-albums-all populates.
+    spotify_id: str | None = None
+    image_url: str | None = None
+    spotify_url: str | None = None
+    spotify_uri: str | None = None
+    release_date: str | None = None
+    total_tracks: int | None = None
 
 
 class TrackRow(Track):

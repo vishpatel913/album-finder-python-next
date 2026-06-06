@@ -10,16 +10,18 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Query
 
-from api.deps import get_parsed_library, get_resolver
+from api.deps import get_album_resolver, get_parsed_library, get_resolver
 from api.schemas import (
+    Album,
     Artist,
     DuplicateGroup,
     Facets,
+    SortAlbums,
     SortArtists,
     SortTracks,
     TrackRow,
 )
-from resources.music_library import find_near_duplicate_artists
+from resources.music_library import albums_from_parsed, find_near_duplicate_artists
 
 router = APIRouter(prefix="/api/library", tags=["library"])
 
@@ -103,6 +105,77 @@ def _sort_artists(rows: list[Artist], sort: SortArtists) -> list[Artist]:
         return sorted(rows, key=lambda a: a.date_added_last or "", reverse=True)
     if sort == "added_asc":
         return sorted(rows, key=lambda a: a.date_added_first or "")
+    return rows
+
+
+@router.get("/albums", response_model=list[Album])
+def list_albums(
+    parsed: dict = Depends(get_parsed_library),
+    album_resolver=Depends(get_album_resolver),
+    limit: int = Query(100, ge=1, le=500),
+    min_plays: int = Query(0, ge=0),
+    q: str | None = None,
+    artist: str | None = None,
+    genre: str | None = None,
+    year_from: int | None = None,
+    year_to: int | None = None,
+    added_after: str | None = None,
+    include_greatest_hits: bool = False,
+    sort: SortAlbums = "plays_desc",
+) -> list[Album]:
+    rows: list[Album] = []
+    for a in albums_from_parsed(parsed):
+        # Always drop compilations (the "Top 40" Various-Artists albums);
+        # greatest-hits/collections are hidden unless explicitly requested.
+        if a["compilation"]:
+            continue
+        if a["is_greatest_hits"] and not include_greatest_hits:
+            continue
+        if a["total_plays"] < min_plays:
+            continue
+        if not _matches_substring(a["album"], q):
+            continue
+        if artist and a["artist"].casefold() != artist.casefold():
+            continue
+        if genre and not any(g.casefold() == genre.casefold() for g in a["all_genres"]):
+            continue
+        if year_from is not None and (a["year"] or 0) < year_from:
+            continue
+        if year_to is not None and (a["year"] or 9999) > year_to:
+            continue
+        if added_after and (a["date_added_last"] or "") < added_after:
+            continue
+
+        cached = album_resolver.get_cached(a["artist"], a["album"]) or {}
+        rows.append(Album(
+            **a,
+            spotify_id=cached.get("id"),
+            image_url=cached.get("image_url"),
+            spotify_url=cached.get("spotify_url"),
+            spotify_uri=cached.get("uri"),
+            release_date=cached.get("release_date"),
+            total_tracks=cached.get("total_tracks"),
+        ))
+
+    rows = _sort_albums(rows, sort)
+    return rows[:limit]
+
+
+def _sort_albums(rows: list[Album], sort: SortAlbums) -> list[Album]:
+    if sort == "plays_desc":
+        return sorted(rows, key=lambda a: a.total_plays, reverse=True)
+    if sort == "plays_asc":
+        return sorted(rows, key=lambda a: a.total_plays)
+    if sort == "name":
+        return sorted(rows, key=lambda a: a.album.casefold())
+    if sort == "added_desc":
+        return sorted(rows, key=lambda a: a.date_added_last or "", reverse=True)
+    if sort == "added_asc":
+        return sorted(rows, key=lambda a: a.date_added_first or "")
+    if sort == "year_desc":
+        return sorted(rows, key=lambda a: a.year or 0, reverse=True)
+    if sort == "year_asc":
+        return sorted(rows, key=lambda a: a.year or 9999)
     return rows
 
 

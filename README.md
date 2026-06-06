@@ -1,8 +1,8 @@
 # Album Finder
 
-Parses your Music.app library, ranks artists/tracks by play count, enriches
-with Spotify images and "vibe" tags, and serves it through a FastAPI
-backend + Next.js App Router frontend.
+Parses your Music.app library, ranks artists/albums/tracks by play count,
+enriches with Spotify images, links and "vibe" tags, and serves it through a
+FastAPI backend + Next.js App Router frontend.
 
 Two ways to run: **Docker** (one command, everything wired up) or
 **bare-metal** (two terminals, more control while learning).
@@ -218,9 +218,11 @@ This path is independent of the FastAPI server.
 | Rebuild after Python deps change | `docker compose build api` |
 | Rebuild after Node/FE change | `docker compose build web` |
 | View logs | `docker compose logs -f api` / `web` |
-| **Enrich** (batch, Docker) | `docker compose exec api python run.py --enrich-all` |
-| **Enrich** (batch, endpoint) | `curl -X POST http://localhost:8000/api/spotify/enrich-all` |
-| **Enrich** (interactive y/n) | `docker compose exec api python run.py --enrich-interactive` |
+| **Enrich artists** (batch, Docker) | `docker compose exec api python run.py --enrich-all` |
+| **Enrich artists** (batch, endpoint) | `curl -X POST http://localhost:8000/api/spotify/enrich-all` |
+| **Enrich artists** (interactive y/n) | `docker compose exec api python run.py --enrich-interactive` |
+| **Enrich albums** (batch, Docker) | `docker compose exec api python run.py --enrich-albums` |
+| **Enrich albums** (batch, endpoint) | `curl -X POST http://localhost:8000/api/spotify/enrich-albums-all` |
 | Enrich specific artists | `curl -X POST http://localhost:8000/api/spotify/enrich -H 'content-type: application/json' -d '{"names":["Radiohead","Burial"]}'` |
 | Watch enrich progress (endpoint) | `docker compose logs -f api` |
 | Force re-parse library | `curl -X POST http://localhost:8000/api/library/refresh` |
@@ -238,12 +240,18 @@ When you add music in Music.app:
 2. The API re-parses automatically — it keys the parsed library on the file's
    mtime. (If it doesn't pick up, `curl -X POST .../api/library/refresh`.) A
    timestamped snapshot of the export is saved under `./dumps/backups/`.
-3. **Top up Spotify data** for the new artists:
+3. **Top up Spotify data** for the new artists (and albums):
    ```bash
    docker compose exec api python run.py --enrich-all
+   docker compose exec api python run.py --enrich-albums
    ```
-   Idempotent — already-cached artists are skipped, so only the new ones hit
-   Spotify. The cache persists in the `album-finder-data` volume.
+   Idempotent — already-cached entries are skipped, so only the new ones hit
+   Spotify. Both caches persist in the `album-finder-data` volume.
+
+   Albums enrich only **real** albums — compilations ("Top 40"-style Various
+   Artists albums) and "greatest hits"/collections are skipped. Both filters
+   live in `functions/resources/music_library.py` (`enrichable_albums`,
+   `_GREATEST_HITS_RE`) if you want to tune them.
 
 ---
 
@@ -255,9 +263,11 @@ When you add music in Music.app:
 │   ├── layout.tsx             # root layout + nav
 │   ├── page.tsx               # home (health + dupe warnings)
 │   ├── artists/page.tsx       # top artists, server component, URL filters
+│   ├── albums/page.tsx        # albums (compilations hidden), URL filters
 │   ├── tracks/page.tsx        # top tracks, server component, URL filters
 │   ├── components/Filters.tsx # client component — pushes filters into URL
-│   ├── components/ArtistTile.tsx, TrackRow.tsx
+│   ├── components/{ArtistTile,AlbumTile,TrackRow}.tsx
+│   ├── components/ui/         # Radix-based primitives (Button, Select, …)
 │   └── lib/api.ts             # typed FastAPI client
 │
 ├── functions/                 # Python backend
@@ -266,11 +276,12 @@ When you add music in Music.app:
 │   │   ├── deps.py            # singletons + mtime-keyed library cache
 │   │   ├── schemas.py         # Pydantic models
 │   │   └── routes/
-│   │       ├── library.py     # /api/library/{artists,tracks,facets,…}
-│   │       └── spotify.py     # /api/spotify/{artist,enrich}
+│   │       ├── library.py     # /api/library/{artists,albums,tracks,facets,…}
+│   │       └── spotify.py     # /api/spotify/{artist,enrich,enrich-all,enrich-albums-all}
 │   ├── resources/
-│   │   ├── music_library.py   # plistlib parser + near-dupe scanner
-│   │   ├── artist_resolver.py # Spotify name → ID + image + genres, cached
+│   │   ├── music_library.py   # plistlib parser + album rollups + near-dupe scanner
+│   │   ├── artist_resolver.py # Spotify artist → ID + image + genres, cached
+│   │   ├── album_resolver.py  # Spotify album → ID + cover + release date, cached
 │   │   ├── artist_overrides.py# inert stub for manual overrides
 │   │   └── spotify.py         # legacy SpotifySearch wrapper (CLI uses it)
 │   ├── handlers/              # legacy lambda-shape handler (still works)

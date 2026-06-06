@@ -59,6 +59,28 @@ export type Health = {
   cache_entries: number;
 };
 
+export type Album = {
+  artist: string;
+  album: string;
+  total_plays: number;
+  track_count: number;
+  top_genre: string | null;
+  all_genres: string[];
+  year: number | null;
+  date_added_first: string | null;
+  date_added_last: string | null;
+  avg_rating: number | null;
+  loved_count: number;
+  compilation: boolean;
+  is_greatest_hits: boolean;
+  spotify_id: string | null;
+  image_url: string | null;
+  spotify_url: string | null;
+  spotify_uri: string | null;
+  release_date: string | null;
+  total_tracks: number | null;
+};
+
 export type DuplicateGroup = { names: string[] };
 
 type SearchParams = Record<string, string | number | boolean | undefined | null>;
@@ -85,6 +107,7 @@ async function fetchJson<T>(path: string, params: SearchParams = {}): Promise<T>
 export const api = {
   health: () => fetchJson<Health>("/api/health"),
   artists: (params: SearchParams = {}) => fetchJson<Artist[]>("/api/library/artists", params),
+  albums: (params: SearchParams = {}) => fetchJson<Album[]>("/api/library/albums", params),
   tracks: (params: SearchParams = {}) => fetchJson<TrackRow[]>("/api/library/tracks", params),
   facets: () => fetchJson<Facets>("/api/library/facets"),
   duplicates: () => fetchJson<DuplicateGroup[]>("/api/library/duplicates"),

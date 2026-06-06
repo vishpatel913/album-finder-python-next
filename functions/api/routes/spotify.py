@@ -9,9 +9,9 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from api.deps import get_parsed_library, get_resolver
+from api.deps import get_album_resolver, get_parsed_library, get_resolver
 from api.schemas import EnrichRequest
-from resources.music_library import enrichable_artist_names
+from resources.music_library import enrichable_albums, enrichable_artist_names
 
 router = APIRouter(prefix="/api/spotify", tags=["spotify"])
 
@@ -53,3 +53,19 @@ def enrich_all(
         "skipped_compilation_only": len(parsed) - len(names),
         "matched": matched,
     }
+
+
+@router.post("/enrich-albums-all")
+def enrich_albums_all(
+    parsed: dict = Depends(get_parsed_library),
+    resolver=Depends(get_album_resolver),
+    include_greatest_hits: bool = False,
+) -> dict:
+    """Batch-resolve real albums (non-compilation, non-greatest-hits) into the
+    album cache. Idempotent — already-cached albums are skipped."""
+    albums = enrichable_albums(parsed, skip_greatest_hits=not include_greatest_hits)
+    pairs = [(a["artist"], a["album"]) for a in albums]
+    results = resolver.resolve_many(pairs)
+    resolver.save()
+    matched = sum(1 for v in results.values() if v and v.get("id"))
+    return {"enrichable_albums": len(pairs), "matched": matched}

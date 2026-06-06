@@ -90,7 +90,30 @@ def parse_args() -> argparse.Namespace:
         help="Like --enrich-all but prompt yes/no per artist. Needs a TTY: run via "
         "`docker compose exec api python run.py --enrich-interactive`.",
     )
+    parser.add_argument(
+        "--enrich-albums",
+        action="store_true",
+        help="Batch-fetch Spotify data for real albums (non-compilation, "
+        "non-greatest-hits) into the album cache, then exit. Idempotent.",
+    )
     return parser.parse_args()
+
+
+def enrich_albums_cli(library_path: Path) -> None:
+    """Populate the Spotify album cache for real albums (CLI entry point)."""
+    from api.deps import album_cache_path, get_spotify
+    from resources.album_resolver import AlbumResolver
+    from resources.music_library import enrichable_albums
+
+    parsed = parse_library(library_path)
+    resolver = AlbumResolver(get_spotify(), cache_path=album_cache_path())
+    albums = enrichable_albums(parsed)
+    pairs = [(a["artist"], a["album"]) for a in albums]
+    logger.info("Enriching %d real albums from Spotify (cached ones skipped)…", len(pairs))
+    results = resolver.resolve_many(pairs)
+    resolver.save()
+    matched = sum(1 for v in results.values() if v and v.get("id"))
+    logger.info("Done: %d/%d albums matched on Spotify", matched, len(pairs))
 
 
 def enrich_all_cli(library_path: Path) -> None:
@@ -185,11 +208,13 @@ def write_results(results) -> None:
 def main_cli() -> None:
     args = parse_args()
 
-    if args.enrich_all or args.enrich_interactive:
+    if args.enrich_all or args.enrich_interactive or args.enrich_albums:
         library_path = resolve_library_path(args.library or args.library_positional)
         logger.info("Reading library: %s", library_path)
         if args.enrich_interactive:
             enrich_interactive_cli(library_path)
+        elif args.enrich_albums:
+            enrich_albums_cli(library_path)
         else:
             enrich_all_cli(library_path)
         return

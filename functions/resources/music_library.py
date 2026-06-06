@@ -243,6 +243,73 @@ def enrichable_artist_names(parsed: dict) -> list[str]:
     ]
 
 
+# Album-name patterns treated as "greatest hits" / collections. Edit to taste.
+_GREATEST_HITS_RE = re.compile(
+    r"greatest hits|best of|the best|\bthe hits\b|\bhits\b|b-sides|anthology|"
+    r"essential|definitive|collection|#1'?s|number ones|ultimate",
+    re.IGNORECASE,
+)
+
+
+def _album_rollup(artist: str, album: str, tracks: list[dict]) -> dict:
+    genres = Counter(t["genre"] for t in tracks if t["genre"])
+    years = [t["year"] for t in tracks if isinstance(t["year"], int)]
+    dates = sorted(t["date_added"] for t in tracks if t["date_added"])
+    ratings = [t["rating"] for t in tracks if isinstance(t["rating"], int) and t["rating"] > 0]
+    return {
+        "artist": artist,
+        "album": album,
+        "total_plays": sum(t["plays"] for t in tracks),
+        "track_count": len(tracks),
+        "top_genre": genres.most_common(1)[0][0] if genres else None,
+        "all_genres": sorted(genres.keys()),
+        "year": min(years) if years else None,
+        "date_added_first": dates[0] if dates else None,
+        "date_added_last": dates[-1] if dates else None,
+        "avg_rating": round(sum(ratings) / len(ratings), 1) if ratings else None,
+        "loved_count": sum(1 for t in tracks if t["loved"]),
+        "compilation": any(t.get("compilation") for t in tracks),
+        "is_greatest_hits": bool(_GREATEST_HITS_RE.search(album)),
+    }
+
+
+def albums_from_parsed(parsed: dict) -> list[dict]:
+    """Roll the parsed library up by album: {artist, album, total_plays, …}.
+
+    Built from the already-parsed artist→tracks structure so the in-memory
+    cache stays the single source of truth (same approach as the artist/track
+    routes). Sorted by play count descending.
+    """
+    grouped: dict[tuple[str, str], list[dict]] = defaultdict(list)
+    for artist, rollup in parsed.items():
+        for track in rollup["tracks"]:
+            album = (track.get("album") or "").strip()
+            if not album:
+                continue
+            grouped[(artist, album)].append(track)
+
+    albums = [_album_rollup(artist, album, tracks) for (artist, album), tracks in grouped.items()]
+    albums.sort(key=lambda a: a["total_plays"], reverse=True)
+    return albums
+
+
+def enrichable_albums(parsed: dict, *, skip_greatest_hits: bool = True) -> list[dict]:
+    """Albums worth fetching from Spotify: real (non-compilation) albums.
+
+    Compilations (the "Top 40"-style Various Artists albums) are always
+    skipped; "greatest hits"/collections are skipped too unless you pass
+    skip_greatest_hits=False.
+    """
+    out = []
+    for album in albums_from_parsed(parsed):
+        if album["compilation"]:
+            continue
+        if skip_greatest_hits and album["is_greatest_hits"]:
+            continue
+        out.append(album)
+    return out
+
+
 def find_near_duplicate_artists(album_artists: Iterable[str]) -> list[list[str]]:
     """Return groups of Album Artist names that collapse to the same form.
 

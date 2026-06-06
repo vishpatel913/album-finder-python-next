@@ -19,6 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/artists" className="text-sm text-neutral-300 hover:text-white">
               Artists
             </Link>
+            <Link href="/albums" className="text-sm text-neutral-300 hover:text-white">
+              Albums
+            </Link>
             <Link href="/tracks" className="text-sm text-neutral-300 hover:text-white">
               Tracks
             </Link>
