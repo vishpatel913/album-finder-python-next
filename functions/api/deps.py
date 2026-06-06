@@ -16,7 +16,7 @@ from pathlib import Path
 
 import spotipy
 from spotipy.cache_handler import CacheFileHandler
-from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 
 from resources.album_resolver import AlbumResolver
 from resources.artist_resolver import ArtistResolver
@@ -28,9 +28,24 @@ logger = logging.getLogger(__name__)
 # default to no timeout). Token fetch + searches respect this.
 SPOTIFY_REQUEST_TIMEOUT = 10  # seconds
 
+# Scopes needed to follow artists and save albums on the user's behalf.
+# (Read scopes let us show the correct initial like/follow state.)
+SPOTIFY_USER_SCOPES = (
+    "user-follow-read user-follow-modify user-library-read user-library-modify"
+)
+# Must EXACTLY match a Redirect URI registered in the Spotify dashboard.
+# 127.0.0.1 (not localhost) — Spotify rejects localhost for new redirect URIs.
+DEFAULT_REDIRECT_URI = "http://127.0.0.1:8888/callback"
+
 
 class SpotifyCredentialsError(RuntimeError):
     """Raised when Spotify creds are missing — surfaced as a clean 503."""
+
+
+class SpotifyUserAuthError(RuntimeError):
+    """Raised when no cached user token exists — i.e. the one-time consent
+    (scripts/spotify_authorize.py) hasn't been run. Surfaced as a clean 503
+    so write endpoints fail fast instead of blocking on a browser prompt."""
 
 # Repo root: functions/api/deps.py -> functions/api -> functions -> root
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -46,6 +61,7 @@ _state: dict = {
     "library_mtime": None,
     "parsed": None,
     "spotify": None,
+    "spotify_user": None,
     "resolver": None,
     "album_resolver": None,
 }
@@ -113,6 +129,66 @@ def get_spotify() -> spotipy.Spotify:
                 retries=2,
             )
         return _state["spotify"]
+
+
+def redirect_uri() -> str:
+    """OAuth redirect URI. Override with SPOTIFY_REDIRECT_URI; must match the
+    dashboard exactly. Only used during the one-time consent — the server never
+    redirects, it just reads the cached token."""
+    return os.environ.get("SPOTIFY_REDIRECT_URI") or DEFAULT_REDIRECT_URI
+
+
+def user_token_cache_path() -> Path:
+    """User (Authorization Code) token cache — holds the refresh token spotipy
+    rotates. Sits beside the other caches in the gitignored, Docker-persistent
+    data/ dir. Distinct from the client-credentials token cache."""
+    return cache_path().parent / ".spotify-user-token-cache"
+
+
+def _user_auth_manager() -> SpotifyOAuth:
+    """Build the user OAuth manager. open_browser=False so the server never
+    tries to launch a browser — auth is done out-of-band by the authorize
+    script; the server only reads/refreshes the cached token."""
+    if not (
+        os.environ.get("SPOTIPY_CLIENT_ID") and os.environ.get("SPOTIPY_CLIENT_SECRET")
+    ):
+        raise SpotifyCredentialsError(
+            "Spotify credentials missing — set SPOTIPY_CLIENT_ID and "
+            "SPOTIPY_CLIENT_SECRET in your .env at the repo root."
+        )
+    cache = user_token_cache_path()
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    return SpotifyOAuth(
+        scope=SPOTIFY_USER_SCOPES,
+        redirect_uri=redirect_uri(),
+        open_browser=False,
+        cache_handler=CacheFileHandler(cache_path=str(cache)),
+    )
+
+
+def get_spotify_user() -> spotipy.Spotify:
+    """User-authorised Spotify client for write actions (follow/save).
+
+    Requires the one-time consent (scripts/spotify_authorize.py) to have
+    written a token cache. If none exists we raise immediately rather than let
+    spotipy block on an interactive prompt — the server is headless.
+    """
+    with _lock:
+        if _state["spotify_user"] is None:
+            auth = _user_auth_manager()
+            if auth.cache_handler.get_cached_token() is None:
+                raise SpotifyUserAuthError(
+                    "No Spotify user token found — run "
+                    "`python scripts/spotify_authorize.py` once to grant access, "
+                    f"then ensure {user_token_cache_path()} is present "
+                    "(mount it into Docker)."
+                )
+            _state["spotify_user"] = spotipy.Spotify(
+                auth_manager=auth,
+                requests_timeout=SPOTIFY_REQUEST_TIMEOUT,
+                retries=2,
+            )
+        return _state["spotify_user"]
 
 
 def get_resolver() -> ArtistResolver:

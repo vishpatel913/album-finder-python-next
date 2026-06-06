@@ -33,6 +33,7 @@ from spotipy.oauth2 import SpotifyOauthError
 
 from api.deps import (
     SpotifyCredentialsError,
+    SpotifyUserAuthError,
     cache_entry_count,
     get_parsed_library,
     library_mtime_iso,
@@ -56,6 +57,11 @@ app.add_middleware(
 
 @app.exception_handler(SpotifyCredentialsError)
 def _handle_missing_creds(request: Request, exc: SpotifyCredentialsError) -> JSONResponse:
+    return JSONResponse(status_code=503, content={"detail": str(exc)})
+
+
+@app.exception_handler(SpotifyUserAuthError)
+def _handle_missing_user_token(request: Request, exc: SpotifyUserAuthError) -> JSONResponse:
     return JSONResponse(status_code=503, content={"detail": str(exc)})
 
 

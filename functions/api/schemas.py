@@ -115,3 +115,14 @@ class DuplicateGroup(BaseModel):
 
 class EnrichRequest(BaseModel):
     names: list[str] = Field(default_factory=list)
+
+
+# --- Spotify write actions (follow artist / save album) ---
+LibraryEntity = Literal["artist", "album"]
+LibraryAction = Literal["add", "remove"]
+
+
+class LibraryToggleRequest(BaseModel):
+    type: LibraryEntity
+    id: str  # Spotify ID of the artist/album (from enrichment)
+    action: LibraryAction
