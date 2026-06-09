@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Major Version</key><integer>1</integer>
+	<key>Minor Version</key><integer>1</integer>
+	<key>Application Version</key><string>1.0.0</string>
+	<key>Date</key><date>2025-01-15T10:00:00Z</date>
+	<key>Library Persistent ID</key><string>0000000000000001</string>
+	<key>Tracks</key>
+	<dict>
+		<!-- Radiohead: two heavily-played Kid A tracks, one loved, both rated -->
+		<key>1001</key>
+		<dict>
+			<key>Track ID</key><integer>1001</integer>
+			<key>Name</key><string>Idioteque</string>
+			<key>Artist</key><string>Radiohead</string>
+			<key>Album Artist</key><string>Radiohead</string>
+			<key>Album</key><string>Kid A</string>
+			<key>Genre</key><string>Alternative</string>
+			<key>Year</key><integer>2000</integer>
+			<key>Total Time</key><integer>319000</integer>
+			<key>Play Count</key><integer>87</integer>
+			<key>Rating</key><integer>100</integer>
+			<key>Loved</key><true/>
+			<key>Date Added</key><date>2017-04-12T19:33:00Z</date>
+			<key>Play Date UTC</key><date>2024-11-02T09:15:00Z</date>
+		</dict>
+		<key>1002</key>
+		<dict>
+			<key>Track ID</key><integer>1002</integer>
+			<key>Name</key><string>Everything In Its Right Place</string>
+			<key>Artist</key><string>Radiohead</string>
+			<key>Album Artist</key><string>Radiohead</string>
+			<key>Album</key><string>Kid A</string>
+			<key>Genre</key><string>Alternative</string>
+			<key>Year</key><integer>2000</integer>
+			<key>Total Time</key><integer>251000</integer>
+			<key>Play Count</key><integer>54</integer>
+			<key>Rating</key><integer>80</integer>
+			<key>Date Added</key><date>2017-04-12T19:33:00Z</date>
+			<key>Play Date UTC</key><date>2024-09-18T22:01:00Z</date>
+		</dict>
+
+		<!-- Burial: a few Untrue tracks, late-night plays -->
+		<key>1010</key>
+		<dict>
+			<key>Track ID</key><integer>1010</integer>
+			<key>Name</key><string>Archangel</string>
+			<key>Artist</key><string>Burial</string>
+			<key>Album Artist</key><string>Burial</string>
+			<key>Album</key><string>Untrue</string>
+			<key>Genre</key><string>Electronic</string>
+			<key>Year</key><integer>2007</integer>
+			<key>Play Count</key><integer>61</integer>
+			<key>Rating</key><integer>100</integer>
+			<key>Loved</key><true/>
+			<key>Date Added</key><date>2019-02-08T23:11:00Z</date>
+			<key>Play Date UTC</key><date>2025-01-04T01:42:00Z</date>
+		</dict>
+		<key>1011</key>
+		<dict>
+			<key>Track ID</key><integer>1011</integer>
+			<key>Name</key><string>Near Dark</string>
+			<key>Artist</key><string>Burial</string>
+			<key>Album Artist</key><string>Burial</string>
+			<key>Album</key><string>Untrue</string>
+			<key>Genre</key><string>Electronic</string>
+			<key>Year</key><integer>2007</integer>
+			<key>Play Count</key><integer>22</integer>
+			<key>Date Added</key><date>2019-02-08T23:11:00Z</date>
+		</dict>
+
+		<!-- Beyoncé: with accent — paired with a "Beyonce" near-dupe later -->
+		<key>1020</key>
+		<dict>
+			<key>Track ID</key><integer>1020</integer>
+			<key>Name</key><string>Halo</string>
+			<key>Artist</key><string>Beyoncé</string>
+			<key>Album Artist</key><string>Beyoncé</string>
+			<key>Album</key><string>I Am... Sasha Fierce</string>
+			<key>Genre</key><string>R&amp;B/Soul</string>
+			<key>Year</key><integer>2008</integer>
+			<key>Play Count</key><integer>40</integer>
+			<key>Rating</key><integer>80</integer>
+			<key>Date Added</key><date>2018-12-20T14:00:00Z</date>
+			<key>Play Date UTC</key><date>2024-12-15T18:30:00Z</date>
+		</dict>
+		<key>1021</key>
+		<dict>
+			<key>Track ID</key><integer>1021</integer>
+			<key>Name</key><string>Single Ladies (Put a Ring on It)</string>
+			<key>Artist</key><string>Beyoncé</string>
+			<key>Album Artist</key><string>Beyoncé</string>
+			<key>Album</key><string>I Am... Sasha Fierce</string>
+			<key>Genre</key><string>R&amp;B/Soul</string>
+			<key>Year</key><integer>2008</integer>
+			<key>Play Count</key><integer>33</integer>
+			<key>Date Added</key><date>2018-12-20T14:00:00Z</date>
+		</dict>
+		<!-- Deliberate near-duplicate (no accent) to exercise the duplicate scanner -->
+		<key>1022</key>
+		<dict>
+			<key>Track ID</key><integer>1022</integer>
+			<key>Name</key><string>Crazy In Love</string>
+			<key>Artist</key><string>Beyonce</string>
+			<key>Album Artist</key><string>Beyonce</string>
+			<key>Album</key><string>Dangerously in Love</string>
+			<key>Genre</key><string>R&amp;B/Soul</string>
+			<key>Year</key><integer>2003</integer>
+			<key>Play Count</key><integer>12</integer>
+			<key>Date Added</key><date>2016-05-04T08:00:00Z</date>
+		</dict>
+
+		<!-- Kendrick Lamar: hip-hop, mixed plays -->
+		<key>1030</key>
+		<dict>
+			<key>Track ID</key><integer>1030</integer>
+			<key>Name</key><string>Alright</string>
+			<key>Artist</key><string>Kendrick Lamar</string>
+			<key>Album Artist</key><string>Kendrick Lamar</string>
+			<key>Album</key><string>To Pimp a Butterfly</string>
+			<key>Genre</key><string>Hip-Hop/Rap</string>
+			<key>Year</key><integer>2015</integer>
+			<key>Play Count</key><integer>48</integer>
+			<key>Rating</key><integer>100</integer>
+			<key>Loved</key><true/>
+			<key>Date Added</key><date>2020-06-11T16:00:00Z</date>
+			<key>Play Date UTC</key><date>2025-02-10T12:00:00Z</date>
+		</dict>
+		<key>1031</key>
+		<dict>
+			<key>Track ID</key><integer>1031</integer>
+			<key>Name</key><string>HUMBLE.</string>
+			<key>Artist</key><string>Kendrick Lamar</string>
+			<key>Album Artist</key><string>Kendrick Lamar</string>
+			<key>Album</key><string>DAMN.</string>
+			<key>Genre</key><string>Hip-Hop/Rap</string>
+			<key>Year</key><integer>2017</integer>
+			<key>Play Count</key><integer>29</integer>
+			<key>Date Added</key><date>2020-06-11T16:00:00Z</date>
+		</dict>
+
+		<!-- Aphex Twin: ambient/IDM, older library entries -->
+		<key>1040</key>
+		<dict>
+			<key>Track ID</key><integer>1040</integer>
+			<key>Name</key><string>Xtal</string>
+			<key>Artist</key><string>Aphex Twin</string>
+			<key>Album Artist</key><string>Aphex Twin</string>
+			<key>Album</key><string>Selected Ambient Works 85-92</string>
+			<key>Genre</key><string>Electronic</string>
+			<key>Year</key><integer>1992</integer>
+			<key>Play Count</key><integer>19</integer>
+			<key>Rating</key><integer>80</integer>
+			<key>Date Added</key><date>2015-08-30T22:00:00Z</date>
+		</dict>
+
+		<!-- Fleetwood Mac: classic rock, recently re-added -->
+		<key>1050</key>
+		<dict>
+			<key>Track ID</key><integer>1050</integer>
+			<key>Name</key><string>Dreams</string>
+			<key>Artist</key><string>Fleetwood Mac</string>
+			<key>Album Artist</key><string>Fleetwood Mac</string>
+			<key>Album</key><string>Rumours</string>
+			<key>Genre</key><string>Rock</string>
+			<key>Year</key><integer>1977</integer>
+			<key>Play Count</key><integer>15</integer>
+			<key>Date Added</key><date>2023-08-14T17:30:00Z</date>
+			<key>Play Date UTC</key><date>2024-12-30T20:00:00Z</date>
+		</dict>
+
+		<!-- A track with Artist but no Album Artist (parser should fall back) -->
+		<key>1060</key>
+		<dict>
+			<key>Track ID</key><integer>1060</integer>
+			<key>Name</key><string>Untitled Demo</string>
+			<key>Artist</key><string>Various Sessions</string>
+			<key>Album</key><string>Demos</string>
+			<key>Genre</key><string>Unclassifiable</string>
+			<key>Play Count</key><integer>3</integer>
+			<key>Date Added</key><date>2022-01-01T00:00:00Z</date>
+		</dict>
+
+		<!-- A zero-play track — should be excluded when min_track_plays >= 1 -->
+		<key>1070</key>
+		<dict>
+			<key>Track ID</key><integer>1070</integer>
+			<key>Name</key><string>Never Played</string>
+			<key>Artist</key><string>Skipped Band</string>
+			<key>Album Artist</key><string>Skipped Band</string>
+			<key>Album</key><string>Forgotten</string>
+			<key>Genre</key><string>Rock</string>
+			<key>Year</key><integer>2019</integer>
+			<key>Play Count</key><integer>0</integer>
+			<key>Date Added</key><date>2019-11-11T11:11:00Z</date>
+		</dict>
+
+		<!-- Whitespace-padded variant of an existing artist — duplicate scanner should flag -->
+		<key>1080</key>
+		<dict>
+			<key>Track ID</key><integer>1080</integer>
+			<key>Name</key><string>Pyramid Song</string>
+			<key>Artist</key><string>  Radiohead </string>
+			<key>Album Artist</key><string>  Radiohead </string>
+			<key>Album</key><string>Amnesiac</string>
+			<key>Genre</key><string>Alternative</string>
+			<key>Year</key><integer>2001</integer>
+			<key>Play Count</key><integer>8</integer>
+			<key>Date Added</key><date>2017-04-12T19:33:00Z</date>
+		</dict>
+	</dict>
+	<key>Playlists</key>
+	<array/>
+</dict>
+</plist>

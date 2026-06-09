@@ -1,0 +1,14 @@
+.git
+.gitignore
+.claude
+.vscode
+node_modules
+.next
+__pycache__
+*.pyc
+.env
+README.md
+data
+dumps
+# the web image is pure Next — it never needs the Python backend
+functions

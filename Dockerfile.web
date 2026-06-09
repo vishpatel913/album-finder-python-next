@@ -1,0 +1,29 @@
+# syntax=docker/dockerfile:1
+
+# --- deps: install node_modules from the lockfile ---
+FROM node:20-alpine AS deps
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+# --- build: produce the standalone production server ---
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN yarn build
+
+# --- runner: minimal image, just the standalone server + static assets ---
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    HOSTNAME=0.0.0.0 \
+    PORT=3000
+# .next/standalone bundles server.js + the traced node_modules it needs.
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/public ./public
+EXPOSE 3000
+CMD ["node", "server.js"]

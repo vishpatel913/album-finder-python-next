@@ -1,0 +1,12 @@
+venv
+__pycache__
+**/__pycache__
+*.pyc
+.pytest_cache
+.env
+data
+dumps
+.serverless
+node_modules
+package.json
+yarn.lock
