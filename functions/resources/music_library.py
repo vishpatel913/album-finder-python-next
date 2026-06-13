@@ -1,4 +1,4 @@
-"""Parse a Music.app exported Library.xml into per-artist play data.
+~"""Parse a Music.app exported Library.xml into per-artist play data.
 
 Output shape is a plain `dict[str, dict]` keyed by Album Artist, sorted by
 total play count descending. Kept as raw dicts (not dataclasses) so the
