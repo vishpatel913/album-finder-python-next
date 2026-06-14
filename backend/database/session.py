@@ -3,7 +3,7 @@ import os
 from sqlmodel import Session, SQLModel, create_engine
 
 DATABASE_URL = os.getenv(
-    "DATABASE_URL", "postgresql://postgres:postgres@database:5432/music-library"
+    "DATABASE_URL", "postgresql://postgres:postgres@database:5432/music_library"
 )
 
 engine = create_engine(DATABASE_URL, echo=True)

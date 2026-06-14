@@ -1,12 +1,11 @@
-venv
-__pycache__
-**/__pycache__
+# backend/.dockerignore
+.venv/
+__pycache__/
 *.pyc
-.pytest_cache
+.pytest_cache/
+.ruff_cache/
+.git/
 .env
-data
-dumps
-.serverless
-node_modules
-package.json
-yarn.lock
+backups/
+scripts/__pycache__/
+.venv
