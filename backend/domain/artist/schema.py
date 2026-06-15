@@ -1,11 +1,12 @@
-from domain.album.schema import AlbumRead
+# from domain.album.schema import AlbumRead
 from sqlmodel import SQLModel
 
-# class ArtistCreate(SQLModel):
-#     name: str
+class ArtistCreate(SQLModel):
+    id: str
+    name: str
 
 
 class ArtistRead(SQLModel):
-    id: int
+    id: str
     name: str
-    albums: list["AlbumRead"]
+    # albums: list["AlbumRead"]

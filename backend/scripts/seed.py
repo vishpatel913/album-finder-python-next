@@ -1,7 +1,11 @@
 import os
 from pathlib import Path
-
-# from database import session
+from domain.artist.model import Artist
+from domain.artist.schema import ArtistCreate
+from sqlmodel import Session
+from domain.album.model import Album
+from database.session import session_scope
+from domain.album.schema import AlbumCreate
 from libs.music_library.parser import extract_albums, extract_artists, parse_library
 
 # Point this at any iTunes-style XML dump. Override with the SEED_FIXTURE env
@@ -13,35 +17,40 @@ DEFAULT_FIXTURE = (
 )
 FIXTURE = Path(os.getenv("SEED_FIXTURE", DEFAULT_FIXTURE))
 
-# def upsert_book(session: Session, parsed: BookCreate) -> None:
-#     existing = session.get(Book, parsed.id)
-#     if existing is None:
-#         session.add(Book.model_validate(parsed))
-#     else:
-#         for key, value in parsed.model_dump(exclude_unset=True).items():
-#             setattr(existing, key, value)
-#         session.add(existing)
+def upsert_album(session: Session, parsed: AlbumCreate) -> None:
+    existing = session.get(Album, parsed.id)
+    if existing is None:
+        session.add(Album.model_validate(parsed))
+    else:
+        for key, value in parsed.model_dump(exclude_unset=True).items():
+            setattr(existing, key, value)
+        session.add(existing)
+
+def upsert_artist(session: Session, parsed: ArtistCreate) -> None:
+    existing = session.get(Artist, parsed.id)
+    if existing is None:
+        session.add(Artist.model_validate(parsed))
+    else:
+        for key, value in parsed.model_dump(exclude_unset=True).items():
+            setattr(existing, key, value)
+        session.add(existing)
 
 
 def seed():
     parsed_tracks = parse_library(FIXTURE)
     print(f"parsed {len(parsed_tracks)} tracks from {FIXTURE}")
 
-    for entry in extract_albums(parsed_tracks):
-        print(entry)
-        pass
-    
-    for entry in extract_artists(parsed_tracks):
-        print(entry)
-        pass
+    with session_scope() as session:
+        for entry in extract_albums(parsed_tracks):
+            print(entry)
+            pass
+        
+        for entry in extract_artists(parsed_tracks):
+            print(entry)
+            pass
 
-    # with Session(engine) as session:
-    #     for entry in root.findall("entry"):
-    #         print(entry)
-    #         pass
-
-    #     session.commit()
-    #     print("Seed complete")
+        session.commit()
+        print("Seed complete")
 
 
 if __name__ == "__main__":

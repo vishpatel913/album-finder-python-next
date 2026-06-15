@@ -10,7 +10,7 @@ from sqlmodel import Field, Relationship, SQLModel
 
 class AlbumBase(SQLModel):
     name: str = Field(index=True)
-    artist_id: int = Field(foreign_key="artist.id")
+    artist_id: str = Field(foreign_key="artist.id")
     genre: str
     year: int
 

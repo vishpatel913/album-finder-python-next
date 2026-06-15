@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "music_library (compose)",
+      "Group": "Servers",
+      "Host": "database",
+      "Port": 5432,
+      "MaintenanceDB": "music_library",
+      "Username": "postgres",
+      "SSLMode": "prefer"
+    }
+  }
+}

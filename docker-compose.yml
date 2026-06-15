@@ -97,6 +97,28 @@ services:
   #     - api
   #   restart: unless-stopped
 
+  # Web DB admin UI. Browse to http://localhost:5050
+  #   login: admin@admin.com / admin
+  # The music_library server is pre-registered (see pgadmin/servers.json); you
+  # only enter the DB password (postgres) the first time you expand it.
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_CONFIG_SERVER_MODE=False              # skip the per-user login wall
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      database:
+        condition: service_healthy
+
 volumes:
   # album-finder-data:
   pgdata:
+  pgadmin_data:

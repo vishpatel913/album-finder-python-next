@@ -1,4 +1,5 @@
 import os
+from contextlib import contextmanager
 
 from sqlmodel import Session, SQLModel, create_engine
 
@@ -14,5 +15,11 @@ def create_db_and_tables():
 
 
 def get_session():
+    """FastAPI dependency. Stays a generator so `Depends(get_session)` works."""
     with Session(engine) as session:
         yield session
+
+
+# Context-manager form for scripts / non-request code (seed, one-offs):
+#   with session_scope() as session: ...
+session_scope = contextmanager(get_session)
