@@ -2,7 +2,7 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from logging import INFO, basicConfig, getLogger
 
-from api.routes import albums, artists
+from api.routes import albums, artists, health
 from fastapi import FastAPI
 
 from database.session import create_db_and_tables
@@ -22,6 +22,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 def get_app() -> FastAPI:
     app = FastAPI(title="Music Library API", lifespan=lifespan)
+    app.include_router(health.router)
     app.include_router(artists.router)
     app.include_router(albums.router)
     return app

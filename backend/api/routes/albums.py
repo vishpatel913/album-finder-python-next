@@ -12,9 +12,9 @@ def list_album(repo=Depends(get_album_repo)):
     return service.get_all_albums(repo)
 
 
-@router.get("/{book_id}", response_model=AlbumRead)
-def get_album(book_id: int, repo=Depends(get_album_repo)):
+@router.get("/{album_id}", response_model=AlbumRead)
+def get_album(album_id: int, repo=Depends(get_album_repo)):
     try:
-        return service.get_album(book_id, repo)
+        return service.get_album(album_id, repo)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))

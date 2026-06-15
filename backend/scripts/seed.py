@@ -41,13 +41,12 @@ def seed():
     print(f"parsed {len(parsed_tracks)} tracks from {FIXTURE}")
 
     with session_scope() as session:
-        for entry in extract_albums(parsed_tracks):
-            print(entry)
-            pass
-        
         for entry in extract_artists(parsed_tracks):
-            print(entry)
-            pass
+            upsert_artist(session, ArtistCreate.from_library(entry))
+        session.flush()
+
+        for entry in extract_albums(parsed_tracks):
+            upsert_album(session, AlbumCreate.from_library(entry))
 
         session.commit()
         print("Seed complete")

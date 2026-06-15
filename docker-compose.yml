@@ -12,36 +12,6 @@ services:
       database:
         condition: service_healthy
 
-  # Dev-only: re-runs scripts.seed whenever you edit source or drop a new
-  # fixture into backend/fixtures. Bring it up explicitly with the watcher:
-  #   docker compose up --build --watch seed
-  # The seed runs once, then the container idles so Compose Watch can restart
-  # it (re-running the seed) on every file change.
-  seed:
-    build: ./backend
-    entrypoint: []   # bypass the API entrypoint (init_db + uvicorn)
-    command:
-      - sh
-      - -c
-      - "python -m scripts.seed; echo '--- seed done, watching for changes (edit a file to re-run) ---'; tail -f /dev/null"
-    working_dir: /app
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@database:5432/music_library
-      # - SEED_FIXTURE=fixtures/another_dump.xml   # swap the dump, no code change
-    depends_on:
-      database:
-        condition: service_healthy
-    develop:
-      watch:
-        # Edit any backend source file or drop a new XML into backend/fixtures
-        # -> Compose syncs it into the container and restarts -> seed re-runs.
-        - action: sync+restart
-          path: ./backend
-          target: /app
-          ignore:
-            - .venv/
-            - __pycache__/
-
   # Database
   database:
     image: postgres:16
@@ -109,7 +79,7 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=admin
-      - PGADMIN_CONFIG_SERVER_MODE=False              # skip the per-user login wall
+      - PGADMIN_CONFIG_SERVER_MODE=False # skip the per-user login wall
       - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
     volumes:
       - pgadmin_data:/var/lib/pgadmin

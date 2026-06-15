@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+# from typing import TYPE_CHECKING, Optional
 
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -10,9 +10,11 @@ from sqlmodel import Field, Relationship, SQLModel
 
 class AlbumBase(SQLModel):
     name: str = Field(index=True)
-    artist_id: str = Field(foreign_key="artist.id")
+    artist_id: str | None = Field(default=None, foreign_key="artist.id")
     genre: str
     year: int
+    date_added: str | None = None
+    is_compilation: bool
 
     # Relationships
     # artist: "Artist" = Relationship(back_populates="albums")
