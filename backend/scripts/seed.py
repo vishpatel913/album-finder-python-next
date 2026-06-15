@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+from domain.track.model import Track
+from domain.track.schema import TrackCreate
 from domain.artist.model import Artist
 from domain.artist.schema import ArtistCreate
 from sqlmodel import Session
@@ -17,6 +19,15 @@ DEFAULT_FIXTURE = (
 )
 FIXTURE = Path(os.getenv("SEED_FIXTURE", DEFAULT_FIXTURE))
 
+def upsert_artist(session: Session, parsed: ArtistCreate) -> None:
+    existing = session.get(Artist, parsed.id)
+    if existing is None:
+        session.add(Artist.model_validate(parsed))
+    else:
+        for key, value in parsed.model_dump(exclude_unset=True).items():
+            setattr(existing, key, value)
+        session.add(existing)
+
 def upsert_album(session: Session, parsed: AlbumCreate) -> None:
     existing = session.get(Album, parsed.id)
     if existing is None:
@@ -26,14 +37,15 @@ def upsert_album(session: Session, parsed: AlbumCreate) -> None:
             setattr(existing, key, value)
         session.add(existing)
 
-def upsert_artist(session: Session, parsed: ArtistCreate) -> None:
-    existing = session.get(Artist, parsed.id)
+def upsert_track(session: Session, parsed: TrackCreate) -> None:
+    existing = session.get(Track, parsed.id)
     if existing is None:
-        session.add(Artist.model_validate(parsed))
+        session.add(Track.model_validate(parsed))
     else:
         for key, value in parsed.model_dump(exclude_unset=True).items():
             setattr(existing, key, value)
         session.add(existing)
+
 
 
 def seed():
@@ -47,6 +59,9 @@ def seed():
 
         for entry in extract_albums(parsed_tracks):
             upsert_album(session, AlbumCreate.from_library(entry))
+        
+        for entry in parsed_tracks:
+            upsert_track(session, TrackCreate.from_library(entry))
 
         session.commit()
         print("Seed complete")

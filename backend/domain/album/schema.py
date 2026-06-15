@@ -18,7 +18,7 @@ class AlbumCreate(SQLModel):
         """Adapter: neutral parser album dict -> domain create model."""
         artist = album["album_artist"]
         return cls(
-            id=slugify(artist, album["album"]),
+            id=slugify(album["album"], artist),
             name=album["album"],
             artist_id=slugify(artist) if artist else None,
             genre=album["genre"],
