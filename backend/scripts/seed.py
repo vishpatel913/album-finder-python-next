@@ -59,6 +59,7 @@ def seed():
 
         for entry in extract_albums(parsed_tracks):
             upsert_album(session, AlbumCreate.from_library(entry))
+        session.flush()
         
         for entry in parsed_tracks:
             upsert_track(session, TrackCreate.from_library(entry))

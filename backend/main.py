@@ -2,7 +2,7 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from logging import INFO, basicConfig, getLogger
 
-from api.routes import albums, artists, health
+from api.routes import albums, artists, health, tracks
 from fastapi import FastAPI
 
 from database.session import create_db_and_tables
@@ -25,6 +25,7 @@ def get_app() -> FastAPI:
     app.include_router(health.router)
     app.include_router(artists.router)
     app.include_router(albums.router)
+    app.include_router(tracks.router)
     return app
 
 
