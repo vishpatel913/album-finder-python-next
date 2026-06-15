@@ -10,14 +10,10 @@ from database.session import session_scope
 from domain.album.schema import AlbumCreate
 from libs.music_library.parser import extract_albums, extract_artists, parse_library
 
-# Point this at any iTunes-style XML dump. Override with the SEED_FIXTURE env
-# var (relative paths resolve against the working dir); otherwise defaults to
-# backend/fixtures/sample_library.xml. In dev the fixtures dir is bind-mounted,
-# so you can drop a new dump in and the watcher re-runs the seed.
-DEFAULT_FIXTURE = (
+DEFAULT_DATA = (
     Path(__file__).resolve().parent.parent / "fixtures" / "sample_library.xml"
 )
-FIXTURE = Path(os.getenv("SEED_FIXTURE", DEFAULT_FIXTURE))
+DATA = Path(os.getenv("SEED_DATA", DEFAULT_DATA))
 
 def upsert_artist(session: Session, parsed: ArtistCreate) -> None:
     existing = session.get(Artist, parsed.id)
@@ -49,8 +45,8 @@ def upsert_track(session: Session, parsed: TrackCreate) -> None:
 
 
 def seed():
-    parsed_tracks = parse_library(FIXTURE)
-    print(f"parsed {len(parsed_tracks)} tracks from {FIXTURE}")
+    parsed_tracks = parse_library(DATA)
+    print(f"parsed {len(parsed_tracks)} tracks from {DATA}")
 
     with session_scope() as session:
         for entry in extract_artists(parsed_tracks):
