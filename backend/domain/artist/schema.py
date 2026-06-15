@@ -1,4 +1,4 @@
-from backend.domain.album.schema import AlbumRead
+from domain.album.schema import AlbumRead
 from sqlmodel import SQLModel
 
 # class ArtistCreate(SQLModel):

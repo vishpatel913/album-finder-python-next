@@ -1,4 +1,3 @@
-
 #!/bin/sh
 # backend/entrypoint.sh
 # Runs before the API server starts. Container won't even reach this until

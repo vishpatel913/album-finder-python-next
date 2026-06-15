@@ -1,6 +1,17 @@
+import os
 from pathlib import Path
 
-from backend.libs.music_library.parser import parse_library
+# from database import session
+from libs.music_library.parser import extract_albums, extract_artists, parse_library
+
+# Point this at any iTunes-style XML dump. Override with the SEED_FIXTURE env
+# var (relative paths resolve against the working dir); otherwise defaults to
+# backend/fixtures/sample_library.xml. In dev the fixtures dir is bind-mounted,
+# so you can drop a new dump in and the watcher re-runs the seed.
+DEFAULT_FIXTURE = (
+    Path(__file__).resolve().parent.parent / "fixtures" / "sample_library.xml"
+)
+FIXTURE = Path(os.getenv("SEED_FIXTURE", DEFAULT_FIXTURE))
 
 # def upsert_book(session: Session, parsed: BookCreate) -> None:
 #     existing = session.get(Book, parsed.id)
@@ -13,16 +24,16 @@ from backend.libs.music_library.parser import parse_library
 
 
 def seed():
-    parsed = parse_library(Path("../fixtures/test_library.xml"))
-    # create_db_and_tables()
-    # tree = ET.parse("../fixtures/test_library.xml")
-    # root = tree.getroot()
+    parsed_tracks = parse_library(FIXTURE)
+    print(f"parsed {len(parsed_tracks)} tracks from {FIXTURE}")
 
-    print("root", parsed)
-
-    # for entry in root.findall("entry"):
-    #     print(entry)
-    #     pass
+    for entry in extract_albums(parsed_tracks):
+        print(entry)
+        pass
+    
+    for entry in extract_artists(parsed_tracks):
+        print(entry)
+        pass
 
     # with Session(engine) as session:
     #     for entry in root.findall("entry"):

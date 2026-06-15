@@ -1,0 +1,1762 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Application Version</key>
+	<string>1.6.2.57</string>
+	<key>Date</key>
+	<date>2026-06-01T17:30:58Z</date>
+	<key>Features</key>
+	<integer>5</integer>
+	<key>Library Persistent ID</key>
+	<string>F4C224A7CE2D4F29</string>
+	<key>Major Version</key>
+	<integer>1</integer>
+	<key>Minor Version</key>
+	<integer>1</integer>
+	<key>Music Folder</key>
+	<string>file:///Users/Vish/Music/Music/Media.localized/</string>
+	<key>Playlists</key>
+	<array>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Master</key>
+			<true/>
+			<key>Name</key>
+			<string>Library</string>
+			<key>Playlist ID</key>
+			<integer>62</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>1612</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>4052</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>4082</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>5350</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>7006</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>7010</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>10494</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>12788</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>12796</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14938</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14960</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>17364</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>17366</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>20310</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>22152</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>0000000000000005</string>
+			<key>Visible</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Distinguished Kind</key>
+			<integer>65</integer>
+			<key>Name</key>
+			<string>Downloaded</string>
+			<key>Playlist ID</key>
+			<integer>40048</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>10494</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>1612</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>7006</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>7010</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14938</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14960</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>5350</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>4052</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>4082</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>12788</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>12796</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>17364</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>17366</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>20310</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>22152</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>52C70C509C42ABD5</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Distinguished Kind</key>
+			<integer>4</integer>
+			<key>Music</key>
+			<true/>
+			<key>Name</key>
+			<string>Music</string>
+			<key>Playlist ID</key>
+			<integer>52989</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>1612</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>4052</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>4082</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>5350</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>7006</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>7010</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>10494</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>12788</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>12796</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14938</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14960</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>17364</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>17366</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>20310</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>22152</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>F4C224A7CE2D4F34</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Awesome Mix Drive</string>
+			<key>Playlist ID</key>
+			<integer>65937</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>41329E5007AE2469</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Awesome Mix R&amp;B</string>
+			<key>Playlist ID</key>
+			<integer>65991</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>401C047F1EA25E75</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Awesome Mix Rap</string>
+			<key>Playlist ID</key>
+			<integer>66067</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>494C085C659A9AD2</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Background Party</string>
+			<key>Playlist ID</key>
+			<integer>66127</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>5350</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>E858EBDE22780E19</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Best of Drizzy</string>
+			<key>Playlist ID</key>
+			<integer>66207</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>DA79ACD54FCDC475</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Bit of Ed</string>
+			<key>Playlist ID</key>
+			<integer>66263</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>8E7C9E766014EBFE</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Camp Acid Rap</string>
+			<key>Playlist ID</key>
+			<integer>66301</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>DD72311E707BF312</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Collaborations Project</string>
+			<key>Playlist ID</key>
+			<integer>66330</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>CD9D4670994871F3</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Daffy Comedown</string>
+			<key>Playlist ID</key>
+			<integer>66361</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>5855BE02EC72796B</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Guitar</string>
+			<key>Playlist ID</key>
+			<integer>66393</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>4052</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>10494</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>DCB6DA16635A1CEC</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Hype</string>
+			<key>Playlist ID</key>
+			<integer>66458</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14938</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14960</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>DD0C7F38A3E1319B</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Kanye Fest</string>
+			<key>Playlist ID</key>
+			<integer>66539</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>2CF6F34632E047EB</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Mellow Rap</string>
+			<key>Playlist ID</key>
+			<integer>66584</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>5350</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>85BD46401372CCD9</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Modern Em</string>
+			<key>Playlist ID</key>
+			<integer>66673</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>B43ABBF5FD8218E9</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Needy &amp; Pathetic</string>
+			<key>Playlist ID</key>
+			<integer>66709</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>12788</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>4082</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>95C45BAA602970CA</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Nicki Features</string>
+			<key>Playlist ID</key>
+			<integer>66760</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>C713D510EE73B039</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Power Walk</string>
+			<key>Playlist ID</key>
+			<integer>66790</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>14938</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>20310</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>12486AF1248BCA29</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>sadgal playlist</string>
+			<key>Playlist ID</key>
+			<integer>66904</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>7006</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>F75AB75E0B7A76DD</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Second Year Pre</string>
+			<key>Playlist ID</key>
+			<integer>66987</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>5350</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>F35D0807F1341A4A</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Sk8er Boi</string>
+			<key>Playlist ID</key>
+			<integer>67101</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14938</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>050FEE93DF2EA0E8</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Slipping' Into Some Kinda Feeling</string>
+			<key>Playlist ID</key>
+			<integer>67234</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>8A2D2FDA8C258D71</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Summer Vibes</string>
+			<key>Playlist ID</key>
+			<integer>67275</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>14572</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>20310</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>17366</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>17364</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>D388CE1307801510</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>Sunny Stroll</string>
+			<key>Playlist ID</key>
+			<integer>67501</integer>
+			<key>Playlist Items</key>
+			<array/>
+			<key>Playlist Persistent ID</key>
+			<string>D727403AB3132432</string>
+		</dict>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Description</key>
+			<string></string>
+			<key>Name</key>
+			<string>WorldHQ</string>
+			<key>Playlist ID</key>
+			<integer>67516</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>14960</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>14938</integer>
+				</dict>
+			</array>
+			<key>Playlist Persistent ID</key>
+			<string>FBB6B83B2B061CF9</string>
+		</dict>
+	</array>
+	<key>Show Content Ratings</key>
+	<true/>
+	<key>Tracks</key>
+	<dict>
+		<key>10494</key>
+		<dict>
+			<key>Album</key>
+			<string>Begin Again</string>
+			<key>Album Artist</key>
+			<string>Begin Again Cast</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Album Rating Computed</key>
+			<true/>
+			<key>Artist</key>
+			<string>Adam Levine</string>
+			<key>Bit Rate</key>
+			<integer>160</integer>
+			<key>Comments</key>
+			<string>(Into the Night Mix)</string>
+			<key>Compilation</key>
+			<true/>
+			<key>Composer</key>
+			<string>Gregg Alexander, Danielle Brisebois, Nick Lashley &amp; Nick Southwood</string>
+			<key>Date Added</key>
+			<date>2014-09-03T00:58:10Z</date>
+			<key>Date Modified</key>
+			<date>2014-09-03T15:18:03Z</date>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Soundtrack</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Compilations/Begin%20Again/13%20Lost%20Stars%20%5BInto%20the%20Night%20Mix%5D.mp3</string>
+			<key>Name</key>
+			<string>Lost Stars [Into the Night Mix]</string>
+			<key>Normalization</key>
+			<integer>6921</integer>
+			<key>Persistent ID</key>
+			<string>6BDA3D9D41573A5B</string>
+			<key>Play Count</key>
+			<integer>158</integer>
+			<key>Play Date</key>
+			<integer>3757491885</integer>
+			<key>Play Date UTC</key>
+			<date>2023-01-25T11:44:45Z</date>
+			<key>Rating</key>
+			<integer>60</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>4501670</integer>
+			<key>Skip Count</key>
+			<integer>3</integer>
+			<key>Skip Date</key>
+			<date>2015-03-02T14:22:36Z</date>
+			<key>Total Time</key>
+			<integer>218174</integer>
+			<key>Track ID</key>
+			<integer>10494</integer>
+			<key>Track Number</key>
+			<integer>13</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2014</integer>
+		</dict>
+		<key>12788</key>
+		<dict>
+			<key>Album</key>
+			<string>Greatest Hits...So Far!!!</string>
+			<key>Album Artist</key>
+			<string>P!nk</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Album Rating Computed</key>
+			<true/>
+			<key>Artist</key>
+			<string>P!nk</string>
+			<key>Artwork Count</key>
+			<integer>1</integer>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Date Added</key>
+			<date>2015-06-28T18:10:24Z</date>
+			<key>Date Modified</key>
+			<date>2015-06-28T18:12:06Z</date>
+			<key>Disc Count</key>
+			<integer>2</integer>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Pop</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/P!nk/Greatest%20Hits...So%20Far!!!/05%20Family%20Portrait.mp3</string>
+			<key>Name</key>
+			<string>Family Portrait</string>
+			<key>Normalization</key>
+			<integer>4058</integer>
+			<key>Persistent ID</key>
+			<string>8131F200448671F0</string>
+			<key>Play Count</key>
+			<integer>238</integer>
+			<key>Play Date</key>
+			<integer>3766383059</integer>
+			<key>Play Date UTC</key>
+			<date>2023-05-08T08:30:59Z</date>
+			<key>Rating</key>
+			<integer>60</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>12010267</integer>
+			<key>Skip Count</key>
+			<integer>10</integer>
+			<key>Skip Date</key>
+			<date>2020-11-12T18:02:26Z</date>
+			<key>Total Time</key>
+			<integer>295235</integer>
+			<key>Track ID</key>
+			<integer>12788</integer>
+			<key>Track Number</key>
+			<integer>5</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2010</integer>
+		</dict>
+		<key>12796</key>
+		<dict>
+			<key>Album</key>
+			<string>Greatest Hits...So Far!!!</string>
+			<key>Album Artist</key>
+			<string>P!nk</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Album Rating Computed</key>
+			<true/>
+			<key>Artist</key>
+			<string>P!nk</string>
+			<key>Artwork Count</key>
+			<integer>1</integer>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Date Added</key>
+			<date>2015-06-28T18:10:24Z</date>
+			<key>Date Modified</key>
+			<date>2015-06-28T18:12:06Z</date>
+			<key>Disc Count</key>
+			<integer>2</integer>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Pop</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/P!nk/Greatest%20Hits...So%20Far!!!/09%20U%20+%20Ur%20Hand.mp3</string>
+			<key>Name</key>
+			<string>U + Ur Hand</string>
+			<key>Normalization</key>
+			<integer>9736</integer>
+			<key>Persistent ID</key>
+			<string>17E8055FAE91F770</string>
+			<key>Play Count</key>
+			<integer>302</integer>
+			<key>Play Date</key>
+			<integer>3773898885</integer>
+			<key>Play Date UTC</key>
+			<date>2023-08-03T08:14:45Z</date>
+			<key>Rating</key>
+			<integer>60</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>8797206</integer>
+			<key>Skip Count</key>
+			<integer>27</integer>
+			<key>Skip Date</key>
+			<date>2020-05-26T15:02:06Z</date>
+			<key>Total Time</key>
+			<integer>214909</integer>
+			<key>Track ID</key>
+			<integer>12796</integer>
+			<key>Track Number</key>
+			<integer>9</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2010</integer>
+		</dict>
+		<key>14572</key>
+		<dict>
+			<key>Album</key>
+			<string>To Pimp A Butterfly</string>
+			<key>Album Artist</key>
+			<string>Kendrick Lamar</string>
+			<key>Album Rating</key>
+			<integer>80</integer>
+			<key>Album Rating Computed</key>
+			<true/>
+			<key>Artist</key>
+			<string>Kendrick Lamar</string>
+			<key>Artwork Count</key>
+			<integer>1</integer>
+			<key>Bit Rate</key>
+			<integer>192</integer>
+			<key>Date Added</key>
+			<date>2016-01-25T17:26:03Z</date>
+			<key>Date Modified</key>
+			<date>2016-01-29T12:13:28Z</date>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Hip Hop</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Kendrick%20Lamar/To%20Pimp%20A%20Butterfly/17%20i%20(Single%20Version).mp3</string>
+			<key>Name</key>
+			<string>i (Single Version)</string>
+			<key>Normalization</key>
+			<integer>4339</integer>
+			<key>Persistent ID</key>
+			<string>D74CE6D31759A78D</string>
+			<key>Play Count</key>
+			<integer>301</integer>
+			<key>Play Date</key>
+			<integer>3843449576</integer>
+			<key>Play Date UTC</key>
+			<date>2025-10-16T07:52:56Z</date>
+			<key>Rating</key>
+			<integer>80</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>5573746</integer>
+			<key>Skip Count</key>
+			<integer>22</integer>
+			<key>Skip Date</key>
+			<date>2018-01-25T18:02:03Z</date>
+			<key>Sort Album</key>
+			<string>To Pimp A Butterfly</string>
+			<key>Sort Album Artist</key>
+			<string>Kendrick Lamar</string>
+			<key>Sort Name</key>
+			<string>i (Single Version)</string>
+			<key>Total Time</key>
+			<integer>230739</integer>
+			<key>Track ID</key>
+			<integer>14572</integer>
+			<key>Track Number</key>
+			<integer>17</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2015</integer>
+		</dict>
+		<key>14938</key>
+		<dict>
+			<key>Album</key>
+			<string>Made In The Manor</string>
+			<key>Album Artist</key>
+			<string>Kano</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Artist</key>
+			<string>Kano</string>
+			<key>Artwork Count</key>
+			<integer>1</integer>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Date Added</key>
+			<date>2016-03-24T17:55:29Z</date>
+			<key>Date Modified</key>
+			<date>2017-07-30T13:23:54Z</date>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Grime</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Kano/Made%20In%20The%20Manor/04%203%20Wheel-Ups%20(Ft.%20Wiley%20&amp;%20Giggs).mp3</string>
+			<key>Name</key>
+			<string>3 Wheel-Ups (Ft. Wiley &amp; Giggs)</string>
+			<key>Normalization</key>
+			<integer>5569</integer>
+			<key>Persistent ID</key>
+			<string>05AB899FD9BBF38F</string>
+			<key>Play Count</key>
+			<integer>417</integer>
+			<key>Play Date</key>
+			<integer>3839163252</integer>
+			<key>Play Date UTC</key>
+			<date>2025-08-27T17:14:12Z</date>
+			<key>Rating</key>
+			<integer>60</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>11325203</integer>
+			<key>Skip Count</key>
+			<integer>26</integer>
+			<key>Skip Date</key>
+			<date>2024-02-01T21:44:22Z</date>
+			<key>Total Time</key>
+			<integer>280764</integer>
+			<key>Track ID</key>
+			<integer>14938</integer>
+			<key>Track Number</key>
+			<integer>4</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2016</integer>
+		</dict>
+		<key>14960</key>
+		<dict>
+			<key>Album</key>
+			<string>Made In The Manor</string>
+			<key>Album Artist</key>
+			<string>Kano</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Artist</key>
+			<string>Kano</string>
+			<key>Artwork Count</key>
+			<integer>1</integer>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Date Added</key>
+			<date>2016-03-24T17:55:29Z</date>
+			<key>Date Modified</key>
+			<date>2017-07-30T13:23:54Z</date>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Grime</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Kano/Made%20In%20The%20Manor/15%20Flow%20Of%20The%20Year%20(Ft.%20Jme)%20(Bonus).mp3</string>
+			<key>Name</key>
+			<string>Flow Of The Year (Ft. Jme) (Bonus)</string>
+			<key>Normalization</key>
+			<integer>4756</integer>
+			<key>Persistent ID</key>
+			<string>1D9DDE03B598DF61</string>
+			<key>Play Count</key>
+			<integer>356</integer>
+			<key>Play Date</key>
+			<integer>3828188179</integer>
+			<key>Play Date UTC</key>
+			<date>2025-04-22T16:36:19Z</date>
+			<key>Rating</key>
+			<integer>60</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>8767254</integer>
+			<key>Skip Count</key>
+			<integer>11</integer>
+			<key>Skip Date</key>
+			<date>2018-03-16T17:02:36Z</date>
+			<key>Total Time</key>
+			<integer>216790</integer>
+			<key>Track ID</key>
+			<integer>14960</integer>
+			<key>Track Number</key>
+			<integer>15</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2016</integer>
+		</dict>
+		<key>1612</key>
+		<dict>
+			<key>Album</key>
+			<string>Top 40 Singles 2008</string>
+			<key>Album Artist</key>
+			<string>Various Artists</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Album Rating Computed</key>
+			<true/>
+			<key>Artist</key>
+			<string>Chris Brown</string>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Comments</key>
+			<string>DHZ</string>
+			<key>Compilation</key>
+			<true/>
+			<key>Date Added</key>
+			<date>2009-08-13T20:40:54Z</date>
+			<key>Date Modified</key>
+			<date>2020-03-08T22:24:27Z</date>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Top 40</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Compilations/Top%2040%20Singles%202008/62%20Forever.mp3</string>
+			<key>Name</key>
+			<string>Forever</string>
+			<key>Normalization</key>
+			<integer>4877</integer>
+			<key>Persistent ID</key>
+			<string>032EEB87ADFF6723</string>
+			<key>Play Count</key>
+			<integer>726</integer>
+			<key>Play Date</key>
+			<integer>3687326910</integer>
+			<key>Play Date UTC</key>
+			<date>2020-11-04T09:28:30Z</date>
+			<key>Rating</key>
+			<integer>60</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>11147169</integer>
+			<key>Skip Count</key>
+			<integer>11</integer>
+			<key>Skip Date</key>
+			<date>2020-02-21T07:50:15Z</date>
+			<key>Total Time</key>
+			<integer>278256</integer>
+			<key>Track ID</key>
+			<integer>1612</integer>
+			<key>Track Number</key>
+			<integer>62</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2008</integer>
+		</dict>
+		<key>17364</key>
+		<dict>
+			<key>Album</key>
+			<string>The Weather</string>
+			<key>Album Artist</key>
+			<string>Pond</string>
+			<key>Artist</key>
+			<string>Pond</string>
+			<key>Artwork Count</key>
+			<integer>1</integer>
+			<key>Bit Rate</key>
+			<integer>256</integer>
+			<key>Composer</key>
+			<string>Jay Watson, Nicholas Allbrook, Joseph Ryan &amp; Jamie Terry</string>
+			<key>Date Added</key>
+			<date>2017-05-10T07:37:21Z</date>
+			<key>Date Modified</key>
+			<date>2017-05-10T07:37:41Z</date>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Indie</string>
+			<key>Kind</key>
+			<string>Purchased AAC audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Pond/The%20Weather/02%20Sweep%20Me%20Off%20My%20Feet.m4a</string>
+			<key>Name</key>
+			<string>Sweep Me Off My Feet</string>
+			<key>Normalization</key>
+			<integer>10080</integer>
+			<key>Persistent ID</key>
+			<string>08FFAFD928568233</string>
+			<key>Play Count</key>
+			<integer>53</integer>
+			<key>Play Date</key>
+			<integer>3785030881</integer>
+			<key>Play Date UTC</key>
+			<date>2023-12-10T05:28:01Z</date>
+			<key>Purchased</key>
+			<true/>
+			<key>Release Date</key>
+			<date>2017-05-05T07:00:00Z</date>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>8043139</integer>
+			<key>Skip Count</key>
+			<integer>2</integer>
+			<key>Skip Date</key>
+			<date>2021-05-30T13:02:50Z</date>
+			<key>Sort Album</key>
+			<string>Weather</string>
+			<key>Total Time</key>
+			<integer>209093</integer>
+			<key>Track Count</key>
+			<integer>9</integer>
+			<key>Track ID</key>
+			<integer>17364</integer>
+			<key>Track Number</key>
+			<integer>2</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2017</integer>
+		</dict>
+		<key>17366</key>
+		<dict>
+			<key>Album</key>
+			<string>The Weather</string>
+			<key>Album Artist</key>
+			<string>Pond</string>
+			<key>Artist</key>
+			<string>Pond</string>
+			<key>Artwork Count</key>
+			<integer>1</integer>
+			<key>Bit Rate</key>
+			<integer>256</integer>
+			<key>Composer</key>
+			<string>Jay Watson, Nicholas Allbrook &amp; Todd Rundgren</string>
+			<key>Date Added</key>
+			<date>2017-05-10T07:37:21Z</date>
+			<key>Date Modified</key>
+			<date>2017-05-10T07:37:41Z</date>
+			<key>Disc Count</key>
+			<integer>1</integer>
+			<key>Disc Number</key>
+			<integer>1</integer>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Indie</string>
+			<key>Kind</key>
+			<string>Purchased AAC audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Pond/The%20Weather/03%20Paint%20Me%20Silver.m4a</string>
+			<key>Name</key>
+			<string>Paint Me Silver</string>
+			<key>Normalization</key>
+			<integer>8688</integer>
+			<key>Persistent ID</key>
+			<string>DCB56BBD95CF6FA4</string>
+			<key>Play Count</key>
+			<integer>110</integer>
+			<key>Play Date</key>
+			<integer>3744457736</integer>
+			<key>Play Date UTC</key>
+			<date>2022-08-27T14:08:56Z</date>
+			<key>Purchased</key>
+			<true/>
+			<key>Release Date</key>
+			<date>2017-05-03T07:00:00Z</date>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>8626136</integer>
+			<key>Skip Count</key>
+			<integer>6</integer>
+			<key>Skip Date</key>
+			<date>2018-01-02T13:26:31Z</date>
+			<key>Sort Album</key>
+			<string>Weather</string>
+			<key>Sort Artist</key>
+			<string>Pond</string>
+			<key>Sort Name</key>
+			<string>Paint Me Silver</string>
+			<key>Total Time</key>
+			<integer>224973</integer>
+			<key>Track Count</key>
+			<integer>9</integer>
+			<key>Track ID</key>
+			<integer>17366</integer>
+			<key>Track Number</key>
+			<integer>3</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2017</integer>
+		</dict>
+		<key>20310</key>
+		<dict>
+			<key>Album</key>
+			<string>Spider-Man: Into the Spider-Verse</string>
+			<key>Album Artist</key>
+			<string>Various Artists</string>
+			<key>Artist</key>
+			<string>Post Malone</string>
+			<key>Artwork Count</key>
+			<integer>1</integer>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Comments</key>
+			<string>Freak37</string>
+			<key>Compilation</key>
+			<true/>
+			<key>Date Added</key>
+			<date>2019-01-06T14:49:46Z</date>
+			<key>Date Modified</key>
+			<date>2023-08-28T10:40:28Z</date>
+			<key>Disc Number</key>
+			<integer>1</integer>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Hip Hop</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Compilations/Spider-Man_%20Into%20the%20Spider-Verse/1-02%20Sunflower%20(feat.%20Swae%20Lee).mp3</string>
+			<key>Name</key>
+			<string>Sunflower (feat. Swae Lee)</string>
+			<key>Normalization</key>
+			<integer>4807</integer>
+			<key>Persistent ID</key>
+			<string>49B2579F7514DB60</string>
+			<key>Play Count</key>
+			<integer>255</integer>
+			<key>Play Date</key>
+			<integer>3793360782</integer>
+			<key>Play Date UTC</key>
+			<date>2024-03-15T15:19:42Z</date>
+			<key>Sample Rate</key>
+			<integer>48000</integer>
+			<key>Size</key>
+			<integer>6460026</integer>
+			<key>Skip Count</key>
+			<integer>8</integer>
+			<key>Skip Date</key>
+			<date>2024-02-01T21:57:58Z</date>
+			<key>Total Time</key>
+			<integer>158088</integer>
+			<key>Track Count</key>
+			<integer>13</integer>
+			<key>Track ID</key>
+			<integer>20310</integer>
+			<key>Track Number</key>
+			<integer>2</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2018</integer>
+		</dict>
+		<key>22152</key>
+		<dict>
+			<key>Album</key>
+			<string>The Umbrella Academy</string>
+			<key>Album Artist</key>
+			<string>Various Artists</string>
+			<key>Artist</key>
+			<string>Grimes</string>
+			<key>Artwork Count</key>
+			<integer>1</integer>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Comments</key>
+			<string>PMEDIA NETWORK</string>
+			<key>Compilation</key>
+			<true/>
+			<key>Composer</key>
+			<string>Claire Boucher</string>
+			<key>Date Added</key>
+			<date>2020-08-04T11:02:55Z</date>
+			<key>Date Modified</key>
+			<date>2020-08-04T11:03:32Z</date>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Soundtrack</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Compilations/The%20Umbrella%20Academy/24%20Oblivion.mp3</string>
+			<key>Name</key>
+			<string>Oblivion</string>
+			<key>Normalization</key>
+			<integer>1632</integer>
+			<key>Persistent ID</key>
+			<string>5D7147D901CE2CB6</string>
+			<key>Play Count</key>
+			<integer>86</integer>
+			<key>Play Date</key>
+			<integer>3808479437</integer>
+			<key>Play Date UTC</key>
+			<date>2024-09-06T13:57:17Z</date>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>10398470</integer>
+			<key>Skip Count</key>
+			<integer>4</integer>
+			<key>Skip Date</key>
+			<date>2021-09-03T22:39:32Z</date>
+			<key>Sort Album</key>
+			<string>Umbrella Academy</string>
+			<key>Total Time</key>
+			<integer>251324</integer>
+			<key>Track ID</key>
+			<integer>22152</integer>
+			<key>Track Number</key>
+			<integer>24</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2019</integer>
+		</dict>
+		<key>4052</key>
+		<dict>
+			<key>Album</key>
+			<string>Time Flies... 1994–2009</string>
+			<key>Album Artist</key>
+			<string>Oasis</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Album Rating Computed</key>
+			<true/>
+			<key>Artist</key>
+			<string>Oasis</string>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Date Added</key>
+			<date>2012-03-29T20:23:01Z</date>
+			<key>Date Modified</key>
+			<date>2012-03-29T20:40:47Z</date>
+			<key>Disc Number</key>
+			<integer>1</integer>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Rock</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Oasis/Time%20Flies...%201994%E2%80%932009/1-08%20Wonderwall.mp3</string>
+			<key>Name</key>
+			<string>Wonderwall</string>
+			<key>Normalization</key>
+			<integer>3756</integer>
+			<key>Persistent ID</key>
+			<string>875F57138A9A149E</string>
+			<key>Play Count</key>
+			<integer>385</integer>
+			<key>Play Date</key>
+			<integer>3805787650</integer>
+			<key>Play Date UTC</key>
+			<date>2024-08-06T10:14:10Z</date>
+			<key>Rating</key>
+			<integer>100</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>11642925</integer>
+			<key>Skip Count</key>
+			<integer>32</integer>
+			<key>Skip Date</key>
+			<date>2016-12-20T00:31:36Z</date>
+			<key>Total Time</key>
+			<integer>260519</integer>
+			<key>Track ID</key>
+			<integer>4052</integer>
+			<key>Track Number</key>
+			<integer>8</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2010</integer>
+		</dict>
+		<key>4082</key>
+		<dict>
+			<key>Album</key>
+			<string>Time Flies... 1994–2009</string>
+			<key>Album Artist</key>
+			<string>Oasis</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Album Rating Computed</key>
+			<true/>
+			<key>Artist</key>
+			<string>Oasis</string>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Date Added</key>
+			<date>2012-03-29T20:23:04Z</date>
+			<key>Date Modified</key>
+			<date>2012-03-29T20:44:02Z</date>
+			<key>Disc Number</key>
+			<integer>2</integer>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Rock</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Oasis/Time%20Flies...%201994%E2%80%932009/2-08%20Stop%20Crying%20Your%20Heart%20Out.mp3</string>
+			<key>Name</key>
+			<string>Stop Crying Your Heart Out</string>
+			<key>Normalization</key>
+			<integer>3834</integer>
+			<key>Persistent ID</key>
+			<string>B4D5917180A4D88E</string>
+			<key>Play Count</key>
+			<integer>340</integer>
+			<key>Play Date</key>
+			<integer>3805786386</integer>
+			<key>Play Date UTC</key>
+			<date>2024-08-06T09:53:06Z</date>
+			<key>Rating</key>
+			<integer>80</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>12961610</integer>
+			<key>Skip Count</key>
+			<integer>17</integer>
+			<key>Skip Date</key>
+			<date>2016-12-20T00:13:28Z</date>
+			<key>Total Time</key>
+			<integer>293485</integer>
+			<key>Track ID</key>
+			<integer>4082</integer>
+			<key>Track Number</key>
+			<integer>8</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2010</integer>
+		</dict>
+		<key>5350</key>
+		<dict>
+			<key>Album</key>
+			<string>good kid, m.A.A.d city</string>
+			<key>Album Artist</key>
+			<string>Kendrick Lamar</string>
+			<key>Album Rating</key>
+			<integer>80</integer>
+			<key>Artist</key>
+			<string>Kendrick Lamar</string>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Comments</key>
+			<string>F10</string>
+			<key>Date Added</key>
+			<date>2013-02-07T17:45:10Z</date>
+			<key>Date Modified</key>
+			<date>2013-10-17T18:16:03Z</date>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Hip Hop</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/Kendrick%20Lamar/good%20kid,%20m.A.A.d%20city/17%20Swimming%20Pools%20(Drank)%20%5BBonus%20Track%5D.mp3</string>
+			<key>Name</key>
+			<string>Swimming Pools (Drank) [Bonus Track]</string>
+			<key>Normalization</key>
+			<integer>2683</integer>
+			<key>Persistent ID</key>
+			<string>1C146F547C427386</string>
+			<key>Play Count</key>
+			<integer>377</integer>
+			<key>Play Date</key>
+			<integer>3808487394</integer>
+			<key>Play Date UTC</key>
+			<date>2024-09-06T16:09:54Z</date>
+			<key>Rating</key>
+			<integer>100</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>10045697</integer>
+			<key>Skip Count</key>
+			<integer>39</integer>
+			<key>Skip Date</key>
+			<date>2020-12-07T21:05:36Z</date>
+			<key>Total Time</key>
+			<integer>248006</integer>
+			<key>Track ID</key>
+			<integer>5350</integer>
+			<key>Track Number</key>
+			<integer>17</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Volume Adjustment</key>
+			<integer>-1</integer>
+			<key>Year</key>
+			<integer>2012</integer>
+		</dict>
+		<key>7006</key>
+		<dict>
+			<key>Album</key>
+			<string>Days Are Gone</string>
+			<key>Album Artist</key>
+			<string>HAIM</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Artist</key>
+			<string>HAIM</string>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Date Added</key>
+			<date>2013-10-03T17:32:52Z</date>
+			<key>Date Modified</key>
+			<date>2014-06-04T21:48:42Z</date>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Indie</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/HAIM/Days%20Are%20Gone/11%20Running%20If%20You%20Call%20My%20Name.mp3</string>
+			<key>Name</key>
+			<string>Running If You Call My Name</string>
+			<key>Normalization</key>
+			<integer>4597</integer>
+			<key>Persistent ID</key>
+			<string>9E40E772AACFDAEA</string>
+			<key>Play Count</key>
+			<integer>1502</integer>
+			<key>Play Date</key>
+			<integer>3808211530</integer>
+			<key>Play Date UTC</key>
+			<date>2024-09-03T11:32:10Z</date>
+			<key>Rating</key>
+			<integer>80</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>9796220</integer>
+			<key>Skip Count</key>
+			<integer>19</integer>
+			<key>Skip Date</key>
+			<date>2022-07-22T18:32:17Z</date>
+			<key>Total Time</key>
+			<integer>242573</integer>
+			<key>Track ID</key>
+			<integer>7006</integer>
+			<key>Track Number</key>
+			<integer>11</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2013</integer>
+		</dict>
+		<key>7010</key>
+		<dict>
+			<key>Album</key>
+			<string>Days Are Gone</string>
+			<key>Album Artist</key>
+			<string>HAIM</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Artist</key>
+			<string>HAIM</string>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Comments</key>
+			<string>P2PDL.com</string>
+			<key>Date Added</key>
+			<date>2013-10-03T17:33:34Z</date>
+			<key>Date Modified</key>
+			<date>2014-06-04T21:48:42Z</date>
+			<key>File Folder Count</key>
+			<integer>5</integer>
+			<key>Genre</key>
+			<string>Indie</string>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Library Folder Count</key>
+			<integer>1</integer>
+			<key>Location</key>
+			<string>file:///Users/Vish/Music/Music/Media.localized/Music/HAIM/Days%20Are%20Gone/13%20Send%20Me%20Down.mp3</string>
+			<key>Name</key>
+			<string>Send Me Down</string>
+			<key>Normalization</key>
+			<integer>4325</integer>
+			<key>Persistent ID</key>
+			<string>EB413DF3424CF7D3</string>
+			<key>Play Count</key>
+			<integer>1435</integer>
+			<key>Play Date</key>
+			<integer>3808212022</integer>
+			<key>Play Date UTC</key>
+			<date>2024-09-03T11:40:22Z</date>
+			<key>Rating</key>
+			<integer>60</integer>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>10473283</integer>
+			<key>Skip Count</key>
+			<integer>23</integer>
+			<key>Skip Date</key>
+			<date>2022-07-24T12:10:14Z</date>
+			<key>Total Time</key>
+			<integer>259500</integer>
+			<key>Track ID</key>
+			<integer>7010</integer>
+			<key>Track Number</key>
+			<integer>13</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Year</key>
+			<integer>2013</integer>
+		</dict>
+	</dict>
+</dict>
+</plist>

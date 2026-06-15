@@ -1,7 +1,11 @@
-from backend.domain.artist.model import Artist
+from typing import TYPE_CHECKING
+
 from sqlmodel import Field, Relationship, SQLModel
 
-# from backend.domain.track.model import Track
+# if TYPE_CHECKING:
+    # from domain.artist.model import Artist
+    # from domain.track.model import Track
+
 
 
 class AlbumBase(SQLModel):
@@ -11,7 +15,7 @@ class AlbumBase(SQLModel):
     year: int
 
     # Relationships
-    artist: "Artist" = Relationship(back_populates="albums")
+    # artist: "Artist" = Relationship(back_populates="albums")
     # # tracks: list["Track"] = Relationship(back_populates="album")
 
     # def total_tracks(self) -> int:
@@ -19,4 +23,4 @@ class AlbumBase(SQLModel):
 
 
 class Album(AlbumBase, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+    id: str | None = Field(default=None, primary_key=True)

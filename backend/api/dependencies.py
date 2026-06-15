@@ -1,5 +1,5 @@
-from backend.domain.album.repository import SqlAlbumRepository
-from backend.domain.artist.repository import SqlArtistRepository
+from domain.album.repository import SqlAlbumRepository
+from domain.artist.repository import SqlArtistRepository
 from fastapi import Depends
 from sqlmodel import Session
 

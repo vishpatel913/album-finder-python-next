@@ -1,4 +1,4 @@
-from backend.domain.artist.schema import ArtistRead
+from domain.artist.schema import ArtistRead
 from fastapi import APIRouter, Depends, HTTPException
 
 from api.dependencies import get_artist_repo

@@ -1,9 +1,6 @@
 services:
   api:
-    build: ./
-    command: uvicorn src.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
-    volumes:
-      - ./:/usr/src/app
+    build: ./backend
     ports:
       - "8004:8000"
     environment:
@@ -12,7 +9,38 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@database:5432/music_library
       # - DATABASE_TEST_URL=postgresql://postgres:postgres@database:5432/music_library_test
     depends_on:
-      - database
+      database:
+        condition: service_healthy
+
+  # Dev-only: re-runs scripts.seed whenever you edit source or drop a new
+  # fixture into backend/fixtures. Bring it up explicitly with the watcher:
+  #   docker compose up --build --watch seed
+  # The seed runs once, then the container idles so Compose Watch can restart
+  # it (re-running the seed) on every file change.
+  seed:
+    build: ./backend
+    entrypoint: []   # bypass the API entrypoint (init_db + uvicorn)
+    command:
+      - sh
+      - -c
+      - "python -m scripts.seed; echo '--- seed done, watching for changes (edit a file to re-run) ---'; tail -f /dev/null"
+    working_dir: /app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@database:5432/music_library
+      # - SEED_FIXTURE=fixtures/another_dump.xml   # swap the dump, no code change
+    depends_on:
+      database:
+        condition: service_healthy
+    develop:
+      watch:
+        # Edit any backend source file or drop a new XML into backend/fixtures
+        # -> Compose syncs it into the container and restarts -> seed re-runs.
+        - action: sync+restart
+          path: ./backend
+          target: /app
+          ignore:
+            - .venv/
+            - __pycache__/
 
   # Database
   database:

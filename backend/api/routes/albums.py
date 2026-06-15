@@ -1,4 +1,4 @@
-from backend.domain.album.schema import AlbumRead
+from domain.album.schema import AlbumRead
 from fastapi import APIRouter, Depends, HTTPException
 
 from api.dependencies import get_album_repo

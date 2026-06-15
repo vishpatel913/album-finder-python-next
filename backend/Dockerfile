@@ -2,7 +2,7 @@
 # Multi-stage: build deps in one layer, copy into a slim runtime image.
 
 # ---- builder ----------------------------------------------------------------
-FROM python:3.11-slim AS builder
+FROM python:3.14-slim AS builder
 
 ENV POETRY_VERSION=2.1.1 \
     POETRY_NO_INTERACTION=1 \
@@ -20,7 +20,7 @@ COPY pyproject.toml poetry.lock* ./
 RUN poetry install --no-root --without dev
 
 # ---- runtime ----------------------------------------------------------------
-FROM python:3.11-slim AS runtime
+FROM python:3.14-slim AS runtime
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \

@@ -2,8 +2,8 @@
 # from typing import Optional
 # from sqlmodel import SQLModel, Field, Relationship
 
-# from backend.domain.album.model import Album
-# from backend.domain.artist.model import Artist
+# from domain.album.model import Album
+# from domain.artist.model import Artist
 
 # class TrackBase(SQLModel):
 #     name: str = Field(index=True)
