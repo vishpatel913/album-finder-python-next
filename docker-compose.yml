@@ -9,6 +9,8 @@ services:
       - TESTING=0
       - DATABASE_URL=postgresql://postgres:postgres@database:5432/music_library
       # - DATABASE_TEST_URL=postgresql://postgres:postgres@database:5432/music_library_test
+    # volumes:
+    #   - ${MUSIC_LIBRARY_XML_HOST_PATH:-./dump/Library.xml}:/data/Library.xml:ro
     depends_on:
       database:
         condition: service_healthy
@@ -58,6 +60,7 @@ services:
   # only enter the DB password (postgres) the first time you expand it.
   pgadmin:
     image: dpage/pgadmin4:latest
+    container_name: album-finder-database-pgadmin
     restart: unless-stopped
     ports:
       - "5050:80"
