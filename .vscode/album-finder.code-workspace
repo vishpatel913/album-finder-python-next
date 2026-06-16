@@ -1,0 +1,19 @@
+{
+  // Multi-root workspace: open this file (File > Open Workspace from File...) so
+  // Pylance scopes to the Python services and the TS server scopes to frontend/,
+  // instead of one confused language server spanning both ecosystems.
+  "folders": [
+    { "name": "root", "path": ".." },
+    { "name": "backend (python)", "path": "../backend" },
+    { "name": "frontend (vite)", "path": "../frontend" }
+  ],
+  "settings": {
+    // In the "root" folder, hide the dirs that already appear as their own
+    // workspace roots so the tree isn't duplicated.
+    "files.exclude": {
+      "backend": true,
+      "frontend": true,
+      "**/__pycache__": true
+    }
+  }
+}

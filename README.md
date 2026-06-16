@@ -1,338 +1,72 @@
 # Album Finder
 
-Parses your Music.app library, ranks artists/albums/tracks by play count,
-enriches with Spotify images, links and "vibe" tags, and serves it through a
-FastAPI backend + Next.js App Router frontend.
+Parses your Music.app library, ranks artists/albums/tracks by play count, and
+enriches with Spotify data. Local-only.
 
-Two ways to run: **Docker** (one command, everything wired up) or
-**bare-metal** (two terminals, more control while learning).
+Two services, wired together by `docker-compose.yml`:
 
----
+| Path | What | Stack |
+| --- | --- | --- |
+| [backend/](backend/) | REST API + parser + DB access | FastAPI · SQLModel · Postgres |
+| [frontend/](frontend/) | Browse / search / edit UI | Vite · React · TanStack · Tailwind v4 |
+| [functions/](functions/) | Spotify enrichment (serverless) | Python · Serverless Framework |
 
-## Prerequisites
-
-| Tool | Version | Why |
-| ---- | ------- | --- |
-| Python | 3.10+ | FastAPI + parser (code uses `X \| None` unions — 3.10 minimum) |
-| Node | 20+ | Next.js 14 |
-| Docker Desktop | latest | Optional — for `docker compose up` |
-| Spotify dev creds | — | https://developer.spotify.com/dashboard → create app |
-| Music.app `Library.xml` | — | File → Library → Export Library… in Music.app |
-
-If you don't have a real `Library.xml` to hand, use the committed
-[`fixtures/sample_library.xml`](fixtures/sample_library.xml) — it covers
-every code path (genres, ratings, loved, near-dupes, fallbacks).
+See each directory's own README for details.
 
 ---
 
-## 1. Configure environment
+## Quick start
 
 ```bash
-cp .env.example .env
+cp .env.example .env        # add your Spotify creds (see below)
+make install                # frontend deps
+make up                     # db + api + web, all in Docker
 ```
 
-Open `.env` and fill in:
+- Frontend → http://localhost:5173
+- API docs → http://localhost:8004/docs
+- pgAdmin → http://localhost:5050 (`admin@admin.com` / `admin`)
 
-```dotenv
-# Path on the HOST to your Library.xml. Defaults to ./dumps/Library.xml —
-# drop your export into the gitignored ./dumps/ folder and leave this as-is.
-MUSIC_LIBRARY_XML_HOST_PATH=./dumps/Library.xml
+Faster FE loop — run the backend in Docker, the frontend on the host:
 
-# Spotify (Client Credentials flow — read-only, no user OAuth)
-SPOTIPY_CLIENT_ID=your_client_id_here
-SPOTIPY_CLIENT_SECRET=your_client_secret_here
+```bash
+make backend                # db + api only
+make dev                    # Vite dev server with HMR
 ```
 
-To test against the fixture without a real export:
-
-```dotenv
-MUSIC_LIBRARY_XML_HOST_PATH=./fixtures/sample_library.xml
-```
+Run `make` to see every target.
 
 ---
 
-## 2A. Run with Docker (recommended)
+## Configuration
 
-```bash
-docker compose up --build
-```
+`.env` (see [.env.example](.env.example)) holds the Spotify credentials and the
+path to your Music.app `Library.xml` export. No real library to hand? The
+committed [fixtures/sample_library.xml](fixtures/sample_library.xml) covers
+every code path.
 
-Two services come up:
-
-- **api**  → http://localhost:8000 (FastAPI)
-- **web**  → http://localhost:3000 (Next.js **production build**, not the dev server)
-
-The web image is a multi-stage Next.js standalone build (`output: "standalone"`
-→ `node server.js`). No source bind-mounts and no dev compile, so it boots fast
-and avoids the macOS "port 3000 never loads" dev-server trap.
-
-Open http://localhost:3000 and you should see your artist count on the
-home page. Hit `/artists` and `/tracks` to browse.
-
-Sanity-check the API directly:
-
-```bash
-curl http://localhost:8000/api/health
-curl http://localhost:8000/api/library/facets
-curl "http://localhost:8000/api/library/artists?limit=5"
-```
-
-Auto-generated OpenAPI docs: http://localhost:8000/docs
-
-### Populate the Spotify cache (first run)
-
-The library list shows Spotify images/genres/links **from a cache**. On a fresh
-stack that cache is empty — fill it once with a batch enrich:
-
-```bash
-docker compose exec api python run.py --enrich-all
-# or hit the endpoint:
-curl -X POST http://localhost:8000/api/spotify/enrich-all
-```
-
-Only artists with **at least one non-compilation album** are enriched —
-compilation-only artists (the Various-Artists spillover) are skipped, since
-their images/ids are rarely needed. It's idempotent (already-cached artists are
-skipped), so it's also how you top up after adding new music. See
-[§4.1 Updating](#41-updating-after-new-music). To enrich everyone instead, edit
-`enrichable_artist_names` in `functions/resources/music_library.py`.
-
-Progress is logged artist-by-artist (`[3/329] Taylor Swift → ✓`). The CLI prints
-it inline; the endpoint logs it to the container (`docker compose logs -f api`).
-
-**Pick artists one at a time** — prompts yes/no for each (needs a TTY, which
-`docker compose exec` gives you):
-
-```bash
-docker compose exec api python run.py --enrich-interactive
-#   [y]es  [n]o (default)  [a]ll remaining  [q]uit
-# Saves after every "yes", so you can quit and resume anytime.
-```
-
-### Persistence (the "local DB")
-
-The Spotify artist cache + token cache live in a named Docker volume
-(`album-finder-data`), so they **survive rebuilds and `docker compose down`**.
-Your `Library.xml` and timestamped snapshots stay on the host under `./dumps`.
-
-To stop (keeps the cache volume):
-
-```bash
-docker compose down
-```
-
-To stop **and wipe the cached Spotify data** (forces a full re-enrich next time):
-
-```bash
-docker compose down -v
-```
+Get Spotify creds at https://developer.spotify.com/dashboard.
 
 ---
 
-## 2B. Run bare-metal (two terminals)
-
-Useful when you're iterating on Python or the FastAPI routes and want
-faster reload than the container.
-
-### Terminal 1 — FastAPI backend
-
-```bash
-cd functions
-
-# Fresh venv (one-time setup)
-# Must be Python 3.10+ — macOS system python3 is 3.9 and will crash on import.
-# A `.python-version` file pins 3.10.0; with pyenv installed, `python3` resolves to it.
-python3 --version          # verify 3.10+ before continuing
-python3 -m venv venv
-source venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
-
-# Run it
-export MUSIC_LIBRARY_XML=../fixtures/sample_library.xml   # or your real export
-export SPOTIPY_CLIENT_ID=...
-export SPOTIPY_CLIENT_SECRET=...
-uvicorn api.main:app --reload --port 8000
-```
-
-You should see:
+## Layout
 
 ```
-INFO:     Uvicorn running on http://127.0.0.1:8000
-INFO:     Application startup complete.
-INFO api.deps: Parsing /path/to/Library.xml (mtime=...)
-INFO resources.music_library: Parsed N artists from /path/to/Library.xml
-```
-
-### Terminal 2 — Next.js frontend
-
-```bash
-# From repo root
-npm install        # or `yarn`
-
-export API_BASE=http://localhost:8000
-npm run dev        # or `yarn dev`
-```
-
-Open http://localhost:3000.
-
----
-
-## 3. CLI: pre-compute albums.json (legacy / optional)
-
-The original Spotify-search pipeline still works as a one-shot CLI. It
-reads the library, hits Spotify for each top artist's recent albums, and
-writes `data/albums.json`.
-
-```bash
-cd functions
-source venv/bin/activate
-
-# Defaults to ~/Music/Library.xml — override with --library or env var
-python run.py --library ../fixtures/sample_library.xml
-# or
-python run.py ../fixtures/sample_library.xml   # bare positional path
-# or
-MUSIC_LIBRARY_XML=../fixtures/sample_library.xml python run.py
-```
-
-Expected output ends with:
-
-```
-INFO run: Top N artists by play count selected
-... Spotify search logs per artist ...
-INFO run: Saved to data/albums.json
-```
-
-This path is independent of the FastAPI server.
-
----
-
-## 4. Common commands
-
-| What | Command |
-| ---- | ------- |
-| Bring up Docker stack | `docker compose up --build` |
-| Tear down (keep cache) | `docker compose down` |
-| Tear down + wipe cache | `docker compose down -v` |
-| Rebuild after Python deps change | `docker compose build api` |
-| Rebuild after Node/FE change | `docker compose build web` |
-| View logs | `docker compose logs -f api` / `web` |
-| **Enrich artists** (batch, Docker) | `docker compose exec api python run.py --enrich-all` |
-| **Enrich artists** (batch, endpoint) | `curl -X POST http://localhost:8000/api/spotify/enrich-all` |
-| **Enrich artists** (interactive y/n) | `docker compose exec api python run.py --enrich-interactive` |
-| **Enrich albums** (batch, Docker) | `docker compose exec api python run.py --enrich-albums` |
-| **Enrich albums** (batch, endpoint) | `curl -X POST http://localhost:8000/api/spotify/enrich-albums-all` |
-| Enrich specific artists | `curl -X POST http://localhost:8000/api/spotify/enrich -H 'content-type: application/json' -d '{"names":["Radiohead","Burial"]}'` |
-| Watch enrich progress (endpoint) | `docker compose logs -f api` |
-| Force re-parse library | `curl -X POST http://localhost:8000/api/library/refresh` |
-| Run Python CLI (bare-metal) | `cd functions && python run.py --library …` |
-| Run FastAPI (bare-metal) | `cd functions && uvicorn api.main:app --reload` |
-| Run Next.js (bare-metal) | `npm run dev` |
-| TypeScript check | `npm run typecheck` |
-
-### 4.1 Updating after new music
-
-When you add music in Music.app:
-
-1. **Re-export** `Library.xml` (File → Library → Export Library…) over the one
-   in `./dumps/` (or wherever `MUSIC_LIBRARY_XML_HOST_PATH` points).
-2. The API re-parses automatically — it keys the parsed library on the file's
-   mtime. (If it doesn't pick up, `curl -X POST .../api/library/refresh`.) A
-   timestamped snapshot of the export is saved under `./dumps/backups/`.
-3. **Top up Spotify data** for the new artists (and albums):
-   ```bash
-   docker compose exec api python run.py --enrich-all
-   docker compose exec api python run.py --enrich-albums
-   ```
-   Idempotent — already-cached entries are skipped, so only the new ones hit
-   Spotify. Both caches persist in the `album-finder-data` volume.
-
-   Albums enrich only **real** albums — compilations ("Top 40"-style Various
-   Artists albums) and "greatest hits"/collections are skipped. Both filters
-   live in `functions/resources/music_library.py` (`enrichable_albums`,
-   `_GREATEST_HITS_RE`) if you want to tune them.
-
----
-
-## 5. What lives where
-
-```
-.
-├── app/                       # Next.js App Router (frontend)
-│   ├── layout.tsx             # root layout + nav
-│   ├── page.tsx               # home (health + dupe warnings)
-│   ├── artists/page.tsx       # top artists, server component, URL filters
-│   ├── albums/page.tsx        # albums (compilations hidden), URL filters
-│   ├── tracks/page.tsx        # top tracks, server component, URL filters
-│   ├── components/Filters.tsx # client component — pushes filters into URL
-│   ├── components/{ArtistTile,AlbumTile,TrackRow}.tsx
-│   ├── components/ui/         # Radix-based primitives (Button, Select, …)
-│   └── lib/api.ts             # typed FastAPI client
-│
-├── functions/                 # Python backend
-│   ├── api/                   # FastAPI app
-│   │   ├── main.py            # entrypoint, CORS, /api/health
-│   │   ├── deps.py            # singletons + mtime-keyed library cache
-│   │   ├── schemas.py         # Pydantic models
-│   │   └── routes/
-│   │       ├── library.py     # /api/library/{artists,albums,tracks,facets,…}
-│   │       └── spotify.py     # /api/spotify/{artist,enrich,enrich-all,enrich-albums-all}
-│   ├── resources/
-│   │   ├── music_library.py   # plistlib parser + album rollups + near-dupe scanner
-│   │   ├── artist_resolver.py # Spotify artist → ID + image + genres, cached
-│   │   ├── album_resolver.py  # Spotify album → ID + cover + release date, cached
-│   │   ├── artist_overrides.py# inert stub for manual overrides
-│   │   └── spotify.py         # legacy SpotifySearch wrapper (CLI uses it)
-│   ├── handlers/              # legacy lambda-shape handler (still works)
-│   ├── run.py                 # CLI: parse library → Spotify → albums.json
-│   ├── Dockerfile             # api service image
-│   └── requirements.txt
-│
-├── fixtures/sample_library.xml# Committable mock Music.app library
-├── data/                      # Runtime artefacts (gitignored)
-│   ├── spotify_artist_cache.json
-│   └── albums.json
+album-finder/
+├── backend/        FastAPI service
+├── frontend/       Vite + React SPA
+├── functions/      Spotify enrichment (serverless)
+├── scripts/        Python helpers (test library, Spotify OAuth)
+├── data/ dumps/ fixtures/   library exports, caches, samples
+├── pgadmin/        pre-registered pgAdmin server
 ├── docker-compose.yml
-├── Dockerfile.web
-├── .env.example
-└── .claude/plans/             # Plan docs for past/future work
+├── Makefile        dev entrypoints — `make help`
+└── .vscode/album-finder.code-workspace   multi-root workspace
 ```
 
----
+## Editor
 
-## 6. Troubleshooting
-
-**`Library XML not found`** — check `MUSIC_LIBRARY_XML` (bare-metal) or
-`MUSIC_LIBRARY_XML_HOST_PATH` (Docker). The path must be absolute or
-relative to the directory you launched from. With Docker, the file is
-mounted read-only at `/library/Library.xml` inside the container.
-
-**Home page shows "API unreachable"** — the FastAPI service isn't up, or
-`API_BASE` isn't pointing at it. In Docker the web container resolves
-`http://api:8000` via the compose network; bare-metal uses
-`http://localhost:8000` by default.
-
-**Spotify 401 / no images** — credentials missing or invalid. The
-resolver fails soft (no image, no genres) but still returns the artist
-row from the library. Check `functions/.env` or the host `.env`.
-
-**Near-duplicate Album Artists banner** — the parser found artists that
-collapse to the same name when you strip case/whitespace/accents (e.g.
-`Beyoncé` vs `Beyonce`). Clean them up in Music.app for consistent
-grouping; the banner disappears after re-export.
-
-**Stale data after re-export** — the API caches the parsed library by
-file mtime, so re-exporting in Music.app auto-invalidates. If it
-doesn't, hit `POST /api/library/refresh`.
-
----
-
-## 7. What's not built yet
-
-- **Like button** — needs Spotify OAuth (Authorization Code + PKCE) for
-  `user-library-modify` scope. The current client-credentials flow is
-  read-only. Planned in a follow-up — see
-  [`.claude/plans/next-app-router-fastapi-readonly.md`](.claude/plans/next-app-router-fastapi-readonly.md).
-- **Tests** — none yet. Parser is verified via the fixture; route
-  handlers are unit-test-able via FastAPI's `TestClient`.
+Open [.vscode/album-finder.code-workspace](.vscode/album-finder.code-workspace)
+as a workspace so Pylance and the TS server scope to their own service. VS Code
+will prompt to install the recommended extensions (Python, ruff, Tailwind,
+Docker, EditorConfig).
