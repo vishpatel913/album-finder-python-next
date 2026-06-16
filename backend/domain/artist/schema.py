@@ -18,4 +18,4 @@ class ArtistCreate(SQLModel):
 class ArtistRead(SQLModel):
     id: str
     name: str
-    # albums: list["AlbumRead"]
+    album_ids: list[str]

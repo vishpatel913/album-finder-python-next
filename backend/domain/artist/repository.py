@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections.abc import Iterable
 
 from sqlmodel import Session, select
 
@@ -8,6 +9,9 @@ from .model import Artist
 class AbstractArtistRepository(ABC):
     @abstractmethod
     def get_by_id(self, id: int) -> Artist | None: ...
+
+    @abstractmethod
+    def get_by_ids(self, ids: Iterable[str]) -> list[Artist]: ...
 
     @abstractmethod
     def list(self) -> list[Artist]: ...
@@ -22,6 +26,10 @@ class SqlArtistRepository(AbstractArtistRepository):
 
     def get_by_id(self, id: int) -> Artist | None:
         return self.session.get(Artist, id)
+
+    def get_by_ids(self, ids: Iterable[str]) -> list[Artist]:
+        # TODO: implement — select(Artist).where(Artist.id.in_(ids))
+        raise NotImplementedError
 
     def list(self) -> list[Artist]:
         return self.session.exec(select(Artist)).all()

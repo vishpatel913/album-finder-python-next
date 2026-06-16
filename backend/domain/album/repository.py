@@ -13,6 +13,9 @@ class AbstractAlbumRepository(ABC):
     def list(self) -> list[Album]: ...
 
     @abstractmethod
+    def list_by_artist(self, artist_id: str) -> list[Album]: ...
+
+    @abstractmethod
     def update(self, id: int, fields: dict) -> Album | None: ...
 
 
@@ -26,6 +29,10 @@ class SqlAlbumRepository(AbstractAlbumRepository):
     def list(self) -> list[Album]:
         return self.session.exec(select(Album)).all()
 
+    def list_by_artist(self, artist_id: str) -> list[Album]:
+        # TODO: implement — select(Album).where(Album.artist_id == artist_id)
+        raise NotImplementedError
+    
     def update(self, id: int, fields: dict) -> Album | None:
         album = self.session.get(Album, id)
         if album is None:

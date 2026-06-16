@@ -31,7 +31,7 @@ class AlbumCreate(SQLModel):
 class AlbumRead(SQLModel):
     id: str
     name: str
-    # artist: "ArtistRead"
+    artist_id: str
     genre: str
     year: int
     is_compilation: bool
