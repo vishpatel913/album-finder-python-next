@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* Tailwind v4 is CSS-first: design tokens live here in @theme instead of a
+   tailwind.config.js. Anything you add becomes a utility (e.g. bg-brand). */
+@theme {
+  --color-brand: #1db954;
+  --color-brand-dark: #14833b;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}

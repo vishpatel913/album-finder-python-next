@@ -30,42 +30,25 @@ services:
       timeout: 5s
       retries: 5
 
-  # functions:
-  #   build:
-  #     context: ./functions
-  #     dockerfile: Dockerfile
-  #   container_name: album-finder-api
-  #   ports:
-  #     - "8000:8000"
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     MUSIC_LIBRARY_XML: /library/Library.xml
-  #     SPOTIFY_CACHE_PATH: /app/data/spotify_artist_cache.json
-  #     LIBRARY_BACKUPS_DIR: /app/dumps/backups
-  #     CORS_ORIGINS: http://localhost:3000
-  #   volumes:
-  #     # Your Library.xml export, read-only (host path via .env, defaults to ./dumps).
-  #     - ${MUSIC_LIBRARY_XML_HOST_PATH:-./dumps/Library.xml}:/library/Library.xml:ro
-  #     # Persistent cache — the "local DB". Survives rebuilds and `compose down`.
-  #     - album-finder-data:/app/data
-  #     # Library export + timestamped snapshots, kept on the host so you can see them.
-  #     - ./dumps:/app/dumps
-  #   restart: unless-stopped
-
-  # web:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.web
-  #   container_name: album-finder-web
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     # Server-side calls only (Next server → api container), so service-name routing works.
-  #     API_BASE: http://api:8000
-  #   depends_on:
-  #     - api
-  #   restart: unless-stopped
+  # Vite dev server (React SPA). Browse to http://localhost:5173
+  # The dev server proxies /api -> the api service, so no CORS needed.
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: album-finder-web
+    ports:
+      - "5173:5173"
+    environment:
+      # Vite's dev proxy forwards /api -> this target over the compose network.
+      - VITE_PROXY_TARGET=http://api:8000
+    volumes:
+      # Bind-mount source for HMR; keep the image's node_modules.
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    restart: unless-stopped
 
   # Web DB admin UI. Browse to http://localhost:5050
   #   login: admin@admin.com / admin
