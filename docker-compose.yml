@@ -1,6 +1,7 @@
 services:
   api:
     build: ./backend
+    container_name: album-finder-backend
     ports:
       - "8004:8000"
     environment:
@@ -15,6 +16,7 @@ services:
   # Database
   database:
     image: postgres:16
+    container_name: album-finder-database
     restart: unless-stopped
     volumes:
       - pgdata:/var/lib/postgresql/data

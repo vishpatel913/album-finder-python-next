@@ -38,26 +38,13 @@ Run `make` to see every target.
 
 ---
 
-## Configuration
-
-`.env` (see [.env.example](.env.example)) holds the Spotify credentials and the
-path to your Music.app `Library.xml` export. No real library to hand? The
-committed [fixtures/sample_library.xml](fixtures/sample_library.xml) covers
-every code path.
-
-Get Spotify creds at https://developer.spotify.com/dashboard.
-
----
-
 ## Layout
 
 ```
 album-finder/
 ├── backend/        FastAPI service
 ├── frontend/       Vite + React SPA
-├── functions/      Spotify enrichment (serverless)
 ├── scripts/        Python helpers (test library, Spotify OAuth)
-├── data/ dumps/ fixtures/   library exports, caches, samples
 ├── pgadmin/        pre-registered pgAdmin server
 ├── docker-compose.yml
 ├── Makefile        dev entrypoints — `make help`
