@@ -1,0 +1,3 @@
+"""Write use cases for artists (commands). See albums/commands.py for the shape."""
+
+# TODO: def update_artist(artist_id, data, artist_repo) -> ArtistRead: ...

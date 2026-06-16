@@ -5,7 +5,7 @@ from logging import INFO, basicConfig, getLogger
 from api.routes import albums, artists, health, tracks
 from fastapi import FastAPI
 
-from database.session import create_db_and_tables
+from infrastructure.database.session import create_db_and_tables
 
 logger = getLogger(__name__)
 basicConfig(level=INFO)

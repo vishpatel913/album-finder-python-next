@@ -1,7 +1,7 @@
-from domain.track.schema import TrackRead
 from fastapi import APIRouter, Depends, HTTPException
 
 from api.dependencies import get_track_repo
+from application.dto.read import TrackRead
 from domain.track import service
 
 router = APIRouter(prefix="/track", tags=["track"])

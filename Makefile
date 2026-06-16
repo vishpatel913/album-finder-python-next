@@ -17,7 +17,7 @@ up: ## Start the full stack in the background (db + api + web)
 
 .PHONY: backend
 backend: ## Start just the backend (db + api) for working on the FE locally
-	docker compose up -d database api
+	docker compose up -d database api pgadmin
 
 .PHONY: down
 down: ## Stop and remove containers (keeps data volumes)

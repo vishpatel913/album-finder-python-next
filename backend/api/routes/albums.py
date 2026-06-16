@@ -1,7 +1,7 @@
-from domain.album.schema import AlbumRead
 from fastapi import APIRouter, Depends, HTTPException
 
 from api.dependencies import get_album_repo
+from application.dto.read import AlbumRead
 from domain.album import service
 
 router = APIRouter(prefix="/album", tags=["album"])

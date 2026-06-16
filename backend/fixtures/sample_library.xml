@@ -57,6 +57,10 @@
 				</dict>
 				<dict>
 					<key>Track ID</key>
+					<integer>22502</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
 					<integer>10494</integer>
 				</dict>
 				<dict>
@@ -129,6 +133,10 @@
 				<dict>
 					<key>Track ID</key>
 					<integer>7010</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>22502</integer>
 				</dict>
 				<dict>
 					<key>Track ID</key>
@@ -220,6 +228,10 @@
 				<dict>
 					<key>Track ID</key>
 					<integer>7010</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>22502</integer>
 				</dict>
 				<dict>
 					<key>Track ID</key>
@@ -1756,6 +1768,36 @@
 			<string>File</string>
 			<key>Year</key>
 			<integer>2013</integer>
+		</dict>
+		<key>22502</key>
+		<dict>
+			<key>Track ID</key><integer>22502</integer>
+			<key>Name</key><string>Easily</string>
+			<key>Artist</key><string>Grimes</string>
+			<key>Album Artist</key><string>Grimes</string>
+			<key>Album</key><string>Art Angels</string>
+			<key>Genre</key><string>Electronic</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>7327872</integer>
+			<key>Total Time</key><integer>183144</integer>
+			<key>Track Number</key><integer>8</integer>
+			<key>Track Count</key><integer>14</integer>
+			<key>Year</key><integer>2015</integer>
+			<key>Date Modified</key><date>2020-11-17T08:57:33Z</date>
+			<key>Date Added</key><date>2020-11-17T08:57:11Z</date>
+			<key>Bit Rate</key><integer>320</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Play Count</key><integer>102</integer>
+			<key>Play Date</key><integer>3838893991</integer>
+			<key>Play Date UTC</key><date>2025-08-24T14:26:31Z</date>
+			<key>Skip Count</key><integer>1</integer>
+			<key>Skip Date</key><date>2021-03-27T15:50:13Z</date>
+			<key>Normalization</key><integer>2363</integer>
+			<key>Persistent ID</key><string>9170860BEE74AD3B</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file:///Users/Vish/Music/Music/Media.localized/Music/Grimes/Art%20Angels/08%20Easily.mp3</string>
+			<key>File Folder Count</key><integer>5</integer>
+			<key>Library Folder Count</key><integer>1</integer>
 		</dict>
 	</dict>
 </dict>

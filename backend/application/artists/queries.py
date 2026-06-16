@@ -1,17 +1,10 @@
-"""Query services for artists — resolve the artist -> albums link (one-to-many).
-
-Repository methods used:
-    AbstractArtistRepository.get_by_id(id)              (exists)
-    AbstractAlbumRepository.list_by_artist(artist_id)   (ADD; expected signature:
-            def list_by_artist(self, artist_id: str) -> list[Album]
-        e.g. select(Album).where(Album.artist_id == artist_id))
-"""
+"""Query services for artists — resolve the artist -> albums link (one-to-many)."""
 
 from domain.album.repository import AbstractAlbumRepository
-from domain.album.schema import AlbumRead
 from domain.artist.repository import AbstractArtistRepository
 
-from application.read_models import ArtistWithAlbums
+from application.dto.read import AlbumRead
+from application.dto.read_models import ArtistWithAlbums
 
 
 def get_artist_with_albums(

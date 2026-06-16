@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel
 
-from database.session import engine
+from infrastructure.database.session import engine
 from domain.album.model import Album  # noqa: F401
 from domain.artist.model import Artist  # noqa: F401
 from domain.track.model import Track  # noqa: F401

@@ -1,7 +1,7 @@
-from domain.artist.schema import ArtistRead
 from fastapi import APIRouter, Depends, HTTPException
 
 from api.dependencies import get_artist_repo
+from application.dto.read import ArtistRead
 from domain.artist import service
 
 router = APIRouter(prefix="/artist", tags=["artist"])
