@@ -45,11 +45,11 @@ nuke: ## DESTRUCTIVE: stop everything and drop the database volume
 
 .PHONY: init-db
 init-db: ## Create tables (idempotent)
-	docker compose run --rm api python -m scripts.init_db
+	docker compose run --rm --entrypoint python api -m scripts.init_db
 
 .PHONY: seed
 seed: ## Seed / upsert data (idempotent)
-	docker compose run --rm api python -m scripts.seed
+	docker compose run --rm --entrypoint python api -m scripts.seed
 
 .PHONY: pgadmin
 pgadmin: ## Open pgAdmin (http://localhost:5050 — admin@admin.com / admin)

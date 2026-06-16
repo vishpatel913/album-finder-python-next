@@ -68,8 +68,8 @@ def seed_library(data_path: Path) -> None:
             upsert_album(session, AlbumCreate.from_library(entry))
         session.flush()
 
-        for entry in parsed_tracks:
-            upsert_track(session, TrackCreate.from_library(entry))
+        # for entry in parsed_tracks:
+        #     upsert_track(session, TrackCreate.from_library(entry))
 
         session.commit()
         print("Seed complete")

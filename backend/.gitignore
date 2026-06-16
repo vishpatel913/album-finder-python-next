@@ -70,3 +70,7 @@ venv.bak/
 unzip-requirements.py
 .serverless
 node_modules
+
+# Library export(s) — keep the folder, ignore the (large) data files
+/data/*
+!/data/.gitkeep

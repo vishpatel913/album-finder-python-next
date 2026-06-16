@@ -44,4 +44,4 @@ USER appuser
 EXPOSE 8000
 
 # Entrypoint runs init_db + seed, then exec's uvicorn. See entrypoint.sh.
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["sh", "./entrypoint.sh"]

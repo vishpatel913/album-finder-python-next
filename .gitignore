@@ -17,13 +17,6 @@ dist/
 
 # Claude
 .claude
-
-# Album Finder runtime artefacts
-/data/spotify_artist_cache.json
-/data/spotify_album_cache.json
-/data/*.xml
-/data/.spotify-token-cache
-/data/.spotify-user-token-cache
 .cache
 
 # Local Library.xml dumps — keep the folder, ignore its contents

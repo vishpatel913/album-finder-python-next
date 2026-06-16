@@ -11,9 +11,9 @@ from sqlmodel import Field, Relationship, SQLModel
 class AlbumBase(SQLModel):
     name: str = Field(index=True)
     artist_id: str | None = Field(default=None, foreign_key="artist.id")
-    genre: str
-    year: int
-    date_added: str | None = None
+    genre: str | None = None
+    year: int | None = None
+    date_added: str
     is_compilation: bool
 
     # Relationships

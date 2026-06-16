@@ -28,9 +28,9 @@ class AlbumCreate(SQLModel):
     id: str
     name: str
     artist_id: str | None = None
-    genre: str
-    year: int
-    date_added: str | None = None
+    genre: str | None = None
+    year: int | None = None
+    date_added: str
     is_compilation: bool
 
     @classmethod
@@ -41,8 +41,8 @@ class AlbumCreate(SQLModel):
             id=slugify(album["album"], artist),
             name=album["album"],
             artist_id=slugify(artist) if artist else None,
-            genre=album["genre"],
-            year=album["year"],
+            genre=album["genre"] if album["genre"] else None,
+            year=album["year"] if album["year"] else None,
             date_added=album["date_added"],
             is_compilation=album["compilation"],
         )

@@ -15,9 +15,9 @@ from sqlmodel import SQLModel
 class AlbumRead(SQLModel):
     id: str
     name: str
-    artist_id: str
-    genre: str
-    year: int
+    artist_id: str | None = None
+    genre: str | None = None
+    year: int | None = None
     is_compilation: bool
 
 
