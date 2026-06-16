@@ -9,10 +9,13 @@ services:
       - TESTING=0
       - DATABASE_URL=postgresql://postgres:postgres@database:5432/music_library
       # - DATABASE_TEST_URL=postgresql://postgres:postgres@database:5432/music_library_test
+      - MUSIC_LIBRARY_PATH=/data/Library.xml
     volumes:
       - ./backend:/app
       # Preserve the image's virtualenv (the host has none) anonymous volume
       - /app/.venv
+      # Root-level bulk data (your Library.xml export), kept out of the code tree.
+      - ./dumps:/data:ro
     depends_on:
       database:
         condition: service_healthy

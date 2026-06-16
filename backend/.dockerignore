@@ -9,6 +9,3 @@ __pycache__/
 backups/
 scripts/__pycache__/
 .venv
-
-# Library export(s) — provided at runtime via bind mount, never baked in.
-data/

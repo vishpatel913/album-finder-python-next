@@ -9,24 +9,22 @@ from pathlib import Path
 
 from application.ingestion.service import seed_library
 
-BACKEND_ROOT = Path(__file__).resolve().parent.parent
-DROP_FILE = BACKEND_ROOT / "data" / "Library.xml"
+# BACKEND_ROOT = Path(__file__).resolve().parent.parent
+# REPO_ROOT = BACKEND_ROOT.parent
+# DROP_FILE = REPO_ROOT / "dumps" / "Library.xml"
 # FIXTURE = BACKEND_ROOT / "fixtures" / "sample_library.xml"
 
 
 def resolve_data_path() -> Path:
-    override = os.getenv("SEED_DATA")
+    override = os.getenv("MUSIC_LIBRARY_PATH")
     if override:
         path = Path(override).expanduser()
         if not path.exists():
             # Explicit pointer that's wrong -> fail clearly, no traceback.
-            sys.exit(f"SEED_DATA points to a missing file: {path}")
+            sys.exit(f"MUSIC_LIBRARY_PATH points to a missing file: {path}")
         return path
-
-    if DROP_FILE.exists():
-        return DROP_FILE
     
-    sys.exit(f"missing library file")
+    sys.exit(f"MUSIC_LIBRARY_PATH path is missing in env")
 
     # print(f"No {DROP_FILE} found — falling back to bundled sample ({FIXTURE.name}).")
     # return FIXTURE
