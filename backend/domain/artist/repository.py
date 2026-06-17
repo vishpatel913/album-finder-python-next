@@ -28,8 +28,7 @@ class SqlArtistRepository(AbstractArtistRepository):
         return self.session.get(Artist, id)
 
     def get_by_ids(self, ids: Iterable[str]) -> list[Artist]:
-        # TODO: implement — select(Artist).where(Artist.id.in_(ids))
-        raise NotImplementedError
+        return self.session.exec(select(Artist).where(Artist.id.in_(ids)))
 
     def list(self) -> list[Artist]:
         return self.session.exec(select(Artist)).all()

@@ -30,8 +30,7 @@ class SqlAlbumRepository(AbstractAlbumRepository):
         return self.session.exec(select(Album)).all()
 
     def list_by_artist(self, artist_id: str) -> list[Album]:
-        # TODO: implement — select(Album).where(Album.artist_id == artist_id)
-        raise NotImplementedError
+        return self.session.exec(select(Album).where(Album.artist_id.__eq__(artist_id)))
     
     def update(self, id: int, fields: dict) -> Album | None:
         album = self.session.get(Album, id)

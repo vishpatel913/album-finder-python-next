@@ -16,6 +16,7 @@ class AlbumRead(SQLModel):
     id: str
     name: str
     artist_id: str | None = None
+    date_added: datetime
     genre: str | None = None
     year: int | None = None
     is_compilation: bool
@@ -24,7 +25,6 @@ class AlbumRead(SQLModel):
 class ArtistRead(SQLModel):
     id: str
     name: str
-    album_ids: Optional[list[str]] = None
 
 
 class TrackRead(SQLModel):
