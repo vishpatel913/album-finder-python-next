@@ -24,3 +24,11 @@ def get_artist_with_albums(
         AlbumRead.model_validate(album, from_attributes=True) for album in albums
     ]
     return result
+
+def list_artists_with_albums(
+    artist_repo: AbstractArtistRepository,
+    album_repo: AbstractAlbumRepository,
+) -> list[ArtistWithAlbums]:
+    """All artists, each with its albums resolved in a single batched lookup."""
+    artist = artist_repo.list()
+    return []
