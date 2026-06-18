@@ -1,10 +1,13 @@
 """Query services for artists — resolve the artist -> albums link (one-to-many)."""
 
-from domain.album.repository import AbstractAlbumRepository
-from domain.artist.repository import AbstractArtistRepository
+from collections import defaultdict
 
 from application.dto.read import AlbumRead
 from application.dto.read_models import ArtistWithAlbums
+from domain.album.model import Album
+from domain.album.repository import AbstractAlbumRepository
+from domain.artist import service
+from domain.artist.repository import AbstractArtistRepository
 
 
 def get_artist_with_albums(
@@ -30,5 +33,17 @@ def list_artists_with_albums(
     album_repo: AbstractAlbumRepository,
 ) -> list[ArtistWithAlbums]:
     """All artists, each with its albums resolved in a single batched lookup."""
-    artist = artist_repo.list()
-    return []
+    artists = service.get_all_artists(artist_repo)
+    album_by_artist_id: dict[str, list[Album]] = defaultdict(list)
+    for album in album_repo.list():
+        album_by_artist_id[album.artist_id].append(album)
+        
+    results: list[ArtistWithAlbums] = []
+    for artist in artists:
+        item = ArtistWithAlbums.model_validate(artist, from_attributes=True)
+        albums = album_by_artist_id.get(artist.id, [])
+        item.albums = [
+            AlbumRead.model_validate(album, from_attributes=True) for album in albums
+        ]
+        results.append(item)
+    return results

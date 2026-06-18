@@ -1,10 +1,9 @@
 """Query services for albums — resolve the album -> artist link (many-to-one)."""
 
-from domain.album.repository import AbstractAlbumRepository
-from domain.artist.repository import AbstractArtistRepository
-
 from application.dto.read import ArtistRead
 from application.dto.read_models import AlbumWithArtist
+from domain.album.repository import AbstractAlbumRepository
+from domain.artist.repository import AbstractArtistRepository
 
 
 def get_album_with_artist(

@@ -8,7 +8,7 @@ from .model import Artist
 
 class AbstractArtistRepository(ABC):
     @abstractmethod
-    def get_by_id(self, id: int) -> Artist | None: ...
+    def get_by_id(self, id: str) -> Artist | None: ...
 
     @abstractmethod
     def get_by_ids(self, ids: Iterable[str]) -> list[Artist]: ...
@@ -17,14 +17,14 @@ class AbstractArtistRepository(ABC):
     def list(self) -> list[Artist]: ...
 
     @abstractmethod
-    def update(self, id: int, fields: dict) -> Artist | None: ...
+    def update(self, id: str, fields: dict) -> Artist | None: ...
 
 
 class SqlArtistRepository(AbstractArtistRepository):
     def __init__(self, session: Session):
         self.session = session
 
-    def get_by_id(self, id: int) -> Artist | None:
+    def get_by_id(self, id: str) -> Artist | None:
         return self.session.get(Artist, id)
 
     def get_by_ids(self, ids: Iterable[str]) -> list[Artist]:
@@ -33,7 +33,7 @@ class SqlArtistRepository(AbstractArtistRepository):
     def list(self) -> list[Artist]:
         return self.session.exec(select(Artist)).all()
 
-    def update(self, id: int, fields: dict) -> Artist | None:
+    def update(self, id: str, fields: dict) -> Artist | None:
         artist = self.session.get(Artist, id)
         if artist is None:
             return None
