@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
 
-  // Python (backend/, functions/, scripts/) — ruff handles format + imports.
+  // Python (backend/, scripts/) — ruff handles format + imports.
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,

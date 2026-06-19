@@ -6,7 +6,7 @@ __pycache__/
 *.pyc
 .venv/
 
-# Node (frontend/ and functions/ keep their own too; this is a backstop)
+# Node (frontend/ and backend/ keep their own too; this is a backstop)
 node_modules/
 dist/
 
