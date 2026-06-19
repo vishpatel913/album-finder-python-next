@@ -5,8 +5,9 @@ import plistlib
 from datetime import datetime
 from pathlib import Path
 
-from utils.unique import unique_by
 from sqlalchemy import Null
+
+from utils.unique import unique_by
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +44,7 @@ def _music_library_track(track: dict) -> dict:
         "compilation": bool(track.get("Compilation", False)),
     }
 
+
 def _album_dict(track: dict) -> dict:
     return {
         "artist": track.get("artist", ""),
@@ -56,11 +58,13 @@ def _album_dict(track: dict) -> dict:
         "compilation": bool(track.get("compilation", False)),
     }
 
+
 def _artist_dict(track: dict) -> dict:
     return {
         "album_artist": track.get("album_artist", ""),
         "artist": track.get("artist", ""),
     }
+
 
 def parse_library(
     xml_path: Path,
@@ -82,6 +86,7 @@ def parse_library(
 
     return result
 
+
 def extract_albums(parsed_tracks: list[dict]) -> list[dict]:
     albums = (_album_dict(t) for t in parsed_tracks if t.get("album"))
     return unique_by(albums, key=lambda a: (a["album_artist"], a["album"]))
@@ -90,5 +95,3 @@ def extract_albums(parsed_tracks: list[dict]) -> list[dict]:
 def extract_artists(parsed_tracks: list[dict]) -> list[dict]:
     artists = (_artist_dict(t) for t in parsed_tracks if t.get("album_artist"))
     return unique_by(artists, key=lambda a: a["album_artist"])
-
-

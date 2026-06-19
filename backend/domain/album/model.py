@@ -1,11 +1,10 @@
 # from typing import TYPE_CHECKING, Optional
 
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, SQLModel
 
 # if TYPE_CHECKING:
-    # from domain.artist.model import Artist
-    # from domain.track.model import Track
-
+# from domain.artist.model import Artist
+# from domain.track.model import Track
 
 
 class AlbumBase(SQLModel):

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from sqlmodel import Session, select
+from sqlmodel import Session, col, select
 
 from .model import Album
 
@@ -27,11 +27,15 @@ class SqlAlbumRepository(AbstractAlbumRepository):
         return self.session.get(Album, id)
 
     def list(self) -> list[Album]:
-        return self.session.exec(select(Album)).all()
+        return list(self.session.exec(select(Album)).all())
 
     def list_by_artist(self, artist_id: str) -> list[Album]:
-        return self.session.exec(select(Album).where(Album.artist_id.__eq__(artist_id)))
-    
+        return list(
+            self.session.exec(
+                select(Album).where(col(Album.artist_id) == artist_id)
+            ).all()
+        )
+
     def update(self, id: str, fields: dict) -> Album | None:
         album = self.session.get(Album, id)
         if album is None:

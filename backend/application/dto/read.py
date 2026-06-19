@@ -7,7 +7,6 @@ entities in ``domain/<x>/model.py``. The ``*Create`` schemas and their
 """
 
 from datetime import datetime
-from typing import Optional
 
 from sqlmodel import SQLModel
 
@@ -33,7 +32,7 @@ class TrackRead(SQLModel):
     artist: str
     # artist: "ArtistRead"
     # album: "AlbumRead"
-    track_number: Optional[int]
+    track_number: int | None
     track_length: int
     date_added: datetime
-    play_count: Optional[int]
+    play_count: int | None

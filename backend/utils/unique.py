@@ -1,10 +1,7 @@
 from collections.abc import Callable, Iterable
-from typing import TypeVar
-
-T = TypeVar("T")
 
 
-def unique_by(
+def unique_by[T](
     items: Iterable[T],
     key: Callable[[T], object],
     merge: Callable[[T, T], T] | None = None,

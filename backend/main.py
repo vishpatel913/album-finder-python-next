@@ -2,9 +2,9 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from logging import INFO, basicConfig, getLogger
 
-from api.routes import albums, artists, health, tracks
 from fastapi import FastAPI
 
+from api.routes import albums, artists, health, tracks
 from infrastructure.database.session import create_db_and_tables
 
 logger = getLogger(__name__)
@@ -12,7 +12,7 @@ basicConfig(level=INFO)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     logger.info("Starting up...")
     create_db_and_tables()
     yield

@@ -17,4 +17,4 @@ def get_track(track_id: str, repo=Depends(get_track_repo)):
     try:
         return service.get_track(track_id, repo)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e

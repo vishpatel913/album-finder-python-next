@@ -12,7 +12,7 @@ def slugify(name: str, extension: str | None = None) -> str:
     """Lower-case, collision-resistant id from a display name.
 
     A short sha1 of the original name is appended to catch similar names
-    
+
         slugify("Made In The Manor")        -> "made-in-the-manor-9f8e7d"
         slugify("Kano", "Made In The Manor") -> "kano-made-in-the-manor-1a2b3c"
     """

@@ -12,6 +12,7 @@
   },
   "python.languageServer": "Pylance",
   "pylint.enabled": false,
+  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
 
   // Tailwind v4: pick up classes inside cn(...) and cva(...) helpers.
   "tailwindCSS.experimental.classRegex": [

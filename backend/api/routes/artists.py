@@ -9,8 +9,7 @@ router = APIRouter(prefix="/artist", tags=["artist"])
 
 @router.get("/", response_model=list[ArtistWithAlbums])
 def list_artist(
-    artist_repo=Depends(get_artist_repo),
-    album_repo=Depends(get_album_repo)
+    artist_repo=Depends(get_artist_repo), album_repo=Depends(get_album_repo)
 ):
     return list_artists_with_albums(artist_repo, album_repo)
 
@@ -19,9 +18,9 @@ def list_artist(
 def get_artist(
     artist_id: str,
     artist_repo=Depends(get_artist_repo),
-    album_repo=Depends(get_album_repo)
+    album_repo=Depends(get_album_repo),
 ):
     try:
         return get_artist_with_albums(artist_id, artist_repo, album_repo)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e

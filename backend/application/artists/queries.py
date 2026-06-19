@@ -28,6 +28,7 @@ def get_artist_with_albums(
     ]
     return result
 
+
 def list_artists_with_albums(
     artist_repo: AbstractArtistRepository,
     album_repo: AbstractAlbumRepository,
@@ -36,12 +37,13 @@ def list_artists_with_albums(
     artists = service.get_all_artists(artist_repo)
     album_by_artist_id: dict[str, list[Album]] = defaultdict(list)
     for album in album_repo.list():
-        album_by_artist_id[album.artist_id].append(album)
-        
+        if album.artist_id is not None:
+            album_by_artist_id[album.artist_id].append(album)
+
     results: list[ArtistWithAlbums] = []
     for artist in artists:
         item = ArtistWithAlbums.model_validate(artist, from_attributes=True)
-        albums = album_by_artist_id.get(artist.id, [])
+        albums = album_by_artist_id.get(artist.id, []) if artist.id else []
         item.albums = [
             AlbumRead.model_validate(album, from_attributes=True) for album in albums
         ]

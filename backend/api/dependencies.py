@@ -1,9 +1,9 @@
-from domain.album.repository import SqlAlbumRepository
-from domain.artist.repository import SqlArtistRepository
-from domain.track.repository import SqlTrackRepository
 from fastapi import Depends
 from sqlmodel import Session
 
+from domain.album.repository import SqlAlbumRepository
+from domain.artist.repository import SqlArtistRepository
+from domain.track.repository import SqlTrackRepository
 from infrastructure.database.session import get_session
 
 

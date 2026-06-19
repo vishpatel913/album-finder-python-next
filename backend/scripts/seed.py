@@ -23,8 +23,8 @@ def resolve_data_path() -> Path:
             # Explicit pointer that's wrong -> fail clearly, no traceback.
             sys.exit(f"MUSIC_LIBRARY_PATH points to a missing file: {path}")
         return path
-    
-    sys.exit(f"MUSIC_LIBRARY_PATH path is missing in env")
+
+    sys.exit("MUSIC_LIBRARY_PATH path is missing in env")
 
     # print(f"No {DROP_FILE} found — falling back to bundled sample ({FIXTURE.name}).")
     # return FIXTURE

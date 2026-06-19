@@ -18,7 +18,7 @@ class ArtistCreate(SQLModel):
     name: str
 
     @classmethod
-    def from_library(cls, artist: dict) -> "ArtistCreate":
+    def from_library(cls, artist: dict) -> ArtistCreate:
         """Adapter: neutral parser artist dict -> domain create model."""
         name = artist["album_artist"]
         return cls(id=slugify(name), name=name)
@@ -34,7 +34,7 @@ class AlbumCreate(SQLModel):
     is_compilation: bool
 
     @classmethod
-    def from_library(cls, album: dict) -> "AlbumCreate":
+    def from_library(cls, album: dict) -> AlbumCreate:
         """Adapter: neutral parser album dict -> domain create model."""
         artist = album["album_artist"]
         return cls(
@@ -60,7 +60,7 @@ class TrackCreate(SQLModel):
     play_count: int | None = None
 
     @classmethod
-    def from_library(cls, track: dict) -> "TrackCreate":
+    def from_library(cls, track: dict) -> TrackCreate:
         """Adapter: neutral parser track dict -> domain create model."""
         return cls(
             id=track["id"],

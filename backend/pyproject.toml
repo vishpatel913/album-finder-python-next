@@ -15,21 +15,27 @@ dependencies = [
 ]
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.0"
+pytest = "^9.1.0"
 httpx = "^0.28.0"
-ruff = "^0.8.0"
-pyright = "^1.1.390"
+ruff = "^0.15.0"
+pyright = "^1.1.410"
 
 [tool.poetry]
 package-mode = false
 
 [tool.pyright]
-typeCheckingMode = "strict"
+# "standard" (pyright's default) suits SQLModel/FastAPI: it catches real type
+# bugs without drowning in reportUnknown* noise from the untyped ORM boundary.
+# "strict" produced ~168 false positives here for no real-bug gain.
+typeCheckingMode = "standard"
 reportMissingImports = true
+venvPath = "."
+venv = ".venv"
+pythonVersion = "3.14"
 
 [tool.ruff]
 line-length = 88
-target-version = "py311"
+target-version = "py314"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "TID"]

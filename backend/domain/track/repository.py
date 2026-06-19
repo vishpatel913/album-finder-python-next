@@ -24,7 +24,7 @@ class SqlTrackRepository(AbstractTrackRepository):
         return self.session.get(Track, id)
 
     def list(self) -> list[Track]:
-        return self.session.exec(select(Track)).all()
+        return list(self.session.exec(select(Track)).all())
 
     def update(self, id: str, fields: dict) -> Track | None:
         track = self.session.get(Track, id)

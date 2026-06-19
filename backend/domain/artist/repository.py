@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
 
-from sqlmodel import Session, select
+from sqlmodel import Session, col, select
 
 from .model import Artist
 
@@ -28,10 +28,12 @@ class SqlArtistRepository(AbstractArtistRepository):
         return self.session.get(Artist, id)
 
     def get_by_ids(self, ids: Iterable[str]) -> list[Artist]:
-        return self.session.exec(select(Artist).where(Artist.id.in_(ids)))
+        return list(
+            self.session.exec(select(Artist).where(col(Artist.id).in_(ids))).all()
+        )
 
     def list(self) -> list[Artist]:
-        return self.session.exec(select(Artist)).all()
+        return list(self.session.exec(select(Artist)).all())
 
     def update(self, id: str, fields: dict) -> Artist | None:
         artist = self.session.get(Artist, id)
