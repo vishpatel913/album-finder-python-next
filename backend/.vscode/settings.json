@@ -11,21 +11,10 @@
     }
   },
   "pylint.enabled": false,
-  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
-
-  // Tailwind v4: pick up classes inside cn(...) and cva(...) helpers.
-  "tailwindCSS.experimental.classRegex": [
-    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-  ],
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
 
   // Keep generated and build output out of search/explorer noise.
   "files.exclude": {
     "**/__pycache__": true
-  },
-  "search.exclude": {
-    "**/node_modules": true,
-    "**/dist": true,
-    "frontend/src/types/api.gen.ts": true
   }
 }
