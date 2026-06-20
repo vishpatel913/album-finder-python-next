@@ -64,9 +64,5 @@ ENV/
 env.bak/
 venv.bak/
 
-
-# Serverless
-*.zip
-unzip-requirements.py
-.serverless
-node_modules
+# Migrations
+migrations/versions

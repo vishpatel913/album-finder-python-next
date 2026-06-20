@@ -11,7 +11,7 @@ if [ "$#" -gt 0 ]; then
 fi
 
 echo "==> Creating tables (idempotent)..."
-python -m scripts.init_db
+alembic upgrade head
  
 echo "==> Seeding data (idempotent upsert)..."
 python -m scripts.seed

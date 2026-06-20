@@ -47,6 +47,18 @@ nuke: ## DESTRUCTIVE: stop everything and drop the database volume
 init-db: ## Create tables (idempotent)
 	docker compose run --rm --entrypoint python api -m scripts.init_db
 
+.PHONY: migration
+migration: ## Generate a migration from model changes:  make migration m="add model.field"
+	docker compose exec api alembic revision --autogenerate -m "$(m)"
+
+.PHONY: migrate
+migrate: ## Apply all pending migrations
+	docker compose exec api alembic upgrade head
+
+.PHONY: downgrade
+downgrade: ## Roll back the last migration
+	docker compose exec api alembic downgrade -1
+
 .PHONY: seed
 seed: ## Seed / upsert data (idempotent)
 	docker compose run --rm --entrypoint python api -m scripts.seed
