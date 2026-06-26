@@ -17,6 +17,8 @@ class TrackBase(SQLModel):
     date_added: datetime
     play_count: int | None
 
+    spotify_id: str | None = None
+
     # Relationships
     # artist: Optional["Artist"] = Relationship(back_populates="tracks")
     # series: Optional["Album"] = Relationship(back_populates="tracks")

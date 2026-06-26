@@ -7,6 +7,9 @@ from sqlmodel import Field, SQLModel
 
 class ArtistBase(SQLModel):
     name: str = Field(unique=True, index=True)
+    image_url: str | None = None
+
+    spotify_id: str | None = None
 
     # Relationships
     # albums: list["Album"] = Relationship(back_populates="artist")
