@@ -16,7 +16,16 @@ class AbstractAlbumRepository(ABC):
     def list_by_artist(self, artist_id: str) -> list[Album]: ...
 
     @abstractmethod
+    def create(self, entity: Album) -> Album: ...
+
+    @abstractmethod
     def update(self, id: str, fields: dict) -> Album | None: ...
+
+    @abstractmethod
+    def upsert(self, entity: Album) -> None: ...
+
+    @abstractmethod
+    def delete(self, id: str) -> bool: ...
 
 
 class SqlAlbumRepository(AbstractAlbumRepository):
@@ -36,6 +45,13 @@ class SqlAlbumRepository(AbstractAlbumRepository):
             ).all()
         )
 
+    def create(self, entity: Album) -> Album:
+        """Persist a new album and return the stored row."""
+        self.session.add(entity)
+        self.session.commit()
+        self.session.refresh(entity)
+        return entity
+
     def update(self, id: str, fields: dict) -> Album | None:
         album = self.session.get(Album, id)
         if album is None:
@@ -46,3 +62,22 @@ class SqlAlbumRepository(AbstractAlbumRepository):
         self.session.commit()
         self.session.refresh(album)
         return album
+
+    def upsert(self, entity: Album) -> None:
+        """Stage an insert or in-place update by id. Caller owns the transaction."""
+        existing = self.session.get(Album, entity.id)
+        if existing is None:
+            self.session.add(entity)
+        else:
+            for key, value in entity.model_dump(exclude={"id"}).items():
+                setattr(existing, key, value)
+            self.session.add(existing)
+
+    def delete(self, id: str) -> bool:
+        """Delete by id. Returns True if a row was removed, False if not found."""
+        album = self.session.get(Album, id)
+        if album is None:
+            return False
+        self.session.delete(album)
+        self.session.commit()
+        return True

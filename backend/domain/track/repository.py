@@ -13,7 +13,16 @@ class AbstractTrackRepository(ABC):
     def list(self) -> list[Track]: ...
 
     @abstractmethod
+    def create(self, entity: Track) -> Track: ...
+
+    @abstractmethod
     def update(self, id: str, fields: dict) -> Track | None: ...
+
+    @abstractmethod
+    def upsert(self, entity: Track) -> None: ...
+
+    @abstractmethod
+    def delete(self, id: str) -> bool: ...
 
 
 class SqlTrackRepository(AbstractTrackRepository):
@@ -26,6 +35,13 @@ class SqlTrackRepository(AbstractTrackRepository):
     def list(self) -> list[Track]:
         return list(self.session.exec(select(Track)).all())
 
+    def create(self, entity: Track) -> Track:
+        """Persist a new track and return the stored row."""
+        self.session.add(entity)
+        self.session.commit()
+        self.session.refresh(entity)
+        return entity
+
     def update(self, id: str, fields: dict) -> Track | None:
         track = self.session.get(Track, id)
         if track is None:
@@ -36,3 +52,22 @@ class SqlTrackRepository(AbstractTrackRepository):
         self.session.commit()
         self.session.refresh(track)
         return track
+
+    def upsert(self, entity: Track) -> None:
+        """Stage an insert or in-place update by id. Caller owns the transaction."""
+        existing = self.session.get(Track, entity.id)
+        if existing is None:
+            self.session.add(entity)
+        else:
+            for key, value in entity.model_dump(exclude={"id"}).items():
+                setattr(existing, key, value)
+            self.session.add(existing)
+
+    def delete(self, id: str) -> bool:
+        """Delete by id. Returns True if a row was removed, False if not found."""
+        track = self.session.get(Track, id)
+        if track is None:
+            return False
+        self.session.delete(track)
+        self.session.commit()
+        return True
