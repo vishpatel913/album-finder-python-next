@@ -32,6 +32,19 @@ lint-fix: ## Auto-fix lint and apply formatting
 test: ## Run the test suite
 	$(BIN)/pytest
 
+.PHONY: generate-types
+generate-types: ## Run the test suite
+	$(BIN)/datamodel-codegen \
+		--url https://developer.spotify.com/reference/web-api/open-api-schema.yaml \
+		--input-file-type openapi \
+		--output infrastructure/types/generated.py \
+		--output-model-type pydantic_v2.BaseModel \
+		--field-constraints \
+		--use-annotated \
+		--use-subclass-enum
+
+
+
 .PHONY: help
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
