@@ -36,6 +36,13 @@ reportMissingImports = true
 venvPath = "."
 venv = ".venv"
 pythonVersion = "3.14"
+exclude = [
+    ".venv",
+    "**/node_modules",
+    "**/__pycache__",
+    "**/types/generated.py",
+    "**/migrations/**/*",
+]
 
 [tool.ruff]
 line-length = 88
@@ -56,7 +63,7 @@ extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path", "f
 known-first-party = ["api", "database", "domain", "libs", "scripts"]
 
 [tool.ruff.lint.per-file-ignores]
-"generated.py" = ["E501"]
+"generated.py" = ["E501", "UP042"]
 
 
 [build-system]

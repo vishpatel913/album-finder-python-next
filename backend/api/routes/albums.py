@@ -1,21 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from api.dependencies import get_album_repo, get_artist_repo
+from api.dependencies import get_album_repo, get_artist_repo, get_enrichment_service
+from application.albums.commands import enrich_album
 from application.albums.queries import get_album_with_artist, list_albums_with_artist
+from application.dto.read import AlbumRead
 from application.dto.read_models import AlbumWithArtist
 
 router = APIRouter(prefix="/album", tags=["album"])
 
 
 @router.get("/", response_model=list[AlbumWithArtist])
-def list_album(
+def list_albums(
     album_repo=Depends(get_album_repo), artist_repo=Depends(get_artist_repo)
 ):
     return list_albums_with_artist(album_repo, artist_repo)
 
 
 @router.get("/{album_id}", response_model=AlbumWithArtist)
-def get_album(
+def get_album_by_id(
     album_id: str,
     album_repo=Depends(get_album_repo),
     artist_repo=Depends(get_artist_repo),
@@ -24,3 +26,17 @@ def get_album(
         return get_album_with_artist(album_id, album_repo, artist_repo)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
+
+
+@router.post("/{album_id}/enrich", response_model=AlbumRead | None)
+def enrich_album_by_id(
+    album_id: str,
+    spotify_client=Depends(get_enrichment_service),
+    album_repo=Depends(get_album_repo),
+    artist_repo=Depends(get_artist_repo),
+):
+    res = enrich_album(album_id, spotify_client, album_repo, artist_repo)
+    if res is None:
+        return None
+
+    return res

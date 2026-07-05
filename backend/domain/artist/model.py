@@ -24,4 +24,4 @@ class ArtistBase(SQLModel):
 
 
 class Artist(ArtistBase, table=True):
-    id: str | None = Field(default=None, primary_key=True)
+    id: str = Field(primary_key=True)

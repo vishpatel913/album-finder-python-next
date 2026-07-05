@@ -10,7 +10,7 @@ AlbumType = Literal["album", "single", "compilation"]
 class Album(BaseModel):
     id: str | None
     name: str | None
-    imageUrl: str | None
+    image_url: str | None
     total_tracks: int | None
     release_date: str | None
     type: AlbumType | None
@@ -22,7 +22,7 @@ class Album(BaseModel):
 class Artist(BaseModel):
     id: str | None
     name: str | None
-    imageUrl: str | None
+    image_url: str | None
     uri: str | None
     external_url: str | None
 

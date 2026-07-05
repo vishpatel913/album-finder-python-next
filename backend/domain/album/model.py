@@ -14,7 +14,7 @@ class AlbumBase(SQLModel):
     year: int | None = None
     date_added: str
     is_compilation: bool
-    artwork_url: int | None = None
+    artwork_url: str | None = None
 
     spotify_id: str | None = None
 
@@ -27,4 +27,4 @@ class AlbumBase(SQLModel):
 
 
 class Album(AlbumBase, table=True):
-    id: str | None = Field(default=None, primary_key=True)
+    id: str = Field(primary_key=True)

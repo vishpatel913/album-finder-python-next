@@ -6,8 +6,6 @@ entities in ``domain/<x>/model.py``. The ``*Create`` schemas and their
 ``from_library`` adapters stay in ``domain/<x>/schema.py`` (tied to ingestion).
 """
 
-from datetime import datetime
-
 from sqlmodel import SQLModel
 
 
@@ -15,15 +13,21 @@ class AlbumRead(SQLModel):
     id: str
     name: str
     artist_id: str | None = None
-    date_added: datetime
+    date_added: str
     genre: str | None = None
     year: int | None = None
     is_compilation: bool
+    artwork_url: str | None = None
+
+    spotify_id: str | None = None
 
 
 class ArtistRead(SQLModel):
     id: str
     name: str
+    image_url: str | None = None
+
+    spotify_id: str | None = None
 
 
 class TrackRead(SQLModel):
@@ -34,5 +38,7 @@ class TrackRead(SQLModel):
     # album: "AlbumRead"
     track_number: int | None
     track_length: int
-    date_added: datetime
+    date_added: str
     play_count: int | None
+
+    spotify_id: str | None = None

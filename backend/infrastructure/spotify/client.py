@@ -58,8 +58,8 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
         for item in artist_results.get("items") or []:
             artists.append(self._to_artist(item))
 
-        results = SearchResultItems(albums=albums, artists=artists)
-        return SearchResult(type=search_type, total=0, items=results)
+        result_items = SearchResultItems(albums=albums, artists=artists)
+        return SearchResult(type=search_type, total=0, items=result_items)
 
     def get_album(self, id: str) -> Album | None:
         raw_response = self.spotifyClient.album(album_id=id)
@@ -99,7 +99,7 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
         return Album(
             id=album.id,
             name=album.name,
-            imageUrl=album.images[0].url,
+            image_url=album.images[0].url,
             total_tracks=album.total_tracks,
             release_date=album.release_date,
             type=album.album_type.value,
@@ -116,7 +116,7 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
         return Artist(
             id=artist.id,
             name=artist.name,
-            imageUrl=artist.images[0].url if artist.images else None,
+            image_url=artist.images[0].url if artist.images else None,
             uri=artist.uri,
             external_url=artist.external_urls.spotify if artist.external_urls else None,
         )
