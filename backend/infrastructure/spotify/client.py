@@ -3,6 +3,7 @@
 Only this module imports spotipy; the rest of the app depends on the port.
 """
 
+import logging
 from typing import TypeVar
 
 import spotipy
@@ -25,19 +26,19 @@ RawSearchResponse = TypeVar("RawSearchResponse", bound=BaseModel)
 
 SEARCH_LIMIT = 3
 
+logger = logging.getLogger(__name__)
+
 
 class SpotifyEnrichmentClient(MusicEnrichmentPort):
     def __init__(self) -> None:
-        print("Connecting...")
-
         auth_manager = SpotifyClientCredentials()
         try:
             self.spotifyClient = spotipy.Spotify(auth_manager=auth_manager)
-            print("Connected to Spotify")
-        except:
-            print("Error connecting to Spotify")
+        except Exception:
+            logger.info("Failed to connect to Spotify")
+            raise
 
-        print()
+        logger.info("Connected to library API client")
 
     def search(self, query, search_type):
         raw_response = self.spotifyClient.search(
