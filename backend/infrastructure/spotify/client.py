@@ -3,7 +3,6 @@
 Only this module imports spotipy; the rest of the app depends on the port.
 """
 
-from datetime import date
 from typing import TypeVar
 
 import spotipy
@@ -99,7 +98,7 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
             name=album.name,
             imageUrl=album.images[0].url,
             total_tracks=album.total_tracks,
-            release_date=date.fromisoformat(album.release_date),
+            release_date=album.release_date,
             type=album.album_type.value,
             uri=album.uri,
             external_url=album.external_urls.spotify,

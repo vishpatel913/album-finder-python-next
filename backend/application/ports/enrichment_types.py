@@ -1,4 +1,3 @@
-from datetime import date
 from typing import Literal
 
 from pydantic import BaseModel
@@ -13,7 +12,7 @@ class Album(BaseModel):
     name: str | None
     imageUrl: str | None
     total_tracks: int | None
-    release_date: date | None
+    release_date: str | None
     type: AlbumType | None
     uri: str | None
     external_url: str | None
