@@ -17,6 +17,7 @@ from application.ports.enrichment_types import (
     SearchResult,
     SearchResultItems,
 )
+from infrastructure.spotify.error_handling import handle_validation_errors
 from infrastructure.types.generated import (
     ArtistObject,
     SimplifiedAlbumObject,
@@ -92,6 +93,7 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
         artists = raw.get("artists") or []
         return [a["id"] for a in artists]
 
+    @handle_validation_errors
     def _to_album(self, raw_album: SimplifiedAlbumObject):
         album = SimplifiedAlbumObject.model_validate(raw_album)
         return Album(
@@ -108,6 +110,7 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
             else [],
         )
 
+    @handle_validation_errors
     def _to_artist(self, raw_artist: ArtistObject):
         artist = ArtistObject.model_validate(raw_artist)
         return Artist(
