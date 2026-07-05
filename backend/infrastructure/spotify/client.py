@@ -30,7 +30,7 @@ RawSearchResponse = TypeVar("RawSearchResponse", bound=BaseModel)
 SEARCH_LIMIT = 3
 
 
-class SpotifyEnrichment(MusicEnrichmentPort):
+class SpotifyEnrichmentClient(MusicEnrichmentPort):
     def __init__(self) -> None:
         print("Connecting...")
 
@@ -68,7 +68,8 @@ class SpotifyEnrichment(MusicEnrichmentPort):
 
         return albums
 
-    # def get_album_tracks(self, id: str) -> list[Track] | None:
+    def get_album_tracks(self, id: str) -> None:
+        raise NotImplementedError
 
     def search(self, query, type):
         raw_response = self.spotifyClient.search(q=query, limit=10, offset=0, type=type)
