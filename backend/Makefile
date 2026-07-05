@@ -10,13 +10,6 @@ SHELL := /bin/bash
 PY  ?= python3.14
 BIN := .venv/bin
 
-.PHONY: setup
-setup: ## Create .venv and install runtime + lint tooling
-	$(PY) -m venv .venv
-	$(BIN)/pip install -q --upgrade pip
-	$(BIN)/pip install -q fastapi sqlmodel uvicorn psycopg2-binary python-dotenv \
-		ruff pyright pytest httpx
-
 .PHONY: lint
 lint: ## Lint + typecheck (ruff check, format check, pyright)
 	$(BIN)/ruff check .

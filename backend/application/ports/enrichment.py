@@ -7,14 +7,20 @@ Same ports-and-adapters shape as the repositories.
 
 from abc import ABC, abstractmethod
 
-from enrichment_types import Album, Artist, SearchResult, SearchType, Track
+from application.ports.enrichment_types import (
+    Album,
+    Artist,
+    SearchResult,
+    SearchType,
+    Track,
+)
 
 search_types = ["album", "artist", "track"]
 
 
 class MusicEnrichmentPort(ABC):
     @abstractmethod
-    def search(self, query: str, type: SearchType) -> SearchResult | None:
+    def search(self, query: str, search_type: SearchType) -> SearchResult | None:
         """Find the best-matching item for a name."""
         ...
 

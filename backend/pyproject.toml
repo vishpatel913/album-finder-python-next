@@ -55,6 +55,10 @@ extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path", "f
 [tool.ruff.lint.isort]
 known-first-party = ["api", "database", "domain", "libs", "scripts"]
 
+[tool.ruff.lint.per-file-ignores]
+"generated.py" = ["E501"]
+
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"

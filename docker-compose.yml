@@ -9,7 +9,9 @@ services:
       - TESTING=0
       - DATABASE_URL=postgresql://postgres:postgres@database:5432/music_library
       # - DATABASE_TEST_URL=postgresql://postgres:postgres@database:5432/music_library_test
-      - MUSIC_LIBRARY_PATH=/data/Library.xml
+      - MUSIC_LIBRARY_PATH=${MUSIC_LIBRARY_PATH:-/data/Library.xml}
+      - SPOTIPY_CLIENT_ID=${SPOTIPY_CLIENT_ID}
+      - SPOTIPY_CLIENT_SECRET=${SPOTIPY_CLIENT_SECRET}
     volumes:
       - ./backend:/app
       # Preserve the image's virtualenv (the host has none) anonymous volume

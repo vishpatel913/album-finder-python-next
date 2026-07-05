@@ -4,7 +4,7 @@ from logging import INFO, basicConfig, getLogger
 
 from fastapi import FastAPI
 
-from api.routes import albums, artists, health, tracks
+from api.routes import albums, artists, health, search, tracks
 from infrastructure.database.session import create_db_and_tables
 
 logger = getLogger(__name__)
@@ -26,6 +26,7 @@ def get_app() -> FastAPI:
     app.include_router(artists.router)
     app.include_router(albums.router)
     app.include_router(tracks.router)
+    app.include_router(search.router)
     return app
 
 

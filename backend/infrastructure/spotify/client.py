@@ -1,7 +1,6 @@
 """Spotify adapter — implements MusicEnrichmentPort by wrapping the spotipy lib.
 
 Only this module imports spotipy; the rest of the app depends on the port.
-Wire it in ``api/dependencies`` (e.g. a ``get_enrichment`` provider) when ready.
 """
 
 from datetime import date
@@ -20,8 +19,6 @@ from application.ports.enrichment_types import (
 )
 from infrastructure.types.generated import (
     ArtistObject,
-    PagingArtistObject,
-    PagingSimplifiedAlbumObject,
     SimplifiedAlbumObject,
 )
 
@@ -43,6 +40,26 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
 
         print()
 
+    def search(self, query, search_type):
+        raw_response = self.spotifyClient.search(
+            q=query, limit=10, offset=0, type=search_type
+        )
+        if raw_response is None:
+            return None
+
+        albums = []
+        album_results = raw_response.get("albums", {})
+        for item in album_results.get("items") or []:
+            albums.append(self._to_album(item))
+
+        artists = []
+        artist_results = raw_response.get("artists", {})
+        for item in artist_results.get("items") or []:
+            artists.append(self._to_artist(item))
+
+        results = SearchResultItems(albums=albums, artists=artists)
+        return SearchResult(type=search_type, total=0, items=results)
+
     def get_album(self, id: str) -> Album | None:
         raw_response = self.spotifyClient.album(album_id=id)
         if raw_response is None:
@@ -58,65 +75,45 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
         return self._to_artist(raw_response)
 
     def get_artist_albums(self, id: str) -> list[Album] | None:
-        raw_response = self.spotifyClient.album(album_id=id)
+        raw_response = self.spotifyClient.artist_albums(artist_id=id)
         if raw_response is None:
             return None
 
-        albums: list[Album] = []
-        for album in raw_response:
-            albums.append(self._to_album(album))
+        albums = []
+        for item in raw_response.get("items") or []:
+            albums.append(self._to_album(item))
 
         return albums
 
     def get_album_tracks(self, id: str) -> None:
         raise NotImplementedError
 
-    def search(self, query, type):
-        raw_response = self.spotifyClient.search(q=query, limit=10, offset=0, type=type)
-        if raw_response is None:
-            return None
-
-        album_items = []
-        if "album" in raw_response:
-            album_results: PagingSimplifiedAlbumObject = raw_response["album"]
-            for item in album_results.items if album_results.items else []:
-                album_items.append(self._to_album(item))
-
-        artist_items = []
-        if "artist" in raw_response:
-            artist_results: PagingArtistObject = raw_response["artist"]
-            for item in artist_results.items if artist_results.items else []:
-                artist_items.append(self._to_artist(item))
-
-        items = SearchResultItems(albums=album_items, artists=artist_items)
-        return SearchResult(type=type, total=0, items=items)
-
     def _get_artist_ids(self, raw: dict):
         artists = raw.get("artists") or []
         return [a["id"] for a in artists]
 
     def _to_album(self, raw_album: SimplifiedAlbumObject):
+        album = SimplifiedAlbumObject.model_validate(raw_album)
         return Album(
-            id=raw_album.id,
-            name=raw_album.name,
-            imageUrl=raw_album.images[0].url,
-            total_tracks=raw_album.total_tracks,
-            release_date=date.fromisoformat(raw_album.release_date),
-            type=raw_album.album_type.value,
-            uri=raw_album.uri,
-            external_url=raw_album.external_urls.spotify,
-            artist_ids=[artist.id for artist in raw_album.artists if artist.id]
-            if raw_album.artists
+            id=album.id,
+            name=album.name,
+            imageUrl=album.images[0].url,
+            total_tracks=album.total_tracks,
+            release_date=date.fromisoformat(album.release_date),
+            type=album.album_type.value,
+            uri=album.uri,
+            external_url=album.external_urls.spotify,
+            artist_ids=[artist.id for artist in album.artists if artist.id]
+            if album.artists
             else [],
         )
 
     def _to_artist(self, raw_artist: ArtistObject):
+        artist = ArtistObject.model_validate(raw_artist)
         return Artist(
-            id=raw_artist.id,
-            name=raw_artist.name,
-            imageUrl=raw_artist.images[0].url if raw_artist.images else None,
-            uri=raw_artist.uri,
-            external_url=raw_artist.external_urls.spotify
-            if raw_artist.external_urls
-            else None,
+            id=artist.id,
+            name=artist.name,
+            imageUrl=artist.images[0].url if artist.images else None,
+            uri=artist.uri,
+            external_url=artist.external_urls.spotify if artist.external_urls else None,
         )
