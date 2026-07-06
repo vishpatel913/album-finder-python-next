@@ -45,8 +45,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List Artist */
-        get: operations["list_artist_artist__get"];
+        /** List Artists */
+        get: operations["list_artists_artist__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -62,10 +62,27 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Artist */
-        get: operations["get_artist_artist__artist_id__get"];
+        /** Get Artist By Id */
+        get: operations["get_artist_by_id_artist__artist_id__get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/artist/{artist_id}/enrich": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enrich Artist By Id */
+        post: operations["enrich_artist_by_id_artist__artist_id__enrich_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -79,8 +96,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List Album */
-        get: operations["list_album_album__get"];
+        /** List Albums */
+        get: operations["list_albums_album__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -96,8 +113,161 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get Album By Id */
+        get: operations["get_album_by_id_album__album_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/album/{album_id}/enrich": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enrich Album By Id */
+        post: operations["enrich_album_by_id_album__album_id__enrich_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/track/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Track */
+        get: operations["list_track_track__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/track/{track_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Track */
+        get: operations["get_track_track__track_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/album": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search Albums */
+        get: operations["search_albums_search_album_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/album/{album_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
         /** Get Album */
-        get: operations["get_album_album__album_id__get"];
+        get: operations["get_album_search_album__album_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/album/{album_id}/tracks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Album Tracks */
+        get: operations["get_album_tracks_search_album__album_id__tracks_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/artist": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search Artists */
+        get: operations["search_artists_search_artist_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/artist/{artist_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Artist */
+        get: operations["get_artist_search_artist__artist_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/artist/{artist_id}/albums": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Artist Albums */
+        get: operations["get_artist_albums_search_artist__artist_id__albums_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -110,18 +280,85 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Album */
+        Album: {
+            /** Id */
+            id: string | null;
+            /** Name */
+            name: string | null;
+            /** Image Url */
+            image_url: string | null;
+            /** Total Tracks */
+            total_tracks: number | null;
+            /** Release Date */
+            release_date: string | null;
+            /** Type */
+            type: ("album" | "single" | "compilation") | null;
+            /** Uri */
+            uri: string | null;
+            /** External Url */
+            external_url: string | null;
+            /** Artists */
+            artists: components["schemas"]["Artist"][];
+        };
         /** AlbumRead */
         AlbumRead: {
             /** Id */
             id: string;
             /** Name */
             name: string;
+            /** Artist Id */
+            artist_id?: string | null;
+            /** Date Added */
+            date_added: string;
             /** Genre */
-            genre: string;
+            genre?: string | null;
             /** Year */
-            year: number;
+            year?: number | null;
             /** Is Compilation */
             is_compilation: boolean;
+            /** Artwork Url */
+            artwork_url?: string | null;
+            /** Spotify Id */
+            spotify_id?: string | null;
+        };
+        /**
+         * AlbumWithArtist
+         * @description An album with its (many-to-one) artist resolved.
+         */
+        AlbumWithArtist: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Artist Id */
+            artist_id?: string | null;
+            /** Date Added */
+            date_added: string;
+            /** Genre */
+            genre?: string | null;
+            /** Year */
+            year?: number | null;
+            /** Is Compilation */
+            is_compilation: boolean;
+            /** Artwork Url */
+            artwork_url?: string | null;
+            /** Spotify Id */
+            spotify_id?: string | null;
+            artist?: components["schemas"]["ArtistRead"] | null;
+        };
+        /** Artist */
+        Artist: {
+            /** Id */
+            id: string | null;
+            /** Name */
+            name: string | null;
+            /** Image Url */
+            image_url: string | null;
+            /** Uri */
+            uri: string | null;
+            /** External Url */
+            external_url: string | null;
         };
         /** ArtistRead */
         ArtistRead: {
@@ -129,11 +366,73 @@ export interface components {
             id: string;
             /** Name */
             name: string;
+            /** Image Url */
+            image_url?: string | null;
+            /** Spotify Id */
+            spotify_id?: string | null;
+        };
+        /**
+         * ArtistWithAlbums
+         * @description An artist with its (one-to-many) albums resolved.
+         */
+        ArtistWithAlbums: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Image Url */
+            image_url?: string | null;
+            /** Spotify Id */
+            spotify_id?: string | null;
+            /**
+             * Albums
+             * @default []
+             */
+            albums: components["schemas"]["AlbumRead"][];
         };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** Track */
+        Track: {
+            /** Id */
+            id: string | null;
+            /** Name */
+            name: string | null;
+            album: components["schemas"]["Album"] | null;
+            /** Artists */
+            artists: components["schemas"]["Artist"][];
+            /** Track Number */
+            track_number: number | null;
+            /** Disc Number */
+            disc_number: number | null;
+            /** Uri */
+            uri: string | null;
+            /** Explicit */
+            explicit: boolean | null;
+            /** External Url */
+            external_url: string | null;
+        };
+        /** TrackRead */
+        TrackRead: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Artist */
+            artist: string;
+            /** Track Number */
+            track_number: number | null;
+            /** Track Length */
+            track_length: number;
+            /** Date Added */
+            date_added: string;
+            /** Play Count */
+            play_count: number | null;
+            /** Spotify Id */
+            spotify_id?: string | null;
         };
         /** ValidationError */
         ValidationError: {
@@ -201,7 +500,7 @@ export interface operations {
             };
         };
     };
-    list_artist_artist__get: {
+    list_artists_artist__get: {
         parameters: {
             query?: never;
             header?: never;
@@ -216,17 +515,17 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ArtistRead"][];
+                    "application/json": components["schemas"]["ArtistWithAlbums"][];
                 };
             };
         };
     };
-    get_artist_artist__artist_id__get: {
+    get_artist_by_id_artist__artist_id__get: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                artist_id: number;
+                artist_id: string;
             };
             cookie?: never;
         };
@@ -238,7 +537,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ArtistRead"];
+                    "application/json": components["schemas"]["ArtistWithAlbums"];
                 };
             };
             /** @description Validation Error */
@@ -252,7 +551,38 @@ export interface operations {
             };
         };
     };
-    list_album_album__get: {
+    enrich_artist_by_id_artist__artist_id__enrich_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                artist_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArtistRead"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_albums_album__get: {
         parameters: {
             query?: never;
             header?: never;
@@ -267,17 +597,17 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AlbumRead"][];
+                    "application/json": components["schemas"]["AlbumWithArtist"][];
                 };
             };
         };
     };
-    get_album_album__album_id__get: {
+    get_album_by_id_album__album_id__get: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                album_id: number;
+                album_id: string;
             };
             cookie?: never;
         };
@@ -289,7 +619,275 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AlbumRead"];
+                    "application/json": components["schemas"]["AlbumWithArtist"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    enrich_album_by_id_album__album_id__enrich_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                album_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AlbumRead"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_track_track__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrackRead"][];
+                };
+            };
+        };
+    };
+    get_track_track__track_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                track_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrackRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_albums_search_album_get: {
+        parameters: {
+            query: {
+                q: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Album"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_album_search_album__album_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                album_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Album"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_album_tracks_search_album__album_id__tracks_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                album_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Track"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_artists_search_artist_get: {
+        parameters: {
+            query: {
+                q: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Artist"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_artist_search_artist__artist_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                artist_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Artist"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_artist_albums_search_artist__artist_id__albums_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                artist_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Album"][];
                 };
             };
             /** @description Validation Error */
