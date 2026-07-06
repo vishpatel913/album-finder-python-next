@@ -104,11 +104,12 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
     def _to_album(self, raw_album: SimplifiedAlbumObject) -> Album:
         album = SimplifiedAlbumObject.model_validate(raw_album)
         artists = [artist for raw in album.artists if (artist := self._to_artist(raw))]
+        image_url = album.images[0].url if album.images[0] else None
 
         return Album(
             id=album.id,
             name=album.name,
-            image_url=album.images[0].url,
+            image_url=image_url,
             total_tracks=album.total_tracks,
             release_date=album.release_date,
             type=album.album_type.value,
