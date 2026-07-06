@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from api.dependencies import get_enrichment_service
 from application.ports.enrichment import MusicEnrichmentPort
-from application.ports.enrichment_types import Album, Artist
+from application.ports.enrichment_types import Album, Artist, Track
 
 router = APIRouter(prefix="/search", tags=["search"])
 
@@ -23,6 +23,17 @@ def get_album(
     album_id: str, spotify_client: MusicEnrichmentPort = Depends(get_enrichment_service)
 ):
     res = spotify_client.get_album(album_id)
+    if res is None:
+        return []
+
+    return res
+
+
+@router.get("/album/{album_id}/tracks", response_model=list[Track])
+def get_album_tracks(
+    album_id: str, spotify_client: MusicEnrichmentPort = Depends(get_enrichment_service)
+):
+    res = spotify_client.get_album_tracks(album_id)
     if res is None:
         return []
 

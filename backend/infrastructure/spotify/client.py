@@ -16,12 +16,14 @@ from application.ports.enrichment_types import (
     Artist,
     SearchResult,
     SearchResultItems,
+    Track,
 )
 from infrastructure.spotify.error_handling import handle_validation_errors
 from infrastructure.types.generated import (
     ArtistObject,
     SimplifiedAlbumObject,
     SimplifiedArtistObject,
+    SimplifiedTrackObject,
 )
 
 RawSearchResponse = TypeVar("RawSearchResponse", bound=BaseModel)
@@ -87,17 +89,21 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
 
         return albums
 
-    def get_album_tracks(self, id: str) -> None:
-        raise NotImplementedError
+    def get_album_tracks(self, id: str) -> list[Track] | None:
+        raw_response = self.spotifyClient.album_tracks(album_id=id)
+        if raw_response is None:
+            return None
+
+        tracks = []
+        for item in raw_response.get("items") or []:
+            tracks.append(self._to_track(item))
+
+        return tracks
 
     @handle_validation_errors
     def _to_album(self, raw_album: SimplifiedAlbumObject) -> Album:
         album = SimplifiedAlbumObject.model_validate(raw_album)
-        artists = [
-            artist
-            for raw in album.artists
-            if (artist := self._to_artist(raw)) is not None
-        ]
+        artists = [artist for raw in album.artists if (artist := self._to_artist(raw))]
 
         return Album(
             id=album.id,
@@ -126,4 +132,25 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
             image_url=image_url,
             uri=artist.uri,
             external_url=artist.external_urls.spotify if artist.external_urls else None,
+        )
+
+    @handle_validation_errors
+    def _to_track(self, raw_track: SimplifiedTrackObject) -> Track:
+        track = SimplifiedTrackObject.model_validate(raw_track)
+        artists = (
+            [artist for raw in track.artists if (artist := self._to_artist(raw))]
+            if track.artists
+            else []
+        )
+
+        return Track(
+            id=track.id,
+            name=track.name,
+            uri=track.uri,
+            external_url=track.external_urls.spotify if track.external_urls else None,
+            track_number=track.track_number,
+            disc_number=track.disc_number,
+            explicit=track.explicit,
+            artists=artists,
+            album=None,
         )

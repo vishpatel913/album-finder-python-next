@@ -28,14 +28,14 @@ class Artist(BaseModel):
 
 
 class Track(BaseModel):
-    id: str
-    name: str
-    album_id: str
+    id: str | None
+    name: str | None
+    album: Album | None
     artists: list[Artist]
-    track_number: int
+    track_number: int | None
     disc_number: int | None
-    uri: str
-    explicit: bool
+    uri: str | None
+    explicit: bool | None
     external_url: str | None
 
 
