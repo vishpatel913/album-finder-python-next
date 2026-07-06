@@ -16,7 +16,7 @@ class Album(BaseModel):
     type: AlbumType | None
     uri: str | None
     external_url: str | None
-    artist_ids: list[str]
+    artists: list[Artist]
 
 
 class Artist(BaseModel):
@@ -31,7 +31,7 @@ class Track(BaseModel):
     id: str
     name: str
     album_id: str
-    artist_ids: list[str]
+    artists: list[Artist]
     track_number: int
     disc_number: int | None
     uri: str

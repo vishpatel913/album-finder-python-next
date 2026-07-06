@@ -21,6 +21,7 @@ from infrastructure.spotify.error_handling import handle_validation_errors
 from infrastructure.types.generated import (
     ArtistObject,
     SimplifiedAlbumObject,
+    SimplifiedArtistObject,
 )
 
 RawSearchResponse = TypeVar("RawSearchResponse", bound=BaseModel)
@@ -89,13 +90,15 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
     def get_album_tracks(self, id: str) -> None:
         raise NotImplementedError
 
-    def _get_artist_ids(self, raw: dict):
-        artists = raw.get("artists") or []
-        return [a["id"] for a in artists]
-
     @handle_validation_errors
-    def _to_album(self, raw_album: SimplifiedAlbumObject):
+    def _to_album(self, raw_album: SimplifiedAlbumObject) -> Album:
         album = SimplifiedAlbumObject.model_validate(raw_album)
+        artists = [
+            artist
+            for raw in album.artists
+            if (artist := self._to_artist(raw)) is not None
+        ]
+
         return Album(
             id=album.id,
             name=album.name,
@@ -105,18 +108,22 @@ class SpotifyEnrichmentClient(MusicEnrichmentPort):
             type=album.album_type.value,
             uri=album.uri,
             external_url=album.external_urls.spotify,
-            artist_ids=[artist.id for artist in album.artists if artist.id]
-            if album.artists
-            else [],
+            artists=artists,
         )
 
     @handle_validation_errors
-    def _to_artist(self, raw_artist: ArtistObject):
-        artist = ArtistObject.model_validate(raw_artist)
+    def _to_artist(self, raw_artist: ArtistObject | SimplifiedArtistObject) -> Artist:
+        artist = SimplifiedArtistObject.model_validate(raw_artist)
+
+        image_url = None
+        if isinstance(raw_artist, ArtistObject):
+            images = raw_artist.images if raw_artist.images else []
+            image_url = images[0].url if images[0] else None
+
         return Artist(
             id=artist.id,
             name=artist.name,
-            image_url=artist.images[0].url if artist.images else None,
+            image_url=image_url,
             uri=artist.uri,
             external_url=artist.external_urls.spotify if artist.external_urls else None,
         )
