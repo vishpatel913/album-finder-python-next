@@ -22,7 +22,7 @@ class AbstractAlbumRepository(ABC):
     def update(self, id: str, fields: dict) -> Album | None: ...
 
     @abstractmethod
-    def upsert(self, entity: Album) -> None: ...
+    def upsert(self, entity: Album) -> Album: ...
 
     @abstractmethod
     def delete(self, id: str) -> bool: ...
@@ -63,15 +63,16 @@ class SqlAlbumRepository(AbstractAlbumRepository):
         self.session.refresh(album)
         return album
 
-    def upsert(self, entity: Album) -> None:
-        """Stage an insert or in-place update by id. Caller owns the transaction."""
+    def upsert(self, entity: Album) -> Album:
+        """Insert, or merge only the fields the caller set. Returns the managed row."""
         existing = self.session.get(Album, entity.id)
         if existing is None:
             self.session.add(entity)
-        else:
-            for key, value in entity.model_dump(exclude={"id"}).items():
-                setattr(existing, key, value)
-            self.session.add(existing)
+            return entity
+        for key, value in entity.model_dump(exclude={"id"}, exclude_unset=True).items():
+            setattr(existing, key, value)
+        self.session.add(existing)
+        return existing
 
     def delete(self, id: str) -> bool:
         """Delete by id. Returns True if a row was removed, False if not found."""
