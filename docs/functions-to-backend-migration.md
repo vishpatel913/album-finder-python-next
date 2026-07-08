@@ -28,14 +28,12 @@ Working reference in `functions/`:
 - [functions/api/deps.py](functions/api/deps.py) — `get_spotify_user()`, `_user_auth_manager()`, `user_token_cache_path()`: the out-of-band consent + cached-refresh-token pattern (headless server, `open_browser=False`).
 - [functions/api/routes/spotify.py](functions/api/routes/spotify.py) — `GET /library/contains` (initial like-state, chunked 50 artist / 20 album) and `POST /library/toggle` (follow/unfollow, save/remove).
 
-TODO:
-- [ ] Decide scope: full OAuth flow now, or just port the follow/save calls behind the existing client-credentials setup.
-- [ ] Implement `SpotifyOAuth` (or wrap spotipy's `SpotifyOAuth` as the old code did) with token persistence.
-- [ ] Add a user-authorised client provider in `backend/api/dependencies.py` (mirror `get_enrichment_service`).
-- [ ] Add `contains` + `toggle` endpoints — likely a new `backend/api/routes/library.py` or fold into `search`/a new `spotify` router. Follow DDD: route → application command → port.
-- [ ] Extend `MusicEnrichmentPort` (or a new `LibraryPort`) with follow/save/contains, implement in `infrastructure/spotify`.
-- [ ] Port the one-time consent script → `backend/scripts/spotify_authorize.py`.
-- [ ] Re-point [docs/spotify-write-access.md](docs/spotify-write-access.md) at the new backend — it currently documents the **old** `functions/` impl (`functions/venv`, `/api/spotify/...` paths). Its dashboard-setup + FE-wiring sections are still valid.
+**Full plan, design and task breakdown lives in
+[spotify-write-access-backend.md](spotify-write-access-backend.md)** — a
+from-scratch backend design (user table + per-user tokens in the DB, not the old
+single-user file cache). Work item 1 from that doc, not this checklist. The old
+`functions/`-specific doc has been deleted; its reusable dashboard-setup + FE
+wiring were carried into the new doc (concrete FE snippets remain in git history).
 
 ---
 
