@@ -11,26 +11,38 @@ from pathlib import Path
 import pytest
 from sqlalchemy import Null
 
-from libs.music_library.parser import extract_albums, extract_artists, parse_library
+from libs.music_library.parser import MusicLibraryParser
 
 FIXTURE_PATH = Path(__file__).parent.parent / "fixtures" / "sample_library.xml"
 
 
 @pytest.fixture(scope="module")
-def parsed_tracks() -> list[dict]:
-    return parse_library(FIXTURE_PATH)
+def library_parser_fixture() -> MusicLibraryParser:
+    return MusicLibraryParser(FIXTURE_PATH)
 
 
 def track_by_id(tracks: list[dict], persistent_id: str) -> dict:
     return next(t for t in tracks if t["id"] == persistent_id)
 
 
-class TestParseLibrary:
-    def test_parses_all_tracks(self, parsed_tracks):
-        assert len(parsed_tracks) == 17
+def make_parser(tracks: list[dict]) -> MusicLibraryParser:
+    # skip __init__, no file needed
+    parser = MusicLibraryParser.__new__(MusicLibraryParser)
+    parser.parsed_tracks = tracks
+    return parser
 
-    def test_maps_full_track(self, parsed_tracks):
+
+class TestParseLibrary:
+    def test_missing_file_raises(self, tmp_path):
+        with pytest.raises(FileNotFoundError):
+            MusicLibraryParser(tmp_path / "nope.xml")
+
+    def test_parses_all_tracks(self, library_parser_fixture: MusicLibraryParser):
+        assert len(library_parser_fixture.get_tracks()) == 17
+
+    def test_maps_full_track(self, library_parser_fixture: MusicLibraryParser):
         # Wonderwall — has every field the parser maps.
+        parsed_tracks = library_parser_fixture.get_tracks()
         track = track_by_id(parsed_tracks, "875F57138A9A149E")
         assert track == {
             "id": "875F57138A9A149E",
@@ -51,26 +63,27 @@ class TestParseLibrary:
             "compilation": False,
         }
 
-    def test_compilation_flag(self, parsed_tracks):
+    def test_compilation_flag(self, library_parser_fixture: MusicLibraryParser):
+        parsed_tracks = library_parser_fixture.get_tracks()
         sunflower = track_by_id(parsed_tracks, "49B2579F7514DB60")
         assert sunflower["compilation"] is True
         assert sunflower["album_artist"] == "Various Artists"
 
-    def test_absent_rating_fields_are_none(self, parsed_tracks):
+    def test_absent_rating_fields_are_none(
+        self, library_parser_fixture: MusicLibraryParser
+    ):
         # Pond track has no Album Rating / Album Rating Computed keys.
+        parsed_tracks = library_parser_fixture.get_tracks()
         track = track_by_id(parsed_tracks, "08FFAFD928568233")
         assert track["album_rating"] is None
         assert track["album_rating_computed"] is None
         assert track["compilation"] is False
 
-    def test_dates_are_iso_strings(self, parsed_tracks):
+    def test_dates_are_iso_strings(self, library_parser_fixture: MusicLibraryParser):
+        parsed_tracks = library_parser_fixture.get_tracks()
         for track in parsed_tracks:
             assert isinstance(track["date_added"], str)
             assert "T" in track["date_added"]
-
-    def test_missing_file_raises(self, tmp_path):
-        with pytest.raises(FileNotFoundError):
-            parse_library(tmp_path / "nope.xml")
 
     def test_sparse_track_defaults(self, tmp_path):
         library = {
@@ -86,7 +99,8 @@ class TestParseLibrary:
         with xml_path.open("wb") as fh:
             plistlib.dump(library, fh)
 
-        (track,) = parse_library(xml_path)
+        parser = MusicLibraryParser(xml_path)
+        (track,) = parser.get_tracks()
         assert track["id"] == ""
         assert track["name"] == "Oblivion"
         assert track["artist"] == "Grimes"
@@ -106,13 +120,17 @@ class TestParseLibrary:
 
 
 class TestExtractAlbums:
-    def test_dedupes_by_album_artist_and_album(self, parsed_tracks):
-        albums = extract_albums(parsed_tracks)
+    def test_dedupes_by_album_artist_and_album(
+        self, library_parser_fixture: MusicLibraryParser
+    ):
+        albums = library_parser_fixture.get_albums()
         keys = [(a["album_artist"], a["album"]) for a in albums]
         assert len(keys) == len(set(keys)) == 12
 
-    def test_same_album_name_different_artists_kept_separate(self, parsed_tracks):
-        albums = extract_albums(parsed_tracks)
+    def test_same_album_name_different_artists_kept_separate(
+        self, library_parser_fixture: MusicLibraryParser
+    ):
+        albums = library_parser_fixture.get_albums()
         various = [a for a in albums if a["album_artist"] == "Various Artists"]
         assert {a["album"] for a in various} == {
             "Top 40 Singles 2008",
@@ -120,8 +138,8 @@ class TestExtractAlbums:
             "The Umbrella Academy",
         }
 
-    def test_album_fields(self, parsed_tracks):
-        albums = extract_albums(parsed_tracks)
+    def test_album_fields(self, library_parser_fixture: MusicLibraryParser):
+        albums = library_parser_fixture.get_albums()
         gkmc = next(a for a in albums if a["album"] == "good kid, m.A.A.d city")
         assert gkmc == {
             "artist": "Kendrick Lamar",
@@ -141,7 +159,8 @@ class TestExtractAlbums:
             {"album_artist": "Grimes", "artist": "Grimes"},
             {"album": "Art Angels", "album_artist": "Grimes", "artist": "Grimes"},
         ]
-        albums = extract_albums(tracks)
+        parser = make_parser(tracks)
+        albums = parser.get_albums()
         assert len(albums) == 1
         assert albums[0]["album"] == "Art Angels"
 
@@ -152,13 +171,14 @@ class TestExtractAlbums:
             {"album": "Art Angels", "album_artist": "Grimes", "genre": "Electronic"},
             {"album": "Art Angels", "album_artist": "Grimes", "genre": "Pop"},
         ]
-        (album,) = extract_albums(tracks)
+        parser = make_parser(tracks)
+        (album,) = parser.get_albums()
         assert album["genre"] == "Pop"
 
 
 class TestExtractArtists:
-    def test_dedupes_by_album_artist(self, parsed_tracks):
-        artists = extract_artists(parsed_tracks)
+    def test_dedupes_by_album_artist(self, library_parser_fixture: MusicLibraryParser):
+        artists = library_parser_fixture.get_artists()
         names = [a["album_artist"] for a in artists]
         assert len(names) == len(set(names)) == 9
         assert set(names) == {
@@ -173,8 +193,8 @@ class TestExtractArtists:
             "Grimes",
         }
 
-    def test_artist_fields(self, parsed_tracks):
-        artists = extract_artists(parsed_tracks)
+    def test_artist_fields(self, library_parser_fixture: MusicLibraryParser):
+        artists = library_parser_fixture.get_artists()
         haim = next(a for a in artists if a["album_artist"] == "HAIM")
         assert haim == {"album_artist": "HAIM", "artist": "HAIM"}
 
@@ -183,4 +203,5 @@ class TestExtractArtists:
             {"album_artist": "", "artist": "Adam Levine"},
             {"artist": "Adam Levine"},
         ]
-        assert extract_artists(tracks) == []
+        parser = make_parser(tracks)
+        assert parser.get_artists() == []

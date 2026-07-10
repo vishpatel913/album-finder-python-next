@@ -17,27 +17,24 @@ from domain.album.repository import SqlAlbumRepository
 from domain.artist.model import Artist
 from domain.artist.repository import SqlArtistRepository
 from infrastructure.database.session import session_scope
-from libs.music_library.parser import (
-    extract_albums,
-    extract_artists,
-    parse_library,
-)
+from libs.music_library.parser import MusicLibraryParser
 
 
 def seed_library(data_path: Path) -> None:
     """Parse the library at ``data_path`` and upsert artists, albums, tracks."""
-    parsed_tracks = parse_library(data_path)
+    parser = MusicLibraryParser(data_path)
+    parsed_tracks = parser.get_tracks()
     print(f"parsed {len(parsed_tracks)} tracks from {data_path}")
 
     with session_scope() as session:
         artists = SqlArtistRepository(session)
         albums = SqlAlbumRepository(session)
 
-        for entry in extract_artists(parsed_tracks):
+        for entry in parser.get_artists():
             artists.upsert(Artist.model_validate(ArtistCreate.from_library(entry)))
         session.flush()
 
-        for entry in extract_albums(parsed_tracks):
+        for entry in parser.get_albums():
             albums.upsert(Album.model_validate(AlbumCreate.from_library(entry)))
         session.flush()
 
