@@ -1,16 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { albumsQuery } from "@/lib/queries";
-import { AlbumTile } from "@/components/album-tile";
-import { LibraryAlbum } from "@/components/library-album";
+import { artistsQuery } from "@/lib/queries";
 
-export function AlbumsPage() {
-  const { data, isLoading, error } = useQuery(albumsQuery());
+export function ArtistsPage() {
+  const { data, isLoading, error } = useQuery(artistsQuery());
   const [search, setSearch] = useState("");
 
   // Client-side filter for now; swap for a backend search endpoint later by
   // moving this into the queryKey + queryFn.
-  const albums = useMemo(() => {
+  const artists = useMemo(() => {
     if (!data) return [];
     const q = search.trim().toLowerCase();
     if (!q) return data;
@@ -29,13 +28,21 @@ export function AlbumsPage() {
         className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100 placeholder:text-zinc-500 focus:border-brand focus:outline-none"
       />
 
-      <ul className="grid grid-cols-5 w-full gap-4">
-        {albums.map((album) => (
-          <LibraryAlbum {...album} />
+      <ul className="divide-y divide-zinc-800 rounded-lg border border-zinc-800">
+        {artists.map((artist) => (
+          <li key={artist.id}>
+            <Link
+              to="/artist/$artistId"
+              params={{ artistId: artist.id }}
+              className="flex items-center justify-between px-4 py-3 hover:bg-zinc-900"
+            >
+              <span className="font-medium text-zinc-100">{artist.name}</span>
+            </Link>
+          </li>
         ))}
-        {albums.length === 0 && (
+        {artists.length === 0 && (
           <li className="px-4 py-6 text-center text-zinc-500">
-            No albums match.
+            No artists match.
           </li>
         )}
       </ul>

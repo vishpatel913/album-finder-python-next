@@ -4,13 +4,15 @@ import {
   createRouter,
   Link,
   Outlet,
-} from '@tanstack/react-router'
-import { AlbumsPage } from './routes/albums'
-import { AlbumDetailPage } from './routes/album-detail'
+} from "@tanstack/react-router";
+import { AlbumsPage } from "./routes/albums";
+import { AlbumDetailPage } from "./routes/album-detail";
+import { ArtistsPage } from "./routes/artists";
+import { ArtistDetailPage } from "./routes/artist-details";
 
 // Code-based routing keeps the whole route tree visible in one file — no
 // codegen step. If this grows, TanStack's file-based routing is the upgrade.
-const rootRoute = createRootRoute({ component: RootLayout })
+const rootRoute = createRootRoute({ component: RootLayout });
 
 function RootLayout() {
   return (
@@ -26,27 +28,44 @@ function RootLayout() {
         <Outlet />
       </main>
     </div>
-  )
+  );
 }
 
-const indexRoute = createRoute({
+const albumsRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/',
+  path: "/albums",
   component: AlbumsPage,
-})
+});
 
 const albumRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/album/$albumId',
+  path: "/album/$albumId",
   component: AlbumDetailPage,
-})
+});
 
-const routeTree = rootRoute.addChildren([indexRoute, albumRoute])
+const artistsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/artists",
+  component: ArtistsPage,
+});
 
-export const router = createRouter({ routeTree })
+const artistRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/artist/$artistId",
+  component: ArtistDetailPage,
+});
 
-declare module '@tanstack/react-router' {
+const routeTree = rootRoute.addChildren([
+  albumsRoute,
+  albumRoute,
+  artistsRoute,
+  artistRoute,
+]);
+
+export const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
   interface Register {
-    router: typeof router
+    router: typeof router;
   }
 }
