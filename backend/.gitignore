@@ -19,6 +19,7 @@ var/
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
 
 *.manifest
 *.spec
@@ -46,6 +47,8 @@ instance/
 
 # Scrapy stuff:
 .scrapy
+
+.ruff_cache/
 
 # IPython
 profile_default/
