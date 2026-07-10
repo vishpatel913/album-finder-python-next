@@ -27,6 +27,11 @@ datamodel-code-generator = "^0.67.0"
 [tool.poetry]
 package-mode = false
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# backend/ is the import root (matches Docker), so tests import `libs.*` directly.
+pythonpath = ["."]
+
 [tool.pyright]
 # "standard" (pyright's default) suits SQLModel/FastAPI: it catches real type
 # bugs without drowning in reportUnknown* noise from the untyped ORM boundary.
