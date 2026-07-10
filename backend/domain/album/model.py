@@ -9,7 +9,7 @@ from sqlmodel import Field, SQLModel
 
 class AlbumBase(SQLModel):
     name: str = Field(index=True)
-    artist_id: str = Field(default="unknown", foreign_key="artist.id")
+    artist_id: str | None = Field(default="unknown", foreign_key="artist.id")
     genre: str | None = None
     year: int | None = None
     date_added: str

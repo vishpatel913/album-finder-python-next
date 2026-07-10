@@ -46,7 +46,7 @@ def list_albums_with_artist(
     results: list[AlbumWithArtist] = []
     for album in albums:
         item = AlbumWithArtist.model_validate(album, from_attributes=True)
-        artist = by_id.get(album.artist_id)
+        artist = by_id.get(album.artist_id) if album.artist_id else None
         item.artist = (
             ArtistRead.model_validate(artist, from_attributes=True) if artist else None
         )
