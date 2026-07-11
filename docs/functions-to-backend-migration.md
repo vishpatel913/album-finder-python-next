@@ -20,13 +20,13 @@ Status key: ⬜ not started · 🔄 in progress · ✅ done · 🗑️ decided a
 Assess: do we want "like" (follow artist / save album) in the MVP now, or defer?
 
 Backend today:
-- [backend/infrastructure/auth/spotify_oauth.py](backend/infrastructure/auth/spotify_oauth.py) — `authorize_url` / `exchange_code` / `refresh` all `raise NotImplementedError`.
-- [backend/api/auth.py](backend/api/auth.py) — `get_current_user` always raises 501.
-- [backend/application/ports/identity.py](backend/application/ports/identity.py) — `IdentityPort` exists, no adapter.
+- [backend/infrastructure/auth/spotify_oauth.py](../backend/infrastructure/auth/spotify_oauth.py) — `authorize_url` / `exchange_code` / `refresh` all `raise NotImplementedError`.
+- [backend/api/auth.py](../backend/api/auth.py) — `get_current_user` always raises 501.
+- [backend/application/ports/identity.py](../backend/application/ports/identity.py) — `IdentityPort` exists, no adapter.
 
 Working reference in `functions/`:
-- [functions/api/deps.py](functions/api/deps.py) — `get_spotify_user()`, `_user_auth_manager()`, `user_token_cache_path()`: the out-of-band consent + cached-refresh-token pattern (headless server, `open_browser=False`).
-- [functions/api/routes/spotify.py](functions/api/routes/spotify.py) — `GET /library/contains` (initial like-state, chunked 50 artist / 20 album) and `POST /library/toggle` (follow/unfollow, save/remove).
+- [functions/api/deps.py](../functions/api/deps.py) — `get_spotify_user()`, `_user_auth_manager()`, `user_token_cache_path()`: the out-of-band consent + cached-refresh-token pattern (headless server, `open_browser=False`).
+- [functions/api/routes/spotify.py](../functions/api/routes/spotify.py) — `GET /library/contains` (initial like-state, chunked 50 artist / 20 album) and `POST /library/toggle` (follow/unfollow, save/remove).
 
 **Full plan, design and task breakdown lives in
 [spotify-write-access-backend.md](spotify-write-access-backend.md)** — a
@@ -41,10 +41,10 @@ wiring were carried into the new doc (concrete FE snippets remain in git history
 
 **Relevance: HIGH.** Contains a live-crash fix (see 2a). The rest is feature
 logic the MVP parser dropped — assess per sub-item; ingestion is the natural
-time to do this. Backend parser: [backend/libs/music_library/parser.py](backend/libs/music_library/parser.py). Source: [functions/resources/music_library.py](functions/resources/music_library.py).
+time to do this. Backend parser: [backend/libs/music_library/parser.py](../backend/libs/music_library/parser.py). Source: [functions/resources/music_library.py](../functions/resources/music_library.py).
 
 ### 2a. No-match guard on enrichment — ⬜
-**Do this regardless — it's a bug, not a feature.** [backend/application/artists/commands.py](backend/application/artists/commands.py) and [backend/application/albums/commands.py](backend/application/albums/commands.py) take `results[0]` with no empty check → `IndexError`/500 on any unmatched artist/album. Old resolvers fail soft and cache the miss ([functions/resources/artist_resolver.py](functions/resources/artist_resolver.py), [functions/resources/album_resolver.py](functions/resources/album_resolver.py)).
+**Do this regardless — it's a bug, not a feature.** [backend/application/artists/commands.py](../backend/application/artists/commands.py) and [backend/application/albums/commands.py](../backend/application/albums/commands.py) take `results[0]` with no empty check → `IndexError`/500 on any unmatched artist/album. Old resolvers fail soft and cache the miss ([functions/resources/artist_resolver.py](../functions/resources/artist_resolver.py), [functions/resources/album_resolver.py](../functions/resources/album_resolver.py)).
 - [ ] Guard both `enrich_*` commands against empty search results; return `None`.
 
 ### 2b. Compilation / Various-Artists regrouping — ⬜
@@ -52,7 +52,7 @@ Group comp tracks under the real performer, not a junk "Various Artists" bucket.
 - [ ] Port into the parser's per-track artist resolution.
 
 ### 2c. Featured-artist extraction — ⬜
-Backend has this **commented out** at [backend/libs/music_library/parser.py:24](backend/libs/music_library/parser.py#L24). Source: `_extract_featured`, `_split_featured`, `_FEATURED_RE`, `_FEATURED_SPLIT_RE`.
+Backend has this **commented out** at [backend/libs/music_library/parser.py:24](../backend/libs/music_library/parser.py#L24). Source: `_extract_featured`, `_split_featured`, `_FEATURED_RE`, `_FEATURED_SPLIT_RE`.
 - [ ] Port regexes; decide where `featured` / `featured_artists` land in the track model + DB.
 
 ### 2d. Near-duplicate artist detection — ⬜
@@ -76,9 +76,9 @@ Timestamped, idempotent (mtime-keyed) backup of `Library.xml`. Source: `snapshot
 ## 3. Spotify client hardening — ⬜
 
 **Relevance: MEDIUM, quick win.** Backend's spotipy client has **no timeout and
-no retries** ([backend/infrastructure/spotify/client.py](backend/infrastructure/spotify/client.py)) — it can hang indefinitely — and Spotify errors aren't mapped to HTTP responses.
+no retries** ([backend/infrastructure/spotify/client.py](../backend/infrastructure/spotify/client.py)) — it can hang indefinitely — and Spotify errors aren't mapped to HTTP responses.
 
-Source: [functions/api/deps.py](functions/api/deps.py) (`requests_timeout=10, retries=2`) and [functions/api/main.py](functions/api/main.py) (exception handlers → clean 503s).
+Source: [functions/api/deps.py](../functions/api/deps.py) (`requests_timeout=10, retries=2`) and [functions/api/main.py](../functions/api/main.py) (exception handlers → clean 503s).
 
 TODO:
 - [ ] Add `requests_timeout` + `retries` when constructing `spotipy.Spotify` in `SpotifyEnrichmentClient.__init__`.
@@ -89,9 +89,9 @@ TODO:
 ## 4. Keep as reference — do NOT port yet — ⬜
 
 **Relevance: LOW now, revisit when match quality bites.**
-- **Artist override concept** — [functions/resources/artist_overrides.py](functions/resources/artist_overrides.py) (inert stub). Design: `search_as` (alt search term) / `spotify_id` (pin exact entity) for wrong/ambiguous matches. Backend has no scored matching, so this becomes relevant once bad matches appear.
-- **Filter/sort query surface** — [functions/api/routes/library.py](functions/api/routes/library.py) + [functions/api/schemas.py](functions/api/schemas.py) document the query params the old FE expected (`genre`, `vibe`, `year_from/to`, `added_after`, sort enums). Backend serves DB-backed DTOs instead, but this is a useful spec of FE expectations.
-- **Spotify enrichment fields** — old `ArtistResolver` captured `genres`, `popularity`, `followers`; backend's [enrichment_types.py](backend/application/ports/enrichment_types.py) `Artist` does not. The old FE "vibe" filter needed Spotify genres — add these fields if that feature returns.
+- **Artist override concept** — [functions/resources/artist_overrides.py](../functions/resources/artist_overrides.py) (inert stub). Design: `search_as` (alt search term) / `spotify_id` (pin exact entity) for wrong/ambiguous matches. Backend has no scored matching, so this becomes relevant once bad matches appear.
+- **Filter/sort query surface** — [functions/api/routes/library.py](../functions/api/routes/library.py) + [functions/api/schemas.py](../functions/api/schemas.py) document the query params the old FE expected (`genre`, `vibe`, `year_from/to`, `added_after`, sort enums). Backend serves DB-backed DTOs instead, but this is a useful spec of FE expectations.
+- **Spotify enrichment fields** — old `ArtistResolver` captured `genres`, `popularity`, `followers`; backend's [enrichment_types.py](../backend/application/ports/enrichment_types.py) `Artist` does not. The old FE "vibe" filter needed Spotify genres — add these fields if that feature returns.
 - [ ] (No action — checkbox to mark once consciously reviewed.)
 
 ---

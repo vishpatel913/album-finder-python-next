@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { artistsQuery } from "@/lib/queries";
+import { SpotifyEnrichButton } from "@/components/spotify-enrich";
 
 export function ArtistsPage() {
   const { data, isLoading, error } = useQuery(artistsQuery());
@@ -37,6 +38,11 @@ export function ArtistsPage() {
               className="flex items-center justify-between px-4 py-3 hover:bg-zinc-900"
             >
               <span className="font-medium text-zinc-100">{artist.name}</span>
+              <SpotifyEnrichButton
+                id={artist.id}
+                spotifyId={artist.spotify_id}
+                type="artist"
+              />
             </Link>
           </li>
         ))}

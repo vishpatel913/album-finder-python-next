@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { albumsQuery } from "@/lib/queries";
 import { AlbumTile } from "@/components/album-tile";
-import { LibraryAlbum } from "@/components/library-album";
+import { SpotifyEnrichButton } from "@/components/spotify-enrich";
 
 export function AlbumsPage() {
   const { data, isLoading, error } = useQuery(albumsQuery());
@@ -31,7 +31,21 @@ export function AlbumsPage() {
 
       <ul className="grid grid-cols-5 w-full gap-4">
         {albums.map((album) => (
-          <LibraryAlbum {...album} />
+          <AlbumTile
+            name={album.name}
+            artist={album.artist?.name}
+            year={album.year}
+            genre={album.genre}
+            imageUrl={album.artwork_url}
+            releaseDate={String(album.year)}
+            actions={
+              <SpotifyEnrichButton
+                type="album"
+                id={album.id}
+                spotifyId={album.spotify_id}
+              />
+            }
+          />
         ))}
         {albums.length === 0 && (
           <li className="px-4 py-6 text-center text-zinc-500">
