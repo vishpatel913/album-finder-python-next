@@ -61,7 +61,28 @@ export type Album = components['schemas']['AlbumRead']
 Regenerate whenever the backend's request/response models change. `Track` is
 still hand-defined — the backend has no `TrackRead` response model yet.
 
-## Notes
+## Mock mode (no backend)
+
+```bash
+npm run dev:mock    # http://localhost:5173, backend not required
+```
+
+Sets `VITE_MOCKS=true`, which starts an [MSW](https://mswjs.io) service worker
+that intercepts every `/api/*` call and serves seeded faker data instead of
+hitting the Vite proxy. Everything lives in `src/mocks/`:
+
+- `factories.ts` — one faker factory per OpenAPI schema, typed against
+  `api.gen.ts`. Each takes an `overrides` partial (`albumRead({ year: 1969 })`).
+- `db.ts` — in-memory dataset built once from the factories, so list/detail
+  endpoints agree and ids are stable across reloads (faker is seeded).
+- `handlers.ts` — per-endpoint handlers via
+  [openapi-msw](https://github.com/christoph-fricke/openapi-msw), typed against
+  the generated `paths`.
+
+Because everything is typed against `api.gen.ts`, syncing with backend changes
+is just `npm run gen:api` — drift shows up as type errors in the factories or
+handlers. Unmocked `/api/*` calls log a console warning rather than failing
+silently. Mock code is tree-shaken out of production builds.
 
 - The edit dialog calls `PUT /album/{id}`, which the backend doesn't expose yet.
   The hook is wired — it'll work the moment that route lands.
