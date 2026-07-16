@@ -20,6 +20,7 @@ class AlbumRead(SQLModel):
     artwork_url: str | None = None
 
     spotify_id: str | None = None
+    spotify_url: str | None = None
 
 
 class ArtistRead(SQLModel):
@@ -28,14 +29,15 @@ class ArtistRead(SQLModel):
     image_url: str | None = None
 
     spotify_id: str | None = None
+    spotify_url: str | None = None
 
 
 class TrackRead(SQLModel):
     id: str
     name: str
     artist: str
-    # artist: "ArtistRead"
     # album: "AlbumRead"
+    disc_number: int | None
     track_number: int | None
     track_length: int
     date_added: str

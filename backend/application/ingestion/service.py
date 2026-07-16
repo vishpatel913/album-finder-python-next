@@ -11,11 +11,13 @@ in ``scripts/seed.py`` is now just a thin entrypoint.
 
 from pathlib import Path
 
-from application.ingestion.schemas import AlbumCreate, ArtistCreate
+from application.ingestion.schemas import AlbumCreate, ArtistCreate, TrackCreate
 from domain.album.model import Album
 from domain.album.repository import SqlAlbumRepository
 from domain.artist.model import Artist
 from domain.artist.repository import SqlArtistRepository
+from domain.track.model import Track
+from domain.track.repository import SqlTrackRepository
 from infrastructure.database.session import session_scope
 from libs.music_library.parser import MusicLibraryParser
 
@@ -29,6 +31,7 @@ def seed_library(data_path: Path) -> None:
     with session_scope() as session:
         artists = SqlArtistRepository(session)
         albums = SqlAlbumRepository(session)
+        tracks = SqlTrackRepository(session)
 
         for entry in parser.get_artists():
             artists.upsert(Artist.model_validate(ArtistCreate.from_library(entry)))
@@ -38,9 +41,9 @@ def seed_library(data_path: Path) -> None:
             albums.upsert(Album.model_validate(AlbumCreate.from_library(entry)))
         session.flush()
 
-        # tracks = SqlTrackRepository(session)
-        # for entry in parsed_tracks:
-        #     tracks.upsert(Track.model_validate(TrackCreate.from_library(entry)))
+        for entry in parsed_tracks:
+            tracks.upsert(Track.model_validate(TrackCreate.from_library(entry)))
+        session.flush()
 
         session.commit()
         print("Seed complete")

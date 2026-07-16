@@ -51,8 +51,8 @@ init-db: ## Create tables (idempotent)
 migration: ## Generate a migration from model changes:  make migration m="add model.field"
 	docker compose exec api alembic revision --autogenerate -m "$(m)"
 
-.PHONY: migrate
-migrate: ## Apply all pending migrations
+.PHONY: migration-apply
+migration-apply: ## Apply all pending migrations
 	docker compose exec api alembic upgrade head
 
 .PHONY: downgrade

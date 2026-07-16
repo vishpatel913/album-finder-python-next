@@ -52,10 +52,10 @@ class TrackCreate(SQLModel):
     id: str
     name: str
     artist: str
-    artist_id: str | None = None
     album_id: str
+    disc_number: int | None = None
     track_number: int | None = None
-    track_length: int
+    track_length: int | None = None
     date_added: datetime
     play_count: int | None = None
 
@@ -66,10 +66,10 @@ class TrackCreate(SQLModel):
             id=track["id"],
             name=track["name"],
             artist=track["artist"],
-            artist_id=slugify(track["album_artist"]),
             album_id=slugify(track["album"], track["album_artist"]),
-            track_number=track["track_number"],
-            track_length=track["track_length"],
+            track_number=track["track_number"] if track["track_number"] else None,
+            track_length=track["track_length"] if track["track_length"] else None,
+            disc_number=track["disc_number"] if track["disc_number"] else None,
             date_added=track["date_added"],
-            play_count=track["play_count"],
+            play_count=track["play_count"] if track["play_count"] else None,
         )

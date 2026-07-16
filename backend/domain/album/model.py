@@ -17,11 +17,11 @@ class AlbumBase(SQLModel):
     artwork_url: str | None = None
 
     spotify_id: str | None = None
-    # spotify_url: str | None = None
+    spotify_url: str | None = None
 
     # Relationships
     # artist: "Artist" = Relationship(back_populates="albums")
-    # # tracks: list["Track"] = Relationship(back_populates="album")
+    # tracks: list["Track"] = Relationship(back_populates="album")
 
     # def total_tracks(self) -> int:
     #     return self.tracks.__len__

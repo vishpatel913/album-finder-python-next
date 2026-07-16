@@ -10,7 +10,7 @@ class ArtistBase(SQLModel):
     image_url: str | None = None
 
     spotify_id: str | None = None
-    # spotify_url: str | None = None
+    spotify_url: str | None = None
 
     # Relationships
     # albums: list["Album"] = Relationship(back_populates="artist")

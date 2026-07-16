@@ -37,7 +37,11 @@ def enrich_album(
     )
     top_result = results[0]
 
-    enriched_fields = {"spotify_id": top_result.id, "artwork_url": top_result.image_url}
+    enriched_fields = {
+        "spotify_id": top_result.id,
+        "artwork_url": top_result.image_url,
+        "spotify_url": top_result.external_url,
+    }
     if not album:
         raise ValueError(f"album enriched for {album_id} failed")
 
@@ -56,4 +60,5 @@ def enrich_album(
         is_compilation=updated.is_compilation,
         artwork_url=updated.artwork_url,
         spotify_id=updated.spotify_id,
+        spotify_url=updated.spotify_url,
     )

@@ -5,8 +5,6 @@ import plistlib
 from datetime import datetime
 from pathlib import Path
 
-from sqlalchemy import Null
-
 from utils.unique import unique_by
 
 logger = logging.getLogger(__name__)
@@ -63,8 +61,9 @@ class MusicLibraryParser:
             "album": track.get("Album", ""),
             "genre": track.get("Genre", ""),
             "year": track.get("Year"),
-            "track_id": int(track.get("Track ID", 0)) or Null,
-            "track_number": int(track.get("Track Number", 0)) or Null,
+            "track_id": int(track.get("Track ID", 0)) or None,
+            "track_number": int(track.get("Track Number", 0)) or None,
+            "disc_number": int(track.get("Disc Number", 0)) or None,
             "track_length": int(track.get("Total Time", 0) or 0),
             "date_added": self.__iso(track.get("Date Added")),
             "last_played": self.__iso(track.get("Play Date UTC")),
@@ -86,7 +85,7 @@ class MusicLibraryParser:
             "date_added": track.get("date_added"),
             "album_rating": track.get("album_rating"),  # 0-100 in iTunes XML
             "album_rating_computed": track.get("album_rating_computed"),  # 0-100
-            "compilation": bool(track.get("compilation", False)),
+            "compilation": self.__is_track_compilation(track),
         }
 
     def __get_artist_from_track(self, track: dict) -> dict:
@@ -94,6 +93,9 @@ class MusicLibraryParser:
             "album_artist": track.get("album_artist", ""),
             "artist": track.get("artist", ""),
         }
+
+    def __is_track_compilation(self, track: dict) -> bool:
+        return bool(track.get("compilation", False))
 
     def __iso(self, value) -> str | None:
         if value is None:
