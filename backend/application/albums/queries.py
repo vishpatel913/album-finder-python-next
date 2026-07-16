@@ -1,6 +1,6 @@
 """Query services for albums — resolve the album -> artist link (many-to-one)."""
 
-from application.dto.read import ArtistRead, TrackRead
+from application.dto.read import ArtistRead
 from application.dto.read_models import AlbumDetails
 from domain.album.repository import AbstractAlbumRepository
 from domain.artist.repository import AbstractArtistRepository
@@ -18,17 +18,18 @@ def get_album_details(
     if not album:
         raise ValueError(f"Album id {album_id} not found")
 
-    result = AlbumDetails.model_validate(album, from_attributes=True)
+    data = album.model_dump()
+
     if album.artist_id:
         artist = artist_repo.get_by_id(album.artist_id)
-        result.artist = (
-            ArtistRead.model_validate(artist, from_attributes=True) if artist else None
-        )
-        tracks = track_repo.list_by_album(album.id)
-        result.tracks = [
-            TrackRead.model_validate(track, from_attributes=True) for track in tracks
-        ]
-    return result
+        data["artist"] = artist.model_dump() if artist else None
+    else:
+        data["artist"] = None
+
+    tracks = track_repo.list_by_album(album.id)
+    data["tracks"] = [track.model_dump() for track in tracks]
+
+    return AlbumDetails.model_validate(data)
 
 
 def list_albums_details(
