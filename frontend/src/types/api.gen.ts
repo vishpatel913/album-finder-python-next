@@ -332,6 +332,8 @@ export interface components {
              * @default []
              */
             tracks: components["schemas"]["TrackRead"][];
+            /** Average Play Count */
+            readonly average_play_count: number | null;
         };
         /** AlbumRead */
         AlbumRead: {
