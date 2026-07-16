@@ -5,8 +5,8 @@ import type { components } from "./api.gen";
 //   npm run gen:api      (backend must be running on :8004)
 type Schemas = components["schemas"];
 
-export type Album = Schemas["AlbumWithArtist"];
-export type Artist = Schemas["ArtistWithAlbums"];
+export type Album = Schemas["AlbumDetails"];
+export type Artist = Schemas["ArtistDetails"];
 
 // The backend doesn't expose a TrackRead response model yet, so this stays
 // hand-defined. Swap to Schemas['TrackRead'] once that endpoint lands and the

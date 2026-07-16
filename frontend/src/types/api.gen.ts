@@ -301,6 +301,38 @@ export interface components {
             /** Artists */
             artists: components["schemas"]["Artist"][];
         };
+        /**
+         * AlbumDetails
+         * @description An album with its relational fields resolved.
+         */
+        AlbumDetails: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Artist Id */
+            artist_id?: string | null;
+            /** Date Added */
+            date_added: string;
+            /** Genre */
+            genre?: string | null;
+            /** Year */
+            year?: number | null;
+            /** Is Compilation */
+            is_compilation: boolean;
+            /** Artwork Url */
+            artwork_url?: string | null;
+            /** Spotify Id */
+            spotify_id?: string | null;
+            /** Spotify Url */
+            spotify_url?: string | null;
+            artist?: components["schemas"]["ArtistRead"] | null;
+            /**
+             * Tracks
+             * @default []
+             */
+            tracks: components["schemas"]["TrackRead"][];
+        };
         /** AlbumRead */
         AlbumRead: {
             /** Id */
@@ -321,31 +353,8 @@ export interface components {
             artwork_url?: string | null;
             /** Spotify Id */
             spotify_id?: string | null;
-        };
-        /**
-         * AlbumWithArtist
-         * @description An album with its (many-to-one) artist resolved.
-         */
-        AlbumWithArtist: {
-            /** Id */
-            id: string;
-            /** Name */
-            name: string;
-            /** Artist Id */
-            artist_id?: string | null;
-            /** Date Added */
-            date_added: string;
-            /** Genre */
-            genre?: string | null;
-            /** Year */
-            year?: number | null;
-            /** Is Compilation */
-            is_compilation: boolean;
-            /** Artwork Url */
-            artwork_url?: string | null;
-            /** Spotify Id */
-            spotify_id?: string | null;
-            artist?: components["schemas"]["ArtistRead"] | null;
+            /** Spotify Url */
+            spotify_url?: string | null;
         };
         /** Artist */
         Artist: {
@@ -360,6 +369,27 @@ export interface components {
             /** External Url */
             external_url: string | null;
         };
+        /**
+         * ArtistDetails
+         * @description An album with its (one-to-many) albums resolved.
+         */
+        ArtistDetails: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Image Url */
+            image_url?: string | null;
+            /** Spotify Id */
+            spotify_id?: string | null;
+            /** Spotify Url */
+            spotify_url?: string | null;
+            /**
+             * Albums
+             * @default []
+             */
+            albums: components["schemas"]["AlbumRead"][];
+        };
         /** ArtistRead */
         ArtistRead: {
             /** Id */
@@ -370,25 +400,8 @@ export interface components {
             image_url?: string | null;
             /** Spotify Id */
             spotify_id?: string | null;
-        };
-        /**
-         * ArtistWithAlbums
-         * @description An artist with its (one-to-many) albums resolved.
-         */
-        ArtistWithAlbums: {
-            /** Id */
-            id: string;
-            /** Name */
-            name: string;
-            /** Image Url */
-            image_url?: string | null;
-            /** Spotify Id */
-            spotify_id?: string | null;
-            /**
-             * Albums
-             * @default []
-             */
-            albums: components["schemas"]["AlbumRead"][];
+            /** Spotify Url */
+            spotify_url?: string | null;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -423,11 +436,16 @@ export interface components {
             name: string;
             /** Artist */
             artist: string;
+            /** Disc Number */
+            disc_number: number | null;
             /** Track Number */
             track_number: number | null;
             /** Track Length */
             track_length: number;
-            /** Date Added */
+            /**
+             * Date Added
+             * Format: date-time
+             */
             date_added: string;
             /** Play Count */
             play_count: number | null;
@@ -515,7 +533,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ArtistWithAlbums"][];
+                    "application/json": components["schemas"]["ArtistDetails"][];
                 };
             };
         };
@@ -537,7 +555,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ArtistWithAlbums"];
+                    "application/json": components["schemas"]["ArtistDetails"];
                 };
             };
             /** @description Validation Error */
@@ -597,7 +615,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AlbumWithArtist"][];
+                    "application/json": components["schemas"]["AlbumDetails"][];
                 };
             };
         };
@@ -619,7 +637,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AlbumWithArtist"];
+                    "application/json": components["schemas"]["AlbumDetails"];
                 };
             };
             /** @description Validation Error */

@@ -40,11 +40,12 @@ export const albumRead = (
   ...overrides,
 });
 
-export const albumWithArtist = (
-  overrides: Partial<Schema<"AlbumWithArtist">> = {},
-): Schema<"AlbumWithArtist"> => ({
+export const albumDetails = (
+  overrides: Partial<Schema<"AlbumDetails">> = {},
+): Schema<"AlbumDetails"> => ({
   ...albumRead(),
   artist: null,
+  tracks: [],
   ...overrides,
 });
 
@@ -54,6 +55,7 @@ export const trackRead = (
   id: faker.string.uuid(),
   name: faker.music.songName(),
   artist: faker.music.artist(),
+  disc_number: faker.number.int({ min: 1, max: 14 }),
   track_number: faker.number.int({ min: 1, max: 14 }),
   track_length: faker.number.int({ min: 90_000, max: 420_000 }),
   date_added: faker.date.past({ years: 3 }).toISOString(),

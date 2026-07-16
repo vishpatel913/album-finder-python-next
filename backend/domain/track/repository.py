@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from sqlmodel import Session, select
+from sqlmodel import Session, col, select
 
 from .model import Track
 
@@ -11,6 +11,9 @@ class AbstractTrackRepository(ABC):
 
     @abstractmethod
     def list(self) -> list[Track]: ...
+
+    @abstractmethod
+    def list_by_album(self, album_id: str) -> list[Track]: ...
 
     @abstractmethod
     def create(self, entity: Track) -> Track: ...
@@ -34,6 +37,13 @@ class SqlTrackRepository(AbstractTrackRepository):
 
     def list(self) -> list[Track]:
         return list(self.session.exec(select(Track)).all())
+
+    def list_by_album(self, album_id: str) -> list[Track]:
+        return list(
+            self.session.exec(
+                select(Track).where(col(Track.album_id) == album_id)
+            ).all()
+        )
 
     def create(self, entity: Track) -> Track:
         """Persist a new track and return the stored row."""

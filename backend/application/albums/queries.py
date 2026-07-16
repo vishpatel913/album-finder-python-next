@@ -1,36 +1,40 @@
 """Query services for albums — resolve the album -> artist link (many-to-one)."""
 
-from application.dto.read import ArtistRead
-from application.dto.read_models import AlbumWithArtist
+from application.dto.read import ArtistRead, TrackRead
+from application.dto.read_models import AlbumDetails
 from domain.album.repository import AbstractAlbumRepository
 from domain.artist.repository import AbstractArtistRepository
+from domain.track.repository import AbstractTrackRepository
 
 
-def get_album_with_artist(
+def get_album_details(
     album_id: str,
     album_repo: AbstractAlbumRepository,
     artist_repo: AbstractArtistRepository,
-) -> AlbumWithArtist:
+    track_repo: AbstractTrackRepository,
+) -> AlbumDetails:
     """One album with its artist resolved. Raises ValueError if not found."""
     album = album_repo.get_by_id(album_id)
     if not album:
         raise ValueError(f"Album id {album_id} not found")
 
-    result = AlbumWithArtist.model_validate(album, from_attributes=True)
+    result = AlbumDetails.model_validate(album, from_attributes=True)
     if album.artist_id:
-        # Resolve the link via the *artist* aggregate's repo — no join, no
-        # reaching into the album's tables for artist data.
         artist = artist_repo.get_by_id(album.artist_id)
         result.artist = (
             ArtistRead.model_validate(artist, from_attributes=True) if artist else None
         )
+        tracks = track_repo.list_by_album(album.id)
+        result.tracks = [
+            TrackRead.model_validate(track, from_attributes=True) for track in tracks
+        ]
     return result
 
 
-def list_albums_with_artist(
+def list_albums_details(
     album_repo: AbstractAlbumRepository,
     artist_repo: AbstractArtistRepository,
-) -> list[AlbumWithArtist]:
+) -> list[AlbumDetails]:
     """All albums, each with its artist resolved in a single batched lookup."""
     albums = album_repo.list()
 
@@ -43,9 +47,9 @@ def list_albums_with_artist(
         else {}
     )
 
-    results: list[AlbumWithArtist] = []
+    results: list[AlbumDetails] = []
     for album in albums:
-        item = AlbumWithArtist.model_validate(album, from_attributes=True)
+        item = AlbumDetails.model_validate(album, from_attributes=True)
         artist = by_id.get(album.artist_id) if album.artist_id else None
         item.artist = (
             ArtistRead.model_validate(artist, from_attributes=True) if artist else None

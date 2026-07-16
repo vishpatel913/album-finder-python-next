@@ -7,19 +7,19 @@ from application.artists.queries import (
     list_artists_with_albums,
 )
 from application.dto.read import ArtistRead
-from application.dto.read_models import ArtistWithAlbums
+from application.dto.read_models import ArtistDetails
 
 router = APIRouter(prefix="/artist", tags=["artist"])
 
 
-@router.get("/", response_model=list[ArtistWithAlbums])
+@router.get("/", response_model=list[ArtistDetails])
 def list_artists(
     artist_repo=Depends(get_artist_repo), album_repo=Depends(get_album_repo)
 ):
     return list_artists_with_albums(artist_repo, album_repo)
 
 
-@router.get("/{artist_id}", response_model=ArtistWithAlbums)
+@router.get("/{artist_id}", response_model=ArtistDetails)
 def get_artist_by_id(
     artist_id: str,
     artist_repo=Depends(get_artist_repo),

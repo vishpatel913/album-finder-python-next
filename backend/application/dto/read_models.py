@@ -1,15 +1,16 @@
 """Cross-aggregate read models (the CQRS read side)."""
 
-from application.dto.read import AlbumRead, ArtistRead
+from application.dto.read import AlbumRead, ArtistRead, TrackRead
 
 
-class AlbumWithArtist(AlbumRead):
-    """An album with its (many-to-one) artist resolved."""
+class AlbumDetails(AlbumRead):
+    """An album with its relational fields resolved."""
 
     artist: ArtistRead | None = None
+    tracks: list[TrackRead] = []
 
 
-class ArtistWithAlbums(ArtistRead):
-    """An artist with its (one-to-many) albums resolved."""
+class ArtistDetails(ArtistRead):
+    """An album with its (one-to-many) albums resolved."""
 
     albums: list[AlbumRead] = []
